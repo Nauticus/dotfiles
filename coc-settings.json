@@ -1,0 +1,9 @@
+{
+  "javascript.validate.enable": false,
+  "eslint.autoFixOnSave": false,
+  "prettier.eslintIntegration": true,
+  "signature.enable": true,
+  "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+  }
+}

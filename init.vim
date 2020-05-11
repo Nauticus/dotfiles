@@ -15,6 +15,8 @@ set secure
 set omnifunc=syntaxcomplete#Complete
 set number
 set nobackup
+set noswapfile
+set nowritebackup
 set ignorecase
 set smartcase
 set softtabstop=4
@@ -68,19 +70,19 @@ let g:one_allow_italics = 1
 colo one
 
 let g:lightline = {
-      \ 'colorscheme': 'one',
-      \ 'component_function': {
-      \   'filename': 'LightlineFilename',
-      \ }
-      \ }
+            \ 'colorscheme': 'one',
+            \ 'component_function': {
+            \   'filename': 'LightlineFilename',
+            \ }
+            \ }
 
 function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
+    let root = fnamemodify(get(b:, 'git_dir'), ':h')
+    let path = expand('%:p')
+    if path[:len(root)-1] ==# root
+        return path[len(root)+1:]
+    endif
+    return expand('%')
 endfunction
 
 " Save current view settings on a per-window, per-buffer basis.
@@ -105,8 +107,8 @@ function! AutoRestoreWinView()
 endfunction
 
 function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 function! s:show_documentation()
@@ -177,9 +179,9 @@ omap T <Plug>Sneak_T
 
 " completion dialog
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])

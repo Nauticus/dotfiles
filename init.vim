@@ -63,6 +63,7 @@ Plug 'kristijanhusak/vim-dirvish-git'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-projectionist'
 Plug 'pangloss/vim-javascript'
+Plug 'ekalinin/Dockerfile.vim'
 call plug#end()
 
 let g:one_allow_italics = 1
@@ -124,6 +125,8 @@ endfunction
 autocmd BufLeave * call AutoSaveWinView()
 autocmd BufEnter * call AutoRestoreWinView()
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+
+let g:coc_global_extensions = ['coc-json', 'coc-diagnostic', 'coc-git', 'coc-pairs', 'coc-snippets']
 
 " Sneak
 let g:sneak#label = 1

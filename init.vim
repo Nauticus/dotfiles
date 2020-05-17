@@ -22,7 +22,7 @@ set smartcase
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set updatetime=400
+set updatetime=1000
 set background=dark
 set shell=$SHELL
 set signcolumn=yes

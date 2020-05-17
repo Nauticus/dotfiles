@@ -63,7 +63,6 @@ ZSH_THEME="common"
 
 export NVM_NO_USE=true
 export NVM_LAZY_LOAD=true
-export JIRA_URL="https://performancehorizongroup.atlassian.net"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -80,7 +79,6 @@ plugins=(
     colored-man-pages
     zsh-nvm
     zsh-syntax-highlighting
-    jira
     docker
     docker-compose
     zsh-autosuggestions

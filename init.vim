@@ -61,7 +61,6 @@ Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
 Plug 'kristijanhusak/vim-dirvish-git'
 Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-projectionist'
 Plug 'pangloss/vim-javascript'
 Plug 'ekalinin/Dockerfile.vim'
 call plug#end()

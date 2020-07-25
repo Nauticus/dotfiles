@@ -44,13 +44,11 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'Asheq/close-buffers.vim'
 Plug 'tpope/vim-sensible'
-Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'itchyny/lightline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'rakr/vim-one'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'honza/vim-snippets'
@@ -61,8 +59,17 @@ Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
 Plug 'kristijanhusak/vim-dirvish-git'
 Plug 'tpope/vim-eunuch'
-Plug 'pangloss/vim-javascript'
 Plug 'ekalinin/Dockerfile.vim'
+
+" Color Scheme
+Plug 'rakr/vim-one'
+
+" Syntax
+Plug 'pangloss/vim-javascript'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'MaxMEllon/vim-jsx-pretty'
 call plug#end()
 
 let g:one_allow_italics = 1

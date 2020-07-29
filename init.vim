@@ -1,4 +1,6 @@
-set encoding=utf8
+" cSpell:disable 
+
+set encoding=utf-8
 scriptencoding utf-8
 
 set t_Co=256
@@ -22,7 +24,7 @@ set smartcase
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set updatetime=1000
+set updatetime=500
 set background=dark
 set shell=$SHELL
 set signcolumn=yes
@@ -30,9 +32,9 @@ set incsearch
 set nohlsearch
 set list
 set listchars=tab:→\ ,trail:⋅,extends:❯,precedes:❮
+set lazyredraw
 
 syntax enable
-syntax sync minlines=200
 
 let mapleader = ' '
 
@@ -43,7 +45,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'Asheq/close-buffers.vim'
-Plug 'tpope/vim-sensible'
 Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'itchyny/lightline.vim'
@@ -52,32 +53,31 @@ Plug 'editorconfig/editorconfig-vim'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'honza/vim-snippets'
+Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-eunuch'
 Plug 'justinmk/vim-dirvish'
 Plug 'kristijanhusak/vim-dirvish-git'
-Plug 'tpope/vim-eunuch'
 Plug 'ekalinin/Dockerfile.vim'
 
 " Color Scheme
 Plug 'rakr/vim-one'
+Plug 'morhetz/gruvbox'
 
 " Syntax
-Plug 'pangloss/vim-javascript'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'sheerun/vim-polyglot'
+" Plug 'jelera/vim-javascript-syntax'
 call plug#end()
 
-let g:one_allow_italics = 1
+let g:gruvbox_contrast_dark='medium'
 
-colo one
+colo gruvbox
 
 let g:lightline = {
-            \ 'colorscheme': 'one',
+            \ 'colorscheme': 'gruvbox',
             \ 'component_function': {
             \   'filename': 'LightlineFilename',
             \ }
@@ -126,7 +126,6 @@ function! s:show_documentation()
     endif
 endfunction
 
-
 " When switching buffers, preserve window view.
 autocmd BufLeave * call AutoSaveWinView()
 autocmd BufEnter * call AutoRestoreWinView()
@@ -137,20 +136,20 @@ let g:coc_global_extensions = ['coc-json', 'coc-diagnostic', 'coc-git', 'coc-pai
 " Sneak
 let g:sneak#label = 1
 let g:sneak#use_ic_scs = 1
-let g:sneak#target_labels = ";sfghltunrqz/0"
 
 let g:dirvish_mode = ':sort ,^.*[\/],'
 let g:dirvish_relative_paths = 0
 
-let g:netrw_localmovecmd = 'mv'
-let g:netrw_fastbrowse = 0
 let g:javascript_plugin_flow = 1
 let test#vim#term_position = "belowright"
 let g:pumheight = 8
-let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*"'
 let g:snips_author = "Emanuil Ganchev"
-let g:netrw_localrmdir='rm -r'
-let g:loaded_matchparen = 1
+
+let $FZF_DEFAULT_OPTS = '--layout=reverse'
+let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*"'
+
+let g:fzf_preview_window = 'right:45%'
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8, 'xoffset': 0.5, 'yoffset': 0.1, 'border': 'rounded' } }
 
 nnoremap <SPACE> <Nop>
 map <F2> :w<CR>
@@ -167,24 +166,13 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <leader>di :CocList diagnostics<CR>
 nmap <leader>a  <Plug>(coc-codeaction)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-nnoremap <silent>  :call fzf#run(fzf#wrap({'source': 'find . -type d \( -path ./node_modules -o -path ./.git \) -prune -o -print'}))<CR>
 nnoremap § :Buffers<CR>
 nnoremap <silent> <leader><leader> :Files <C-R>=expand('%:h')<CR><CR>
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-"replace 'f' with 1-char Sneak
-nmap f <Plug>Sneak_f
-nmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
-"replace 't' with 1-char Sneak
-nmap t <Plug>Sneak_t
-nmap T <Plug>Sneak_T
-xmap t <Plug>Sneak_t
-xmap T <Plug>Sneak_T
-omap t <Plug>Sneak_t
-omap T <Plug>Sneak_T
+nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " completion dialog
 inoremap <silent><expr> <TAB>
@@ -194,7 +182,3 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])
-
-hi Sneak gui=bold guifg=#353a44 guibg=#72bef2
-hi SneakScope  guifg=#282C34 guibg=#E5C07B
-hi SneakLabelMask guifg=#72bef2 guibg=#72bef2

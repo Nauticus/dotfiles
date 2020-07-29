@@ -65,7 +65,7 @@ Plug 'ekalinin/Dockerfile.vim'
 
 " Color Scheme
 Plug 'rakr/vim-one'
-Plug 'morhetz/gruvbox'
+Plug 'Nauticus/gruvbox'
 
 " Syntax
 Plug 'sheerun/vim-polyglot'

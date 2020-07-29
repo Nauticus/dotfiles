@@ -64,6 +64,8 @@ ZSH_THEME="common"
 export NVM_NO_USE=true
 export NVM_LAZY_LOAD=true
 
+export VISUAL=nvim
+
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/

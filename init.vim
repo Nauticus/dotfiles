@@ -9,6 +9,7 @@ set t_8b=^[[48;2;%lu;%lu;%lum
 set t_8f=^[[38;2;%lu;%lu;%lum
 
 set clipboard=unnamed
+set relativenumber
 set termguicolors
 set cursorline
 set hidden
@@ -45,13 +46,14 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'Asheq/close-buffers.vim'
-Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'itchyny/lightline.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
@@ -60,19 +62,19 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-eunuch'
 Plug 'justinmk/vim-dirvish'
+Plug 'justinmk/vim-sneak'
 Plug 'kristijanhusak/vim-dirvish-git'
 Plug 'ekalinin/Dockerfile.vim'
 
 " Color Scheme
-Plug 'rakr/vim-one'
 Plug 'Nauticus/gruvbox'
 
 " Syntax
 Plug 'sheerun/vim-polyglot'
-" Plug 'jelera/vim-javascript-syntax'
 call plug#end()
 
 let g:gruvbox_contrast_dark='medium'
+let g:gruvbox_invert_selection=0
 
 colo gruvbox
 
@@ -131,6 +133,8 @@ autocmd BufLeave * call AutoSaveWinView()
 autocmd BufEnter * call AutoRestoreWinView()
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 let g:coc_global_extensions = ['coc-json', 'coc-diagnostic', 'coc-git', 'coc-pairs', 'coc-snippets']
 
 " Sneak
@@ -151,12 +155,27 @@ let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow -g "!{.git,
 let g:fzf_preview_window = 'right:45%'
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8, 'xoffset': 0.5, 'yoffset': 0.1, 'border': 'rounded' } }
 
+"replace 'f' with 1-char Sneak
+nmap f <Plug>Sneak_f
+nmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+"replace 't' with 1-char Sneak
+nmap t <Plug>Sneak_t
+nmap T <Plug>Sneak_T
+xmap t <Plug>Sneak_t
+xmap T <Plug>Sneak_T
+omap t <Plug>Sneak_t
+omap T <Plug>Sneak_T
+
 nnoremap <SPACE> <Nop>
 map <F2> :w<CR>
 nmap <leader>; :Files<CR>
 nmap <leader>hh :History<CR>
 nmap <leader>yf :let @* = expand("%")<CR>
-nmap <leader>rg :Rg <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>rg :Rg <C-R>*<CR><CR>
 nmap <leader>f <Plug>(coc-format)
 vmap <leader>s <Plug>(coc-format-selected)
 nmap <silent> gd <Plug>(coc-definition)

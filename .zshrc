@@ -73,6 +73,8 @@ export VISUAL=nvim
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
+    zsh-nvm
+    vi-mode
     yarn
     colorize
     python
@@ -126,6 +128,4 @@ bindkey '^N' history-search-forward              # Go forward/search in history 
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+export GEM_HOME="$HOME/.gem"

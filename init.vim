@@ -54,6 +54,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/gv.vim'
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
@@ -65,6 +66,10 @@ Plug 'justinmk/vim-dirvish'
 Plug 'justinmk/vim-sneak'
 Plug 'kristijanhusak/vim-dirvish-git'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'aserebryakov/vim-todo-lists'
+Plug 'josa42/vim-lightline-coc'
+Plug 'tpope/vim-dispatch'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " Color Scheme
 Plug 'Nauticus/gruvbox'
@@ -80,10 +85,16 @@ colo gruvbox
 
 let g:lightline = {
             \ 'colorscheme': 'gruvbox',
+            \ 'active': {
+            \   'left': [['mode','coc_errors', 'coc_warnings', 'coc_ok'], ['gitbranch','filename','readonly','modified', 'coc-status']]
+            \ },
             \ 'component_function': {
             \   'filename': 'LightlineFilename',
+            \   'gitbranch': 'FugitiveHead'
             \ }
             \ }
+
+call lightline#coc#register()
 
 function! LightlineFilename()
     let root = fnamemodify(get(b:, 'git_dir'), ':h')
@@ -144,6 +155,9 @@ let g:sneak#use_ic_scs = 1
 let g:dirvish_mode = ':sort ,^.*[\/],'
 let g:dirvish_relative_paths = 0
 
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 0
+
 let g:javascript_plugin_flow = 1
 let test#vim#term_position = "belowright"
 let g:pumheight = 8
@@ -174,7 +188,9 @@ nnoremap <SPACE> <Nop>
 map <F2> :w<CR>
 nmap <leader>; :Files<CR>
 nmap <leader>hh :History<CR>
+nmap <leader>md <Plug>MarkdownPreviewToggle
 nmap <leader>yf :let @* = expand("%")<CR>
+nmap <leader>yp :let @* = expand("%") . ':' . line(".") . ' at ' . FugitiveConfigGet('remote.origin.url') . ':' . FugitiveHead()<CR>
 nmap <leader>rg :Rg <C-R>*<CR><CR>
 nmap <leader>f <Plug>(coc-format)
 vmap <leader>s <Plug>(coc-format-selected)
@@ -189,9 +205,19 @@ nnoremap § :Buffers<CR>
 nnoremap <silent> <leader><leader> :Files <C-R>=expand('%:h')<CR><CR>
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
 nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " completion dialog
 inoremap <silent><expr> <TAB>
@@ -199,5 +225,7 @@ inoremap <silent><expr> <TAB>
             \ <SID>check_back_space() ? "\<TAB>" :
             \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+autocmd FileType dirvish vnoremap <leader>ce :Shdo mv {} {}.ts
 
 command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])

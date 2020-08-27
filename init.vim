@@ -163,11 +163,12 @@ let test#vim#term_position = "belowright"
 let g:pumheight = 8
 let g:snips_author = "Emanuil Ganchev"
 
-let $FZF_DEFAULT_OPTS = '--layout=reverse'
-let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*"'
+let $FZF_DEFAULT_OPTS = '-m'
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --no-ignore-vcs -g "!{node_modules,.git}"'
 
-let g:fzf_preview_window = 'right:45%'
-let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8, 'xoffset': 0.5, 'yoffset': 0.1, 'border': 'rounded' } }
+let g:fzf_preview_window = 'up:45%'
+let g:fzf_buffers_jump = 1
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'xoffset': 0.5, 'yoffset': 0.5 } }
 
 "replace 'f' with 1-char Sneak
 nmap f <Plug>Sneak_f
@@ -189,6 +190,7 @@ map <F2> :w<CR>
 nmap <leader>; :Files<CR>
 nmap <leader>hh :History<CR>
 nmap <leader>md <Plug>MarkdownPreviewToggle
+nmap <leader>yl :let @* = escape(expand("%:t:r"), '/')<CR>
 nmap <leader>yf :let @* = expand("%")<CR>
 nmap <leader>yp :let @* = expand("%") . ':' . line(".") . ' at ' . FugitiveConfigGet('remote.origin.url') . ':' . FugitiveHead()<CR>
 nmap <leader>rg :Rg <C-R>*<CR><CR>

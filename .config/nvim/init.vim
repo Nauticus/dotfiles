@@ -62,15 +62,15 @@ let g:snips_author = "Emanuil Ganchev"
 nnoremap <SPACE> <Nop>
 map <F2> :w<CR>
 nmap <leader>; :Files<CR>
-nmap <leader>wr :vertical resize 127<CR>
 nmap <leader>hh :History<CR>
+nmap <leader>rg :Rg <C-R>*<CR><CR>
+nnoremap § :Buffers<CR>
+nnoremap <silent> <leader><leader> :Files <C-R>=expand('%:h')<CR><CR>
+nmap <leader>wr :vertical resize 127<CR>
 nmap <leader>md <Plug>MarkdownPreviewToggle
 nmap <leader>yl :let @* = escape(expand("%:t:r"), '/')<CR>
 nmap <leader>yf :let @* = expand("%")<CR>
 nmap <leader>yp :let @* = expand("%") . ':' . line(".") . ' at ' . FugitiveConfigGet('remote.origin.url') . ':' . FugitiveHead()<CR>
-nmap <leader>rg :Rg <C-R>*<CR><CR>
-nnoremap § :Buffers<CR>
-nnoremap <silent> <leader><leader> :Files <C-R>=expand('%:h')<CR><CR>
 
 nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"

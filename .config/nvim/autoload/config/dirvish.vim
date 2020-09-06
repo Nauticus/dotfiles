@@ -15,12 +15,22 @@ function! s:CreateFile()
     normal R
 endfunction
 
-function! s:DeleteItemUnderCursor()
-    let target = getline('.')
-    echo target
-    let filename = fnamemodify(target, ':t')
-    let cmd = (isdirectory(target)) ?  printf('rm -rf "%s" /s /q',target) : printf('rm "%s"', target)
-    silent execute(printf(':!%s', cmd))
+function! s:CreateDirectory() abort
+  let dirname = input('Directory name: ')
+  if trim(dirname) == ''
+    return
+  endif
+  let dirpath = expand("%") . dirname
+  if isdirectory(dirpath)
+    redraw
+    echomsg printf('"%s" already exists.', dirpath)
+    return
+  endif
+  let output = system("mkdir -p " . dirpath)
+  if v:shell_error
+    call s:logError(output)
+  endif
+  normal R
 endfunction
 
 function! s:RenameItemUnderCursor()
@@ -40,9 +50,9 @@ function! config#dirvish#Init()
     augroup dirvish_config
 	autocmd!
 	autocmd FileType dirvish silent nmap <silent><buffer> <leader>td :!tmux split-window -h -l 80 -c <C-R>=expand('%:p:h')<CR><CR><CR>
-	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>dd :call <SID>DeleteItemUnderCursor()<CR>
 	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>rn :call <SID>RenameItemUnderCursor()<CR>
-	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>e :call <SID>CreateFile()<CR>
+	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>cf :call <SID>CreateFile()<CR>
+	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>cd :call <SID>CreateDirectory()<CR>
     augroup END
 endfunction
 

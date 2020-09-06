@@ -26,16 +26,27 @@ function! s:RenameItemUnderCursor()
     normal R
 endfunction
 
-function! s:DirvishTouch(...)
-    let l:argument = map(copy(a:000), 'expand("%:h") . "/" . v:val')
-    silent execute printf(':!touch %s', join(l:argument, ' '))
+function! s:ResolveToRoot(list)
+    return map(copy(a:list), 'expand("%:h") . "/" . v:val')
 endfunction
+
+function! s:DirvishTouch(...)
+    silent execute printf(':!touch %s', join(<SID>ResolveToRoot(a:000), ' '))
+endfunction
+
+function! s:DirvishMkdir(...)
+    let s:options = filter(copy(a:000), 'v:val =~ "-"')
+    let s:paths = filter(copy(a:000), 'v:val !~ "-"')
+    silent execute printf(':!mkdir %s %s', join(s:options, ' '), join(<SID>ResolveToRoot(s:paths), ' '))
+endfunction
+
 
 function! config#dirvish#Init()
     let g:dirvish_mode = ':sort ,^.*[\/],'
     let g:dirvish_relative_paths = 0
 
     command! -nargs=+ DirvishTouch call <SID>DirvishTouch(<f-args>)
+    command! -nargs=+ DirvishMkdir call <SID>DirvishMkdir(<f-args>)
 
     augroup dirvish_config
 	autocmd!

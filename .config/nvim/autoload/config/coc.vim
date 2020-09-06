@@ -12,7 +12,7 @@ function! s:check_back_space() abort
 endfunction
 
 function! config#coc#Init()
-    let g:coc_global_extensions = ['coc-marketplace', 'coc-json', 'coc-git', 'coc-pairs', 'coc-snippets']
+    let g:coc_global_extensions = ['coc-marketplace', 'coc-diagnostic', 'coc-emmet', 'coc-eslint', 'coc-json', 'coc-git', 'coc-pairs', 'coc-snippets']
 
     " Show all diagnostics.
     nnoremap <silent><nowait> <leader>a  :<C-u>CocList diagnostics<cr>

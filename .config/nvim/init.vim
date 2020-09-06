@@ -3,7 +3,7 @@
 scriptencoding utf-8
 call options#Init()
 
-call plug#begin('~/.vim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 Plug 'Asheq/close-buffers.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -75,4 +75,3 @@ nmap <leader>yp :let @* = expand("%") . ':' . line(".") . ' at ' . FugitiveConfi
 nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-

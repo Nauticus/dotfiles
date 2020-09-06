@@ -56,7 +56,6 @@ colo gruvbox
 
 let mapleader = ' '
 
-
 let g:pumheight = 8
 let g:snips_author = "Emanuil Ganchev"
 

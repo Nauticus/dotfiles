@@ -1,0 +1,33 @@
+{
+  "tsserver.formatOnType": true,
+  "cSpell.enabled": true,
+  "coc.preferences.formatOnType": true,
+  "javascript.validate.enable": false,
+  "diagnostic.messageDelay": 500,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.refreshOnInsertMode": true,
+  "suggest.noselect": true,
+  "pairs.enableCharacters": ["(", "[", "{", "<", "'", "\"", "`"],
+  "styled-components.tags": ["styled", "css", "sty"],
+  "cSpell.userWords": [
+    "Arial",
+    "Assetlinks",
+    "EEST",
+    "Emanuil",
+    "Ganchev",
+    "Helvetica",
+    "Neue",
+    "TVOG",
+    "browserslist",
+    "chunkhash",
+    "devtool",
+    "devtools",
+    "flowtypes",
+    "funcobj",
+    "gruvbox",
+    "kanban",
+    "nowrap",
+    "svgr",
+    "theming"
+  ]
+}

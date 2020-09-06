@@ -91,7 +91,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
+export PATH="/usr/local/sbin:$PATH"
 
 # Enable Vim mode in ZSH
 bindkey -v

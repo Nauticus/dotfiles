@@ -1,4 +1,4 @@
-function! config#tsserver#Init()
+function! config#lsp#Init()
     " lua <<EOF
     " require'nvim_lsp'.tsserver.setup{}
     " EOF

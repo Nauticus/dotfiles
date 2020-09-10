@@ -19,7 +19,8 @@ function! AutoRestoreWinView()
     endif
 endfunction
 
-" When switching buffers, preserve window view.
-autocmd BufLeave * call AutoSaveWinView()
-autocmd BufEnter * call AutoRestoreWinView()
-
+augroup save_view
+    autocmd!
+    autocmd BufLeave * call AutoSaveWinView()
+    autocmd BufEnter * call AutoRestoreWinView()
+augroup END

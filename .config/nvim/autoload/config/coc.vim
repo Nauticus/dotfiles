@@ -56,6 +56,9 @@ function! config#coc#Init()
 
     command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])
 
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-    autocmd CursorHold * silent call CocActionAsync('highlight')
+    augroup coc_config
+        autocmd!
+        autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+        autocmd CursorHold * silent call CocActionAsync('highlight')
+    augroup END
 endfunction

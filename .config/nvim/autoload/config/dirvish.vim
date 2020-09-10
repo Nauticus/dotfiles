@@ -1,45 +1,36 @@
-function! s:CreateDirectory() abort
-    let dirname = input('Directory name: ')
-    if trim(dirname) == ''
-	return
-    endif
-    let dirpath = expand("%") . dirname
-    if isdirectory(dirpath)
-	redraw
-	echomsg printf('"%s" already exists.', dirpath)
-	return
-    endif
-    let output = system("mkdir -p " . dirpath)
-    if v:shell_error
-	call s:logError(output)
-    endif
-    normal R
+function! s:Move()
+    let l:directory = getline('.')
+    let l:input = input('Move to: ', l:directory, "file")
+    silent execute printf('!mv "%s" "%s"', l:directory, l:input)
+    redraw
 endfunction
 
-function! s:RenameItemUnderCursor()
-    let target = getline('.')
-    let filename = fnamemodify(target, ':t')
-    let path = fnamemodify(target, ':p:h')
-    let newname = input('Rename into: ', filename)
-    let newpath = path . '/' . newname
-    silent execute(printf(':!mv "%s" "%s"',target,newpath))
-    normal R
+function! s:Copy()
+    let l:item = getline('.')
+    let l:input = input('Copy to: ', l:item, 'dir')
+    call system(printf('cp -R %s %s', l:item, l:input))
+    silent edit
 endfunction
 
-function! s:ResolveToRoot(list)
-    return map(copy(a:list), 'expand("%:h") . "/" . v:val')
+function! s:MapToRoot(list)
+    return map(a:list, 'expand("%:h") . "/" . v:val')
 endfunction
 
 function! s:DirvishTouch(...)
-    silent execute printf(':!touch %s', join(<SID>ResolveToRoot(a:000), ' '))
+    silent execute printf(':!touch %s', join(<SID>MapToRoot(a:000), ' '))
 endfunction
 
 function! s:DirvishMkdir(...)
-    let s:options = filter(copy(a:000), 'v:val =~ "-"')
-    let s:paths = filter(copy(a:000), 'v:val !~ "-"')
-    silent execute printf(':!mkdir %s %s', join(s:options, ' '), join(<SID>ResolveToRoot(s:paths), ' '))
+    let l:options = filter(deepcopy(a:000), 'v:val =~ "-"')
+    let l:paths = filter(deepcopy(a:000), 'v:val !~ "-"')
+    call system(printf('mkdir %s %s', join(l:options, ' '), join(<SID>MapToRoot(l:paths), ' ')))
+    silent edit
 endfunction
 
+function! s:DirvishCd(path)
+    cd path
+    edit path
+endfunction
 
 function! config#dirvish#Init()
     let g:dirvish_mode = ':sort ,^.*[\/],'
@@ -47,12 +38,13 @@ function! config#dirvish#Init()
 
     command! -nargs=+ DirvishTouch call <SID>DirvishTouch(<f-args>)
     command! -nargs=+ DirvishMkdir call <SID>DirvishMkdir(<f-args>)
+    command! -nargs=+ -complete=dir DirvishCd call <SID>DirvishCd(<f-args>)
 
     augroup dirvish_config
-	autocmd!
-	autocmd FileType dirvish silent nmap <silent><buffer> <leader>td :!tmux split-window -h -l 80 -c <C-R>=expand('%:p:h')<CR><CR><CR>
-	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>rn :call <SID>RenameItemUnderCursor()<CR>
-	autocmd FileType dirvish nnoremap <silent> <buffer> <leader>cd :call <SID>CreateDirectory()<CR>
+        autocmd!
+        autocmd FileType dirvish silent nmap <silent><buffer> <leader>td :!tmux split-window -h -l 80 -c <C-R>=expand('%:p:h')<CR><CR><CR>
+        autocmd FileType dirvish nnoremap <silent> <buffer> mv :call <SID>Move()<CR>
+        autocmd FileType dirvish nnoremap <silent> <buffer> cp :call <SID>Copy()<CR>
     augroup END
 endfunction
 

@@ -1,6 +1,7 @@
 " cSpell:disable 
 
 scriptencoding utf-8
+
 call options#Init()
 
 call plug#begin(stdpath('data') . '/plugged')
@@ -35,7 +36,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'aserebryakov/vim-todo-lists'
 
 Plug 'itchyny/lightline.vim'
-Plug 'josa42/vim-lightline-coc'
+Plug 'mengelbrecht/lightline-bufferline'
 call config#lightline#Init()
 
 Plug 'tpope/vim-dispatch'
@@ -43,35 +44,54 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
 
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter'
 
+" Plug 'arcticicestudio/nord-vim'
+Plug 'sainnhe/gruvbox-material'
 Plug 'Nauticus/gruvbox'
 let g:gruvbox_contrast_dark='medium'
 let g:gruvbox_invert_selection=0
+let g:gruvbox_improved_strings=0
+let g:gruvbox_invert_indent_guides=1
+let g:gruvbox_italicize_comments=1
 
 Plug 'sheerun/vim-polyglot'
 call plug#end()
 
-colo gruvbox
+" call config#lsp#Init()
+" call config#treesitter#Init()
 
 let mapleader = ' '
 
 let g:pumheight = 8
 let g:snips_author = "Emanuil Ganchev"
 
+function! s:YankDotInfo()
+    return printf('%s:%s at %s:%s', expand('%'), line('.'), FugitiveConfigGet('remote.origin.url'), FugitiveHead())
+endfunction
+
 nnoremap <SPACE> <Nop>
 map <F2> :w<CR>
+nnoremap <silent> <leader><leader> :Files <C-R>=expand('%:h:h')<CR><CR>
 nmap <leader>; :Files<CR>
 nmap <leader>hh :History<CR>
 nmap <leader>rg :Rg <C-R>*<CR><CR>
 nnoremap § :Buffers<CR>
-nnoremap <silent> <leader><leader> :Files <C-R>=expand('%:h')<CR><CR>
 nmap <leader>wr :vertical resize 127<CR>
 nmap <leader>md <Plug>MarkdownPreviewToggle
 nmap <leader>yl :let @* = escape(expand("%:t:r"), '/')<CR>
 nmap <leader>yf :let @* = expand("%")<CR>
-nmap <leader>yp :let @* = expand("%") . ':' . line(".") . ' at ' . FugitiveConfigGet('remote.origin.url') . ':' . FugitiveHead()<CR>
+nmap <silent> <leader>yp :let @* = <SID>YankDotInfo()<CR>
 
-nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+function! s:EchoHighlight()
+    let l:hi = synIDattr(synID(line('.'), col('.'), 1), 'name')
+    let l:trans = synIDattr(synID(line("."),col("."),0),"name")
+    let l:lo = synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
+
+    echo printf('hi<%s> trans<%s> lo<%s>', l:hi, l:trans, l:lo)
+endfunction
+
+nnoremap <F10> :call <SID>EchoHighlight()<CR>
+
+colo gruvbox

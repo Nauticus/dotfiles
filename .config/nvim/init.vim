@@ -45,9 +45,8 @@ let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
 
 " Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-treesitter/nvim-treesitter'
+" Plug 'nvim-treesitter/nvim-treesitter'
 
-" Plug 'arcticicestudio/nord-vim'
 Plug 'sainnhe/gruvbox-material'
 Plug 'Nauticus/gruvbox'
 let g:gruvbox_contrast_dark='medium'
@@ -57,6 +56,7 @@ let g:gruvbox_invert_indent_guides=1
 let g:gruvbox_italicize_comments=1
 
 Plug 'sheerun/vim-polyglot'
+Plug 'rhysd/devdocs.vim'
 call plug#end()
 
 " call config#lsp#Init()

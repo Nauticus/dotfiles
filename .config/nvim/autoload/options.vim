@@ -33,7 +33,7 @@ function! options#Init()
     syntax enable
 
     if has('persistent_undo')
-	set undofile
-	set undodir=$HOME/.vim/undo
+        set undofile
+        set undodir=$HOME/.vim/undo
     endif
 endfunction

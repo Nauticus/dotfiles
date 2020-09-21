@@ -4,9 +4,9 @@ endfunction
 
 function! config#lightline#Init()
     let g:lightline = {
-                \ 'colorscheme': 'gruvbox',
+                \ 'colorscheme': 'blue-moon',
                 \ 'active': {
-                \   'left': [['mode'], ['gitbranch','filename','readonly','modified']]
+                \   'left': [['mode'], ['gitbranch','filename','readonly','modified']],
                 \ },
                 \ 'component_function': {
                 \   'filename': 'LightlineFilename',

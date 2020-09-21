@@ -5,7 +5,7 @@
   "javascript.validate.enable": false,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.refreshOnInsertMode": true,
-  "diagnostic.virtualText": true,
+  "diagnostic.virtualText": false,
   "suggest.noselect": true,
   "pairs.enableCharacters": ["(", "[", "{", "<", "'", "\"", "`"],
   "styled-components.tags": ["styled", "css", "sty"],

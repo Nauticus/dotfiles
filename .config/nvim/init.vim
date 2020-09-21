@@ -105,7 +105,6 @@ call config#fzf#Init()
 call config#lightline#Init()
 call config#dirvish#Init()
 call config#sneak#Init()
-" call config#lsp#Init()
 lua require'config.lsp'.init()
 lua require'config.treesitter'.init()
 

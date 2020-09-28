@@ -46,7 +46,7 @@ function M.init()
             highlight_definitions = { enable = true },
         },
         incremental_selection = incremental_selection,
-        textobjects = textobjects,
+        textobjects = textobjects
     }
 end
 

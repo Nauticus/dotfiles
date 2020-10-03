@@ -1,6 +1,6 @@
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/emanuilganchev/.oh-my-zsh"
+export ZSH="/Users/$USERNAME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -16,7 +16,6 @@ ZSH_THEME="common"
 plugins=(
     git
     frontend-search
-    zsh-nvm
     vi-mode
     tmux
     yarn
@@ -48,7 +47,6 @@ bindkey '^N' history-search-forward              # Go forward/search in history 
 # User configuration
 export PATH="/usr/local/sbin:$PATH"
 export GEM_HOME="$HOME/.gem"
-export NVM_NO_USE=true
-export NVM_LAZY_LOAD=true
+export NVM_AUTO_USE=true
 export VISUAL=nvim
 

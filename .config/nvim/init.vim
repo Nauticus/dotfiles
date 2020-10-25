@@ -1,12 +1,12 @@
-" cSpell:disable 
-
 let $NVIMRC='~/.config/nvim/init.vim'
 
 scriptencoding utf-8
 
 set encoding=utf-8
 
-if has('termguicolors')
+if exists('+termguicolors')
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
 
@@ -33,10 +33,13 @@ set signcolumn=yes
 set incsearch
 set nohlsearch
 set list
-set listchars=tab:→\ ,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:→\ ,nbsp:␣,trail:•,precedes:«,extends:»
 set lazyredraw
 set wrap
 set cmdheight=1
+set errorformat=%f:%l:%m
+set noendofline
+set nofixendofline
 
 syntax on
 
@@ -46,12 +49,16 @@ if has('persistent_undo')
 endif
 
 call plug#begin(stdpath('data') . '/plugged')
+Plug 'Yggdroot/indentLine'
+
+Plug 'ryanoasis/vim-devicons'
+
 Plug 'Asheq/close-buffers.vim'
 
 Plug 'wellle/visual-split.vim'
 
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'editorconfig/editorconfig-vim'
 
@@ -67,9 +74,15 @@ Plug 'honza/vim-snippets'
 
 Plug 'tpope/vim-sensible'
 
+Plug 'tpope/vim-abolish'
+
 Plug 'tpope/vim-surround'
 
 Plug 'tpope/vim-fugitive'
+" Github
+Plug 'tpope/vim-rhubarb'
+" Bitbucket
+Plug 'tommcdo/vim-fubitive'
 
 Plug 'tpope/vim-commentary'
 
@@ -95,23 +108,28 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
 
-Plug 'mhinz/vim-signify'
+" Plug 'mhinz/vim-signify'
 
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'nvim-lua/completion-nvim'
+" Plug 'haorenW1025/diagnostic-nvim'
+" Plug 'mhartington/formatter.nvim'
+" Plug 'rhysd/vim-grammarous'
 
-Plug 'nvim-lua/completion-nvim'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-notes'
+let g:notes_tab_indents = 0
+let g:notes_alt_indents = 0
 
-Plug 'haorenW1025/diagnostic-nvim'
-
-Plug 'mhartington/formatter.nvim'
-
-Plug 'rhysd/vim-grammarous'
+" Plug 'vimwiki/vimwiki'
+" let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
 Plug 'nvim-treesitter/nvim-treesitter'
-
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'nvim-treesitter/playground'
-
 Plug 'nvim-treesitter/completion-treesitter'
+Plug 'romgrk/nvim-treesitter-context'
 
 Plug 'norcalli/nvim-colorizer.lua'
 
@@ -130,7 +148,7 @@ colo gruvbox
 
 let mapleader = ' '
 
-" call config#coc#Init()
+call config#coc#Init()
 
 call config#fzf#Init()
 
@@ -140,15 +158,16 @@ call config#dirvish#Init()
 
 call config#sneak#Init()
 
-lua require'config.lsp'.init()
+" lua require'config.lsp'.init()
 
 lua require'config.treesitter'.init()
 let g:diagnostic_enable_virtual_text = 0
 let g:completion_enable_snippet = 'UltiSnips'
 let g:completion_matching_ignore_case = 1
 
-function! s:YankDotInfo()
-    return printf('%s:%s at %s:%s', expand('%'), line('.'), FugitiveConfigGet('remote.origin.url'), FugitiveHead())
+function! s:PrintFileWithColumn()
+    let l:file = printf('%s:%s', expand('%:~'), line('.'))
+    return printf('%s (%s)', l:file)
 endfunction
 
 nnoremap <SPACE> <Nop>
@@ -162,8 +181,8 @@ nnoremap § :Buffers<CR>
 nmap <leader>wr :vertical resize 127<CR>
 nmap <leader>md <Plug>MarkdownPreviewToggle
 nmap <leader>yl :let @* = escape(expand("%:t:r"), '/')<CR>
-nmap <leader>yf :let @* = expand("%")<CR>
-nmap <silent> <leader>yp :let @* = <SID>YankDotInfo()<CR>
+nnoremap <silent> <leader>yf :let @* = expand("%:.")<CR>
+nnoremap <silent> <leader>yp :let @* = <SID>PrintFileWithColumn()<CR>
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -176,6 +195,7 @@ function! s:EchoHighlight()
     echo printf('hi<%s> trans<%s> lo<%s>', l:hi, l:trans, l:lo)
 endfunction
 
-nnoremap <F10> :call <SID>EchoHighlight()<CR>
+nnoremap <silent> <F10> :TSHighlightCapturesUnderCursor<CR>
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
+au FileType query setlocal commentstring=;%s

@@ -39,19 +39,19 @@ draw_bold_text_with_bright_colors: false
 font:
   # Normal (roman) font face
   normal:
-    family: JetBrains Mono
+    family: JetBrainsMono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Regular
 
   # Bold font face
   bold:
-    family: JetBrains Mono
+    family: JetBrainsMono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Bold
 
   # Italic font face
   italic:
-    family: JetBrains Mono
+    family: JetBrainsMono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Italic
 
@@ -155,6 +155,8 @@ selection:
   # clipboard.
   save_to_clipboard: true
 
+env:
+  TERM: xterm-256color
 
 cursor:
   # Cursor style
@@ -169,7 +171,7 @@ cursor:
   # window is not focused.
   unfocused_hollow: true
 
-  vi_mode_style: Block
+  vi_mode_style: Beam
 
 # Live config reload (changes require restart)
 live_config_reload: true

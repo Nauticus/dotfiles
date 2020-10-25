@@ -15,7 +15,6 @@ ZSH_THEME="common"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    frontend-search
     vi-mode
     tmux
     yarn

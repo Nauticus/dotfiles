@@ -30,12 +30,15 @@ function! config#coc#Init()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
     " Formatting selected code.
-    xmap <leader>f  <Plug>(coc-format)
-    nmap <leader>f  <Plug>(coc-format)
+    vmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>F  :<C-u>CocCommand prettier.formatFile<cr>
+
+    nmap <leader>rn <Plug>(coc-rename)
 
     " Mappings for CoCList
     " Show all diagnostics.
-    nnoremap <silent><nowait> <leader>a  :<C-u>CocList diagnostics<cr>
+    nnoremap <silent><nowait> <leader>di  :<C-u>CocList diagnostics<cr>
     " Manage extensions.
     nnoremap <silent><nowait> <leader>e  :<C-u>CocList extensions<cr>
     " Show commands.
@@ -50,6 +53,7 @@ function! config#coc#Init()
     nnoremap <silent><nowait> <leader>k  :<C-u>CocPrev<CR>
     " Resume latest coc list.
     nnoremap <silent><nowait> <leader>p  :<C-u>CocListResume<CR>
+    nnoremap <silent><nowait> <leader>a  :<C-u>CocAction<CR>
 
     " Use K to show documentation in preview window.
     nnoremap <silent> K :call <SID>show_documentation()<CR>

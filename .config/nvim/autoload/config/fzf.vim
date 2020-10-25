@@ -6,7 +6,7 @@ function! config#fzf#Init()
     let g:fzf_buffers_jump = 1
 
     if exists('$TMUX')
-        let g:fzf_layout = { 'tmux': '-p90%,90% -y60' }
+        let g:fzf_layout = { 'tmux': '-p90%,90%' }
     else
         let g:fzf_layout = { 'down': '40%' }
     endif

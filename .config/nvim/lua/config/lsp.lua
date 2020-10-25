@@ -1,4 +1,5 @@
-local nvim_lsp = require('nvim_lsp')
+local nvim_lsp = require 'nvim_lsp'
+local util = require 'nvim_lsp/util'
 
 local M = {}
 
@@ -79,44 +80,50 @@ local json_schemas = {
 --     },
 --     uri = "file:///Users/emanuilganchev/Code/dotfiles/.config/nvim/lua/config/lsp.lua"
 --   }, {
-local sanitize_uri = function(uri)
-    return vim.fn.fnamemodify(vim.uri_to_fname(uri), ':.')
-end
 
-local show_fzf_location = function(source, options)
-    local fzf_run = vim.fn["fzf#run"]
-    local fzf_wrap = vim.fn["fzf#wrap"]
+-- local sanitize_uri = function(uri)
+--     return vim.fn.fnamemodify(vim.uri_to_fname(uri), ':.')
+-- end
 
-    local wrapped = fzf_wrap("test", {
-        source = source,
-        options = options,
-        column = 1
-    })
-    wrapped["sink*"] = nil   -- this line is required if you want to use `sink` only
-    wrapped.sink = function(line)
-        print(line)
-    end
-    fzf_run(wrapped)
-end
+-- local show_fzf_location = function(source, options)
+--     local fzf_run = vim.fn["fzf#run"]
+--     local fzf_wrap = vim.fn["fzf#wrap"]
 
-local location_callback = function(_, method, locations, _)
-    local source = {}
+--     local wrapped = fzf_wrap("test", {
+--         source = source,
+--         options = options,
+--         column = 1
+--     })
+--     wrapped["sink*"] = nil   -- this line is required if you want to use `sink` only
+--     wrapped.sink = function(line)
+--         print(line)
+--     end
+--     fzf_run(wrapped)
+-- end
 
-    for _, location in ipairs(locations) do
-        table.insert(source, string.format('%s:%s:%s', sanitize_uri(location.uri), location.range.start.line, 1))
-    end
+-- local location_callback = function(_, method, locations, _)
+--     local source = {}
 
-    local options = "--delimiter=: --multi --prompt=\""..method.."> \" --nth 4.."
+--     for _, location in ipairs(locations) do
+--         table.insert(source, string.format('%s:%s:%s', sanitize_uri(location.uri), location.range.start.line, 1))
+--     end
 
-    print(vim.inspect(source), options)
+--     local options = "--delimiter=: --multi --prompt=\""..method.."> \" --nth 4.."
 
-    show_fzf_location(source, options)
-end
+--     print(vim.inspect(source), options)
+
+--     show_fzf_location(source, options)
+-- end
 
 function M.init()
-    vim.lsp.callbacks['textDocument/references'] = location_callback
+    -- vim.lsp.callbacks['textDocument/references'] = location_callback
+
+    nvim_lsp.tsserver.setup{
+        on_attach = on_attach,
+    }
 
     nvim_lsp.jsonls.setup{
+        on_attach = on_attach,
         settings = {
             json = {
                 schemas = json_schemas
@@ -149,10 +156,6 @@ function M.init()
         }
     }
 
-    nvim_lsp.tsserver.setup{
-        on_attach = on_attach,
-    }
-
     nvim_lsp.vimls.setup{
         on_attach = on_attach,
         init_options = {
@@ -161,10 +164,7 @@ function M.init()
     }
 
     nvim_lsp.intelephense.setup{
-        on_attach = on_attach,
-        init_options = {
-            licenceKey = "/Users/emanuilganchev/intelephense.txt"
-        }
+        on_attach = on_attach
     }
 
 end

@@ -42,7 +42,6 @@ function M.init()
     require "nvim-treesitter.configs".setup {
       playground = {
         enable = true,
-        disable = {},
         updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
         persist_queries = false -- Whether the query persists across vim sessions
       }
@@ -50,11 +49,14 @@ function M.init()
 
     require'nvim-treesitter.configs'.setup {
         ensure_installed = "all",
+        indent = {
+            enable = true
+        },
         highlight = {
             enable = true,
             use_languagetree = false,
             custom_captures = {
-                ["jsx_expression.bracket"] = "GruvboxBlue",
+                ["jsx_expression.bracket"] = "GruvboxFg2",
                 ["tag.intrinsic.delimiter"] = "TSTag",
                 ["tag.type.delimiter"] = 'GruvboxOrange',
                 ["tsx.named_imports.bracket"] = "GruvboxAqua",
@@ -63,6 +65,8 @@ function M.init()
                 ["gruvbox.blue"] = "GruvboxBlue",
                 ["gruvbox.orange"] = "GruvboxOrange",
                 ["gruvbox.fg2"] = "GruvboxFg2",
+                ["gruvbox.aqua"] = "GruvboxAqua",
+                ["gruvbox.green"] = "GruvboxGreen",
                 ["tag.selfclosing"] = "GruvboxBlue",
                 ["tdo"] = "TSTag",
                 ["trr"] = "GruvboxOrange",
@@ -70,9 +74,6 @@ function M.init()
                 ["tdd"] = "GruvboxOrange",
                 ["tdc"] = "GruvboxRed"
             }
-        },
-        indent = {
-            enable = true
         },
         refactor = {
             highlight_definitions = { enable = true },

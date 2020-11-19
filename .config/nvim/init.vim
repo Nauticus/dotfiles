@@ -38,8 +38,6 @@ set lazyredraw
 set wrap
 set cmdheight=1
 set errorformat=%f:%l:%m
-set noendofline
-set nofixendofline
 
 syntax on
 
@@ -48,8 +46,11 @@ if has('persistent_undo')
     set undodir=$HOME/.vim/undo
 endif
 
+let g:is_nvim_lsp_enabled = 0
+
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'Yggdroot/indentLine'
+let g:indentLine_char ='|'
 
 Plug 'ryanoasis/vim-devicons'
 
@@ -58,7 +59,6 @@ Plug 'Asheq/close-buffers.vim'
 Plug 'wellle/visual-split.vim'
 
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'editorconfig/editorconfig-vim'
 
@@ -108,35 +108,25 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 0
 
-" Plug 'mhinz/vim-signify'
-
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'nvim-lua/completion-nvim'
-" Plug 'haorenW1025/diagnostic-nvim'
-" Plug 'mhartington/formatter.nvim'
-" Plug 'rhysd/vim-grammarous'
-
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-notes'
-let g:notes_tab_indents = 0
-let g:notes_alt_indents = 0
-
-" Plug 'vimwiki/vimwiki'
-" let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+if g:is_nvim_lsp_enabled
+    Plug 'mhinz/vim-signify'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'nvim-lua/completion-nvim'
+    Plug 'haorenW1025/diagnostic-nvim'
+    Plug 'mhartington/formatter.nvim'
+else
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/completion-treesitter'
-Plug 'romgrk/nvim-treesitter-context'
 
 Plug 'norcalli/nvim-colorizer.lua'
 
-Plug 'lifepillar/vim-colortemplate'
-
 Plug 'Nauticus/gruvbox'
-let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_invert_selection=0
 let g:gruvbox_improved_strings=0
 let g:gruvbox_invert_indent_guides=1
@@ -158,7 +148,9 @@ call config#dirvish#Init()
 
 call config#sneak#Init()
 
-" lua require'config.lsp'.init()
+if g:is_nvim_lsp_enabled
+    lua require'config.lsp'.init()
+endif
 
 lua require'config.treesitter'.init()
 let g:diagnostic_enable_virtual_text = 0
@@ -197,5 +189,5 @@ endfunction
 
 nnoremap <silent> <F10> :TSHighlightCapturesUnderCursor<CR>
 
-au TextYankPost * silent! lua vim.highlight.on_yank()
+au TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 500 })
 au FileType query setlocal commentstring=;%s

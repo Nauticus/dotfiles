@@ -1,9 +1,8 @@
-
 function! s:ShortenPath()
     let name = ""
-    let subs = split(expand('%:.'), "/") 
+    let fragments = split(expand('%:.'), "/") 
     let i = 1
-    for s in subs
+    for s in fragments
         let parent = name
         if  i > len(subs) -3
             let name = parent . '/' . s
@@ -18,7 +17,8 @@ function! s:ShortenPath()
 endfunction
 
 function! LightlineFilename()
-    return <SID>ShortenPath()
+    return expand('%:.')
+    " return <SID>ShortenPath()
 endfunction
 
 function! LightlineFugitive()

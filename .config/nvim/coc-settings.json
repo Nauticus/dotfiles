@@ -1,9 +1,8 @@
 {
-    "tsserver.formatOnType": true,
+    "vetur.trace.server": "verbose",
     "tsserver.disableAutomaticTypeAcquisition": true,
     "cSpell.enabled": true,
     "coc.preferences.formatOnType": false,
-    "javascript.validate.enable": true,
     "diagnostic.checkCurrentLine": true,
     "diagnostic.refreshOnInsertMode": true,
     "diagnostic.virtualText": false,

@@ -27,6 +27,7 @@ require'nvim-treesitter.configs'.setup {
     refactor = { highlight_definitions = { enable = true } },
     incremental_selection = incremental_selection,
     textobjects = textobjects,
+    autopairs = {enable = true},
     indent = { enable = true },
     playground = {
         enable = true,

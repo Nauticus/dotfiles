@@ -34,11 +34,12 @@ zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#49464E"
 
-zinit ice depth=1
-zinit light jeffreytse/zsh-vi-mode
+# zinit ice depth=1
+# zinit light jeffreytse/zsh-vi-mode
 
 zstyle ':autocomplete:tab:*' widget-style menu-complete
 
+bindkey -v
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^V' edit-command-line

@@ -33,7 +33,7 @@ scrolling:
   history: 1000
 
 # When true, bold text is drawn using the bright variant of colors.
-draw_bold_text_with_bright_colors: false
+draw_bold_text_with_bright_colors: true
 
 # Font configuration (changes require restart)
 font:
@@ -56,7 +56,7 @@ font:
     style: Italic
 
   # Point size of the font
-  size: 14
+  size: 12
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -69,70 +69,69 @@ font:
   # increasing `y` moves the glyph upwards.
   glyph_offset:
     x: 0
-    y: 2
+    y: 3
 
   # Better font rendering for mac
-  use_thin_strokes: true
+  use_thin_strokes: false
 
 # Should display the render timer
 debug.render_timer: false
 
+schemes:
+  embark: &embark
+    primary:
+      background: '0x1e1c31'
+      foreground: '0xcbe3e7'
+    cursor:
+      text: '0x1e1c31'
+      cursor: '0xa1efd3'
+    normal:
+      black: '0x1e1c31'
+      red: '0xf48fb1'
+      green: '0xa1efd3'
+      yellow: '0xffe6b3'
+      blue: '0x91ddff'
+      magenta: '0xd4bfff'
+      cyan: '0x87dfeb'
+      white: '0xcbe3e7'
+    bright:
+      black: '0x585273'
+      red: '0xf02e6e'
+      green: '0x62d196'
+      yellow: '0xf2b482'
+      blue: '0x65b2ff'
+      magenta: '0xa37acc'
+      cyan: '0x63f2f1'
+      white: '0x8a889d'
+  one: &one
+    primary:
+      background: '#282c34'
+      foreground: '#abb2bf'
+    normal:
+      black: '#5c6370'
+      red: '#e06c75'
+      green: '#98c379'
+      yellow: '#e5c07b'
+      blue: '0x61afef'
+      magenta: '#c678dd'
+      cyan: '#56b6c2'
+      white: '#abb2bf'
+    bright:
+      black: '#4b5263'
+      red: '#e06c75'
+      green: '#98c379'
+      yellow: '#e5c07b'
+      blue: '0x61afef'
+      magenta: '#c678dd'
+      cyan: '#56b6c2'
+      white: '#abb2bf'
 
-colors:
-  primary:
-    background: '#282c34'
-    foreground: '#abb2bf'
+colors: *one
 
-  normal:
-    black: '#5c6370'
-    red: '#e06c75'
-    green: '#98c379'
-    yellow: '#e5c07b'
-    blue: '0x61afef'
-    magenta: '#c678dd'
-    cyan: '#56b6c2'
-    white: '#abb2bf'
-
-  bright:
-    black: '#4b5263'
-    red: '#e06c75'
-    green: '#98c379'
-    yellow: '#e5c07b'
-    blue: '0x61afef'
-    magenta: '#c678dd'
-    cyan: '#56b6c2'
-    white: '#abb2bf'
-
-  # Indexed Colors
-  #
-  # The indexed colors include all colors from 16 to 256.
-  # When these are not set, they're filled with sensible defaults.
-  #indexed_colors:
-  #  - { index: 16, color: '0x000000' }
-  # indexed_colors: []
-# Any time the BEL code is received, Alacritty "rings" the visual bell. Once
-# rung, the terminal background will be set to white and transition back to the
-# default background color. You can control the rate of this transition by
-# setting the `duration` property (represented in milliseconds). You can also
-# configure the transition function by setting the `animation` property.
-#
-# Possible values for `animation`
-# `Ease`
-# `EaseOut`
-# `EaseOutSine`
-# `EaseOutQuad`
-# `EaseOutCubic`
-# `EaseOutQuart`
-# `EaseOutQuint`
-# `EaseOutExpo`
-# `EaseOutCirc`
-# `Linear`
-#
-# To completely disable the visual bell, set its duration to 0.
-#
 bell:
   animation: EaseOutExpo
   duration: 0
+
 
 mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
@@ -156,6 +155,8 @@ selection:
 
 env:
   TERM: xterm-256color
+
+hide_cursor_when_typing: false
 
 # Live config reload (changes require restart)
 live_config_reload: true

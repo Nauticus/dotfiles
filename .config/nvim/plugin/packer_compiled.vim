@@ -76,6 +76,7 @@ _G.packer_plugins = {
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/completion-treesitter"
   },
   ["editorconfig-vim"] = {
+    config = { "vim.g.EditorConfig_preserve_formatoptions = 1" },
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/editorconfig-vim"
   },
@@ -93,10 +94,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/gitsigns.nvim"
   },
-  gruvbox = {
-    loaded = true,
-    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/gruvbox"
-  },
   ["lualine.nvim"] = {
     config = { "require('config.plugins.lualine')" },
     loaded = true,
@@ -107,6 +104,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua"
+  },
   ["nvim-compe"] = {
     config = { "require('config.plugins.compe')" },
     loaded = true,
@@ -116,6 +117,10 @@ _G.packer_plugins = {
     config = { "require('config.plugins.lsp')" },
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
+  },
+  ["nvim-luapad"] = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-luapad"
   },
   ["nvim-treesitter"] = {
     config = { "require('config.plugins.treesitter')" },
@@ -130,9 +135,22 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects"
   },
-  ["packer.nvim"] = {
+  ["nvim-web-devicons"] = {
     loaded = true,
-    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/packer.nvim"
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-web-devicons"
+  },
+  ["nvim-whichkey-setup.lua"] = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/nvim-whichkey-setup.lua"
+  },
+  ["one-nvim"] = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/one-nvim"
+  },
+  ["packer.nvim"] = {
+    loaded = false,
+    needs_bufread = false,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/opt/packer.nvim"
   },
   playground = {
     loaded = true,
@@ -142,10 +160,18 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/plenary.nvim"
   },
+  ["tokyonight.nvim"] = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/tokyonight.nvim"
+  },
   ultisnips = {
     config = { "\27LJ\2\n>\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\n<nop>\27UltiSnipsExpandTrigger\6g\bvim\0" },
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/ultisnips"
+  },
+  undotree = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/undotree"
   },
   ["vim-commentary"] = {
     loaded = true,
@@ -168,9 +194,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/vim-fugitive"
   },
-  ["vim-gruvbox8"] = {
+  ["vim-obsession"] = {
     loaded = true,
-    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/vim-gruvbox8"
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/vim-obsession"
   },
   ["vim-rhubarb"] = {
     loaded = true,
@@ -188,18 +214,38 @@ _G.packer_plugins = {
   ["vim-surround"] = {
     loaded = true,
     path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/vim-surround"
+  },
+  ["vim-which-key"] = {
+    loaded = true,
+    path = "/Users/emanuilganchev/.local/share/nvim/site/pack/packer/start/vim-which-key"
   }
 }
 
 time("Defining packer_plugins", false)
+-- Config for: nvim-treesitter
+time("Config for nvim-treesitter", true)
+require('config.plugins.treesitter')
+time("Config for nvim-treesitter", false)
+-- Config for: vim-sneak
+time("Config for vim-sneak", true)
+require('config.plugins.sneak')
+time("Config for vim-sneak", false)
+-- Config for: vim-dirvish
+time("Config for vim-dirvish", true)
+require('config.plugins.dirvish')
+time("Config for vim-dirvish", false)
 -- Config for: nvim-lspconfig
 time("Config for nvim-lspconfig", true)
 require('config.plugins.lsp')
 time("Config for nvim-lspconfig", false)
--- Config for: nvim-autopairs
-time("Config for nvim-autopairs", true)
-require('config.plugins.autopairs')
-time("Config for nvim-autopairs", false)
+-- Config for: gitsigns.nvim
+time("Config for gitsigns.nvim", true)
+require('config.plugins.gitsigns')
+time("Config for gitsigns.nvim", false)
+-- Config for: ultisnips
+time("Config for ultisnips", true)
+try_loadstring("\27LJ\2\n>\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\n<nop>\27UltiSnipsExpandTrigger\6g\bvim\0", "config", "ultisnips")
+time("Config for ultisnips", false)
 -- Config for: fzf.vim
 time("Config for fzf.vim", true)
 require('config.plugins.fzf')
@@ -208,30 +254,18 @@ time("Config for fzf.vim", false)
 time("Config for nvim-compe", true)
 require('config.plugins.compe')
 time("Config for nvim-compe", false)
--- Config for: vim-sneak
-time("Config for vim-sneak", true)
-require('config.plugins.sneak')
-time("Config for vim-sneak", false)
--- Config for: gitsigns.nvim
-time("Config for gitsigns.nvim", true)
-require('config.plugins.gitsigns')
-time("Config for gitsigns.nvim", false)
--- Config for: vim-dirvish
-time("Config for vim-dirvish", true)
-require('config.plugins.dirvish')
-time("Config for vim-dirvish", false)
--- Config for: nvim-treesitter
-time("Config for nvim-treesitter", true)
-require('config.plugins.treesitter')
-time("Config for nvim-treesitter", false)
--- Config for: ultisnips
-time("Config for ultisnips", true)
-try_loadstring("\27LJ\2\n>\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\n<nop>\27UltiSnipsExpandTrigger\6g\bvim\0", "config", "ultisnips")
-time("Config for ultisnips", false)
 -- Config for: lualine.nvim
 time("Config for lualine.nvim", true)
 require('config.plugins.lualine')
 time("Config for lualine.nvim", false)
+-- Config for: editorconfig-vim
+time("Config for editorconfig-vim", true)
+vim.g.EditorConfig_preserve_formatoptions = 1
+time("Config for editorconfig-vim", false)
+-- Config for: nvim-autopairs
+time("Config for nvim-autopairs", true)
+require('config.plugins.autopairs')
+time("Config for nvim-autopairs", false)
 if should_profile then save_profiles() end
 
 END

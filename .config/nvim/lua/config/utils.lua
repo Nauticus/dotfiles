@@ -1,5 +1,6 @@
 local npairs = require('nvim-autopairs')
 local fn = vim.fn
+
 _G.utils = {}
 
 _G.utils.check_backspace = function()

@@ -1,14 +1,23 @@
-vim.cmd [[cd %:p:h]]
+local cmd = vim.cmd
+local g = vim.g
+
+cmd [[cd %:p:h]]
 vim.env.NVIMRC = "~/.config/nvim/init.lua"
 
-vim.g.mapleader = ' '
-vim.api.nvim_set_keymap('n', '<SPACE>', '<Nop>', {noremap = true})
+cmd [[let mapleader = "\<Space>"]]
+cmd [[let g:mapleader = "\<Space>"]]
+
+g.loaded_ruby_provider = 0
+g.loaded_python_provider = 0
+g.python3_host_prog = '/usr/local/bin/python3'
+g.node_host_prog = '/usr/local/bin/neovim-node-host'
 
 require 'config.opts'
+require 'config.autocmd'
 require 'config.utils'
 require 'config.plugins'
 require 'config.mappings'
 
-vim.cmd [[colo gruvbox]]
+cmd [[colo one-nvim]]
 
-vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 500 })]]
+cmd [[au TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 500 })]]

@@ -1,18 +1,24 @@
-local execute = vim.api.nvim_command
-local fn = vim.fn
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
 
-local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-  fn.system({'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path})
-  execute 'packadd packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    vim.cmd("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
 end
 
+vim.cmd "packadd packer.nvim"
+
 return require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
-    use { 'hoob3rt/lualine.nvim', config = [[require('config.plugins.lualine')]] }
+    use { 'wbthomason/packer.nvim', opt = true }
+    use 'tpope/vim-obsession'
+    use {
+        'hoob3rt/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' },
+        config = [[require('config.plugins.lualine')]]
+    }
+
     use 'tpope/vim-commentary'
-    use 'editorconfig/editorconfig-vim'
+    use { 'editorconfig/editorconfig-vim', config = [[vim.g.EditorConfig_preserve_formatoptions = 1]] }
+    use { 'mbbill/undotree' }
+    use { 'AckslD/nvim-whichkey-setup.lua', requires = { 'liuchengxu/vim-which-key' } }
 
     use {
         'justinmk/vim-dirvish',
@@ -25,6 +31,15 @@ return require('packer').startup(function(use)
 
     use 'tpope/vim-surround'
 
+    -- use {
+    --     'phaazon/hop.nvim',
+    --     as = 'hop',
+    --     config = function()
+    --         -- you can configure Hop the way you like here; see :h hop-config
+    --         require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    --     end
+    -- }
+
     use { 'justinmk/vim-sneak', config = [[require('config.plugins.sneak')]] }
 
     use {
@@ -33,12 +48,14 @@ return require('packer').startup(function(use)
         requires = { 'nvim-lua/plenary.nvim' }
     }
 
+    use { 'rafcamlet/nvim-luapad' }
+
     use 'tpope/vim-fugitive'
     use 'tpope/vim-rhubarb'
     use 'tommcdo/vim-fubitive'
 
-    use 'gruvbox-community/gruvbox'
-    use 'lifepillar/vim-gruvbox8'
+    use 'Th3Whit3Wolf/one-nvim'
+    use 'folke/tokyonight.nvim'
 
     use {
         'hrsh7th/nvim-compe',
@@ -62,4 +79,6 @@ return require('packer').startup(function(use)
     use 'nvim-treesitter/nvim-treesitter-refactor'
     use 'nvim-treesitter/playground'
     use 'nvim-treesitter/completion-treesitter'
+
+    use 'norcalli/nvim-colorizer.lua'
 end)

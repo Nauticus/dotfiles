@@ -8,7 +8,9 @@ local prettier = { formatCommand = 'prettier --find-config-path --stdin-filepath
 local eslint = {
     lintCommand = 'eslint_d --stdin --stdin-filename ${INPUT} -f unix',
     lintStdin = true,
-    lintIgnoreExitCode = true
+    lintIgnoreExitCode = true,
+    formatCommand = 'eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}',
+    formatStdin = true
 }
 
 local lua_format = { formatCommand = "lua-format -i", formatStdin = true }
@@ -31,10 +33,10 @@ lsp_config.efm.setup {
         languages = {
             lua = { lua_format },
             markdown = { prettier },
-            javascript = { eslint, prettier },
-            javascriptreact = { eslint, prettier },
-            typescript = { eslint, prettier },
-            typescriptreact = { eslint, prettier }
+            javascript = { prettier, eslint },
+            javascriptreact = { prettier, eslint },
+            typescript = { prettier, eslint },
+            typescriptreact = { prettier, eslint }
         }
     }
 }

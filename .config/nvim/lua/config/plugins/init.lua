@@ -14,11 +14,16 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons' },
         config = [[require('config.plugins.lualine')]]
     }
+    use { 'christoomey/vim-tmux-navigator', config = [[vim.g.tmux_navigator_disable_when_zoomed = 1]] }
 
     use 'tpope/vim-commentary'
     use { 'editorconfig/editorconfig-vim', config = [[vim.g.EditorConfig_preserve_formatoptions = 1]] }
     use { 'mbbill/undotree' }
-    use { 'AckslD/nvim-whichkey-setup.lua', requires = { 'liuchengxu/vim-which-key' } }
+    -- use { 'AckslD/nvim-whichkey-setup.lua', requires = { 'liuchengxu/vim-which-key' } }
+
+    use { "folke/which-key.nvim" }
+
+    -- use { 'tamago324/lir.nvim', config = [[require('config.plugins.lir')]] }
 
     use {
         'justinmk/vim-dirvish',
@@ -26,19 +31,20 @@ return require('packer').startup(function(use)
         config = [[require('config.plugins.dirvish')]]
     }
 
-    use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
-    use { 'junegunn/fzf.vim', config = [[require('config.plugins.fzf')]] }
+    -- use { 'junegunn/fzf', ?ir = '~/.fzf', run = './install --all' }
+    -- use { 'junegunn/fzf.vim', config = [[require('config.plugins.fzf')]] }
+
+    use {
+        'nvim-telescope/telescope.nvim',
+        config = [[require('config.plugins.telescope')]],
+        requires = {
+            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+            { 'nvim-lua/popup.nvim' },
+            { 'nvim-lua/plenary.nvim' }
+        }
+    }
 
     use 'tpope/vim-surround'
-
-    -- use {
-    --     'phaazon/hop.nvim',
-    --     as = 'hop',
-    --     config = function()
-    --         -- you can configure Hop the way you like here; see :h hop-config
-    --         require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-    --     end
-    -- }
 
     use { 'justinmk/vim-sneak', config = [[require('config.plugins.sneak')]] }
 
@@ -51,6 +57,7 @@ return require('packer').startup(function(use)
     use { 'rafcamlet/nvim-luapad' }
 
     use 'tpope/vim-fugitive'
+    use 'junegunn/gv.vim'
     use 'tpope/vim-rhubarb'
     use 'tommcdo/vim-fubitive'
 
@@ -71,6 +78,7 @@ return require('packer').startup(function(use)
         }
     }
     use { 'neovim/nvim-lspconfig', config = [[require('config.plugins.lsp')]] }
+    use { 'kabouzeid/nvim-lspinstall' }
 
     use { 'windwp/nvim-autopairs', config = [[require('config.plugins.autopairs')]] }
 
@@ -81,4 +89,8 @@ return require('packer').startup(function(use)
     use 'nvim-treesitter/completion-treesitter'
 
     use 'norcalli/nvim-colorizer.lua'
+
+    -- Project Related
+    use 'digitaltoad/vim-pug'
+    use 'posva/vim-vue'
 end)

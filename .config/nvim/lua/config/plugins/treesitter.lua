@@ -1,5 +1,13 @@
-vim.api.nvim_set_option('foldmethod', 'expr')
-vim.api.nvim_set_option('foldexpr', 'nvim_treesitter#foldexpr()')
+local parsers = require 'nvim-treesitter.parsers'
+
+local configs = parsers.get_parser_configs()
+
+local ft_str = table.concat(vim.tbl_map(function(ft)
+    return configs[ft].filetype or ft
+end, parsers.available_parsers()), ',')
+
+vim.cmd('autocmd Filetype ' .. ft_str .. ' setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()')
+
 vim.api.nvim_set_option('foldlevel', 10)
 
 local incremental_selection = {
@@ -23,11 +31,11 @@ local textobjects = {
 }
 
 require'nvim-treesitter.configs'.setup {
-    highlight = { enable = 'maintained' },
+    highlight = { enable = true, disable = { 'vue' } },
     refactor = { highlight_definitions = { enable = true } },
     incremental_selection = incremental_selection,
     textobjects = textobjects,
-    autopairs = {enable = true},
+    autopairs = { enable = true },
     indent = { enable = true },
     playground = {
         enable = true,

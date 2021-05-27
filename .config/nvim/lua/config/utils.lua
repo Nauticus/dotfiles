@@ -1,4 +1,3 @@
-local npairs = require('nvim-autopairs')
 local fn = vim.fn
 
 _G.utils = {}
@@ -16,6 +15,7 @@ _G.utils.check_backspace = function()
 end
 
 _G.utils.completion_confirm=function()
+  local npairs = require('nvim-autopairs')
   if vim.fn.pumvisible() ~= 0  then
     if vim.fn.complete_info()["selected"] ~= -1 then
       return vim.fn["compe#confirm"](npairs.esc("<cr>"))

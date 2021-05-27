@@ -10,7 +10,7 @@ end
 opt('o', 'guifont', 'JetBrainsMono Nerd Font:h12')
 opt('o', 'diffopt', vim.o.diffopt .. ',algorithm:patience')
 opt('o', 'updatetime', 700)
-opt('o', 'timeoutlen', 200)
+opt('o', 'timeoutlen', 500)
 opt('o', 'clipboard', 'unnamed')
 opt('o', 'completeopt', 'menuone,noinsert,noselect')
 opt('o', 'termguicolors', true)

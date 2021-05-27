@@ -19,3 +19,10 @@ vim.cmd [[
 		autocmd TermOpen,TermEnter * startinsert
 	augroup END
 ]]
+
+vim.cmd [[
+    augroup ftfoldmethod
+        autocmd!
+        autocmd FileType git setlocal foldmethod=syntax foldlevel=0
+    augroup END
+]]

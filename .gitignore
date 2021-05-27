@@ -1,2 +1,4 @@
 node_modules
 .config/coc
+/Session.vim
+/.config/nvim/plugin/packer_compiled.vim

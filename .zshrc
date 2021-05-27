@@ -55,8 +55,6 @@ export VISUAL=nvim
 NEWLINE=$'\n'
 PROMPT="%F{3}%~%f${NEWLINE}%F{1}❯%f "
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 timezsh() {
   shell=${1-$SHELL}
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done

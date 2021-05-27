@@ -1,0 +1,41 @@
+brew install --cask contexts
+brew install --cask google-chrome
+brew install --cask amethyst
+brew install --cask spotify
+brew install --cask 1password
+brew install --cask zoom
+
+# use this for better symlinks
+# brew install stow
+
+brew install zsh
+brew install fd
+
+brew tap homebrew/cask-fonts
+brew install --cask font-jetbrains-mono-nerd-font
+
+brew tap neovim/neovim
+brew install --HEAD neovim
+
+brew install yarn
+
+brew install --HEAD tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+brew install pyenv
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
+pyenv install 3.9.4
+pyenv global 3.9.4
+
+luarocks install --server=https://luarocks.org/dev luaformatter
+
+brew install efm-langserver
+npm install -g vls
+npm install -g vscode-json-languageserver
+npm install -g vscode-html-languageserver-bin
+npm install -g typescript
+npm install -g typescript-language-server
+npm install -g eslint_d
+npm install -g prettier
+

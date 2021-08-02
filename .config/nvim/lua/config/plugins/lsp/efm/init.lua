@@ -25,7 +25,8 @@ lsp_config.efm.setup {
         "javascript.jsx",
         "typescript",
         "typescript.tsx",
-        "typescriptreact"
+        "typescriptreact",
+        "vue"
     },
     init_options = { documentFormatting = true },
     settings = {
@@ -36,7 +37,8 @@ lsp_config.efm.setup {
             javascript = { prettier, eslint },
             javascriptreact = { prettier, eslint },
             typescript = { prettier, eslint },
-            typescriptreact = { prettier, eslint }
+            typescriptreact = { prettier, eslint },
+            vue = { prettier, eslint }
         }
     }
 }

@@ -31,11 +31,13 @@ local textobjects = {
 }
 
 require'nvim-treesitter.configs'.setup {
-    highlight = { enable = true, disable = { 'vue' } },
+    highlight = { enable = true, use_languagetree = true },
     refactor = { highlight_definitions = { enable = true } },
+    tree_docs = { enable = false },
     incremental_selection = incremental_selection,
     textobjects = textobjects,
     autopairs = { enable = true },
+    context_commentstring = { enable = true },
     indent = { enable = true },
     playground = {
         enable = true,

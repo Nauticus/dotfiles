@@ -1,7 +1,7 @@
 local lsp_config = require('lspconfig')
 local on_attach = require('config.plugins.lsp.attach')
 
-lsp_config.jsonls.setup {
+lsp_config.json.setup {
     on_attach = on_attach,
     settings = {
         json = {

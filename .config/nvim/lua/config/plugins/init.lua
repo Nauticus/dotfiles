@@ -1,4 +1,4 @@
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.cmd("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
@@ -7,32 +7,32 @@ end
 vim.cmd "packadd packer.nvim"
 
 return require('packer').startup(function(use)
-    use { 'wbthomason/packer.nvim', opt = true }
+    use 'wbthomason/packer.nvim'
+
     use 'tpope/vim-obsession'
+    use 'tpope/vim-unimpaired'
+    use 'mfussenegger/nvim-dap'
+
     use {
         'hoob3rt/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons' },
         config = [[require('config.plugins.lualine')]]
     }
-    use { 'christoomey/vim-tmux-navigator', config = [[vim.g.tmux_navigator_disable_when_zoomed = 1]] }
+    use { 'christoomey/vim-tmux-navigator', config = [[vim.g.tmux_navigator_disable_when_zoomed = 0]] }
 
     use 'tpope/vim-commentary'
+    use 'JoosepAlviste/nvim-ts-context-commentstring'
+
     use { 'editorconfig/editorconfig-vim', config = [[vim.g.EditorConfig_preserve_formatoptions = 1]] }
     use { 'mbbill/undotree' }
-    -- use { 'AckslD/nvim-whichkey-setup.lua', requires = { 'liuchengxu/vim-which-key' } }
 
     use { "folke/which-key.nvim" }
-
-    -- use { 'tamago324/lir.nvim', config = [[require('config.plugins.lir')]] }
 
     use {
         'justinmk/vim-dirvish',
         requires = { { 'kristijanhusak/vim-dirvish-git' } },
         config = [[require('config.plugins.dirvish')]]
     }
-
-    -- use { 'junegunn/fzf', ?ir = '~/.fzf', run = './install --all' }
-    -- use { 'junegunn/fzf.vim', config = [[require('config.plugins.fzf')]] }
 
     use {
         'nvim-telescope/telescope.nvim',
@@ -46,7 +46,8 @@ return require('packer').startup(function(use)
 
     use 'tpope/vim-surround'
 
-    use { 'justinmk/vim-sneak', config = [[require('config.plugins.sneak')]] }
+    -- use { 'justinmk/vim-sneak', config = [[require('config.plugins.sneak')]] }
+    use { 'ggandor/lightspeed.nvim', config = [[require('config.plugins.lightspeed')]] }
 
     use {
         'lewis6991/gitsigns.nvim',
@@ -58,11 +59,21 @@ return require('packer').startup(function(use)
 
     use 'tpope/vim-fugitive'
     use 'junegunn/gv.vim'
-    use 'tpope/vim-rhubarb'
-    use 'tommcdo/vim-fubitive'
+    use 'junegunn/vim-easy-align'
 
-    use 'Th3Whit3Wolf/one-nvim'
+    use 'tpope/vim-dadbod'
+    use 'kristijanhusak/vim-dadbod-ui'
+
+    use { 'NTBBloodbath/rest.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+
+    use { 'ruifm/gitlinker.nvim', config = [[require('config.plugins.gitlinker')]], requires = 'nvim-lua/plenary.nvim' }
+
     use 'folke/tokyonight.nvim'
+    use 'shaunsingh/moonlight.nvim'
+    use 'gruvbox-community/gruvbox'
+    use { "mhartington/oceanic-next", commit = "29d694b9f6323c90fb0f3f54239090370caa99fb" }
+    use 'monsonjeremy/onedark.nvim'
+    use 'ishan9299/nvim-solarized-lua'
 
     use {
         'hrsh7th/nvim-compe',
@@ -80,9 +91,22 @@ return require('packer').startup(function(use)
     use { 'neovim/nvim-lspconfig', config = [[require('config.plugins.lsp')]] }
     use { 'kabouzeid/nvim-lspinstall' }
 
+    use {
+        "folke/trouble.nvim",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("trouble").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
     use { 'windwp/nvim-autopairs', config = [[require('config.plugins.autopairs')]] }
 
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = [[require('config.plugins.treesitter')]] }
+    use { 'nvim-treesitter/nvim-tree-docs', requires = { 'Olical/aniseed', tag = "v3.18.0" } }
     use 'nvim-treesitter/nvim-treesitter-textobjects'
     use 'nvim-treesitter/nvim-treesitter-refactor'
     use 'nvim-treesitter/playground'
@@ -93,4 +117,14 @@ return require('packer').startup(function(use)
     -- Project Related
     use 'digitaltoad/vim-pug'
     use 'posva/vim-vue'
+
+    use 'tpope/vim-markdown'
+
+    use {
+        'iamcco/markdown-preview.nvim',
+        run = function()
+            vim.fn['mkdp#util#install']()
+        end,
+        ft = { 'markdown' }
+    }
 end)

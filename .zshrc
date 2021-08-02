@@ -25,6 +25,7 @@ zinit snippet OMZL::git.zsh
 
 zinit light zdharma/fast-syntax-highlighting
 export NVM_LAZY_LOAD=true
+export NVM_LAZY_LOAD_EXTRA_COMMANDS=(nvim git)
 zinit light lukechilds/zsh-nvm
 
 zinit ice blockf
@@ -33,6 +34,9 @@ zinit light zsh-users/zsh-completions
 zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#49464E"
+
+zinit ice wait lucid
+zinit snippet OMZ::plugins/tmuxinator/tmuxinator.plugin.zsh
 
 # zinit ice depth=1
 # zinit light jeffreytse/zsh-vi-mode
@@ -52,6 +56,7 @@ bindkey '^N' history-search-forward              # Go forward/search in history 
 export PATH="/usr/local/sbin:$PATH"
 export GEM_HOME="$HOME/.gem"
 export VISUAL=nvim
+export EDITOR=nvim
 NEWLINE=$'\n'
 PROMPT="%F{3}%~%f${NEWLINE}%F{1}❯%f "
 
@@ -59,3 +64,10 @@ timezsh() {
   shell=${1-$SHELL}
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
+
+alias mux=tmuxinator
+
+if which ruby >/dev/null && which gem >/dev/null; then
+  PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
+

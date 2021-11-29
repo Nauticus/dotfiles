@@ -22,7 +22,7 @@ window:
   # Values for `decorations`:
   #     - full: Borders and title bar
   #     - none: Neither borders nor title bar
-  decorations: buttonless
+  decorations: none
 
   startup_mode: Windowed
   dynamic_title: false
@@ -56,121 +56,320 @@ font:
     style: Italic
 
   # Point size of the font
-  size: 12
+  size: 14 
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
     x: 0
-    y: 2
+    y: 1
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
   # increasing `y` moves the glyph upwards.
   glyph_offset:
     x: 0
-    y: 1
+    y: 0
 
   # Better font rendering for mac
-  use_thin_strokes: false
+  use_thin_strokes: true
 
 # Should display the render timer
 debug.render_timer: false
 
 schemes:
-  embark: &embark
+  tokyonight_night: &tokyonight_night
     primary:
-      background: '0x1e1c31'
-      foreground: '0xcbe3e7'
-    cursor:
-      text: '0x1e1c31'
-      cursor: '0xa1efd3'
-    normal:
-      black: '0x1e1c31'
-      red: '0xf48fb1'
-      green: '0xa1efd3'
-      yellow: '0xffe6b3'
-      blue: '0x91ddff'
-      magenta: '0xd4bfff'
-      cyan: '0x87dfeb'
-      white: '0xcbe3e7'
-    bright:
-      black: '0x585273'
-      red: '0xf02e6e'
-      green: '0x62d196'
-      yellow: '0xf2b482'
-      blue: '0x65b2ff'
-      magenta: '0xa37acc'
-      cyan: '0x63f2f1'
-      white: '0x8a889d'
-
-  one: &one
-    primary:
-      background: '#282c34'
-      foreground: '#abb2bf'
-    normal:
-      black: '#5c6370'
-      red: '#e06c75'
-      green: '#98c379'
-      yellow: '#e5c07b'
-      blue: '0x61afef'
-      magenta: '#c678dd'
-      cyan: '#56b6c2'
-      white: '#abb2bf'
-    bright:
-      black: '#4b5263'
-      red: '#e06c75'
-      green: '#98c379'
-      yellow: '#e5c07b'
-      blue: '0x61afef'
-      magenta: '#c678dd'
-      cyan: '#56b6c2'
-      white: '#abb2bf'
-
-  tokyonight: &tokyonight
-    # Default colors
-    primary:
-      background: '0x24283b'
-      foreground: '0xc0caf5'
+      background: "#16161e"
+      foreground: "#c0caf5"
 
     cursor:
-      cursor: '0xc0caf5'
+      cursor: "#FFFFFF"
+
     # Normal colors
     normal:
-      black:   '0x1D202F'
-      red:     '0xf7768e'
-      green:   '0x9ece6a'
-      yellow:  '0xe0af68'
-      blue:    '0x7aa2f7'
-      magenta: '0xbb9af7'
-      cyan:    '0x7dcfff'
-      white:   '0xa9b1d6'
+      black: "#15161E"
+      red: "#f7768e"
+      green: "#9ece6a"
+      yellow: "#e0af68"
+      blue: "#7aa2f7"
+      magenta: "#bb9af7"
+      cyan: "#7dcfff"
+      white: "#a9b1d6"
 
     # Bright colors
     bright:
-      black:   '0x414868'
-      red:     '0xf7768e'
-      green:   '0x9ece6a'
-      yellow:  '0xe0af68'
-      blue:    '0x7aa2f7'
-      magenta: '0xbb9af7'
-      cyan:    '0x7dcfff'
-      white:   '0xc0caf5'
+      black: "#414868"
+      red: "#f7768e"
+      green: "#9ece6a"
+      yellow: "#e0af68"
+      blue: "#7aa2f7"
+      magenta: "#bb9af7"
+      cyan: "#7dcfff"
+      white: "#c0caf5"
 
     indexed_colors:
-      - { index: 16, color: '0xff9e64' }
-      - { index: 17, color: '0xdb4b4b' }
+      - { index: 16, color: "0xff9e64" }
+      - { index: 17, color: "0xdb4b4b" }
 
-colors: *tokyonight
+  nightfox: &nightfox
+    primary:
+      background: "#192330"
+      foreground: "#CDCECF"
+
+    cursor:
+      text: "#393b44"
+      cursor: "#F2F2F2"
+
+    normal:
+      black: "#393b44"
+      red: "#c94f6d"
+      green: "#81B29A"
+      yellow: "#dbc074"
+      blue: "#719cd6"
+      magenta: "#9D79D6"
+      cyan: "#63cdcf"
+      white: "#dfdfe0"
+    bright:
+      black: "#7f8c98"
+      red: "#D6616B"
+      green: "#58cd8b"
+      yellow: "#FFE37E"
+      blue: "#84CEE4"
+      magenta: "#B8A1E3"
+      cyan: "#59F0FF"
+      white: "#F2F2F2"
+
+  catp: &catpee
+    primary:
+      background: "0x0e171c"
+      foreground: "0xabb2bf"
+
+    # Colors the cursor will use if `custom_cursor_colors` is true
+    cursor:
+      text: "0x0e171c"
+      cursor: "0xabb2bf"
+
+    # Normal colors
+    normal:
+      black: "0x393b44"
+      red: "0xc94f6d"
+      green: "0x97c374"
+      yellow: "0xdbc074"
+      blue: "0x61afef"
+      magenta: "0xc678dd"
+      cyan: "0x63cdcf"
+      white: "0xdfdfe0"
+
+    # Bright colors
+    bright:
+      black: "0x7f8c98"
+      red: "0xe06c75"
+      green: "0x58cd8b"
+      yellow: "0xffe37e"
+      blue: "0x84cee4"
+      magenta: "0xb8a1e3"
+      cyan: "0x59f0ff"
+      white: "0xfdebc3"
+
+    indexed_colors:
+      - { index: 16, color: "0xffe37e" }
+      - { index: 17, color: "0xe06c75" }
+
+  github_dimmed: &github_dimmed # Default colors
+    primary:
+      background: "0x22272e"
+      foreground: "0x768390"
+
+    # Normal colors
+    normal:
+      black: "0x22272e"
+      red: "0xff938a"
+      green: "0x6bc46d"
+      yellow: "0xc69026"
+      blue: "0x6cb6ff"
+      magenta: "0xb083f0"
+      cyan: "0x56d4dd"
+      white: "0x768390"
+
+    # Bright colors
+    bright:
+      black: "0x636e7b"
+      red: "0xff938a"
+      green: "0x6bc46d"
+      yellow: "0xdaaa3f"
+      blue: "0x6cb6ff"
+      magenta: "0xdcbdfb"
+      cyan: "0x56d4dd"
+      white: "0x768390"
+
+    indexed_colors:
+      - { index: 16, color: "0xd18616" }
+      - { index: 17, color: "0xff938a" }
+
+  embark: &embark
+    primary:
+      background: "0x1e1c31"
+      foreground: "0xcbe3e7"
+    cursor:
+      text: "0x1e1c31"
+      cursor: "0xa1efd3"
+    normal:
+      black: "0x1e1c31"
+      red: "0xf48fb1"
+      green: "0xa1efd3"
+      yellow: "0xffe6b3"
+      blue: "0x91ddff"
+      magenta: "0xd4bfff"
+      cyan: "0x87dfeb"
+      white: "0xcbe3e7"
+    bright:
+      black: "0x585273"
+      red: "0xf02e6e"
+      green: "0x62d196"
+      yellow: "0xf2b482"
+      blue: "0x65b2ff"
+      magenta: "0xa37acc"
+      cyan: "0x63f2f1"
+      white: "0x8a889d"
+
+  onedark: &onedark # Default colors
+    primary:
+      background: "0x282c34"
+      foreground: "0xabb2bf"
+
+    # Selection colors
+    selection:
+      text: CellForeground
+      background: "0x393f4a"
+
+    # Normal colors
+    normal:
+      black: "0x20232A"
+      red: "0xe86671"
+      green: "0x98c379"
+      yellow: "0xe0af68"
+      blue: "0x61afef"
+      magenta: "0xc678dd"
+      cyan: "0x56b6c2"
+      white: "0x798294"
+
+    # Bright colors
+    bright:
+      black: "0x21252b"
+      red: "0xe86671"
+      green: "0x98c379"
+      yellow: "0xe0af68"
+      blue: "0x61afef"
+      magenta: "0xc678dd"
+      cyan: "0x56b6c2"
+      white: "0xabb2bf"
+
+    indexed_colors:
+      - { index: 16, color: "0xd19a66" }
+      - { index: 17, color: "0xf65866" }
+
+  tokyonight: &tokyonight # Default colors
+    primary:
+      background: "0x24283b"
+      foreground: "0xc0caf5"
+
+    cursor:
+      cursor: "#FFFFFF"
+    # Normal colors
+    normal:
+      black: "0x1D202F"
+      red: "0xf7768e"
+      green: "0x9ece6a"
+      yellow: "0xe0af68"
+      blue: "0x7aa2f7"
+      magenta: "0xbb9af7"
+      cyan: "0x7dcfff"
+      white: "0xa9b1d6"
+
+    # Bright colors
+    bright:
+      black: "0x414868"
+      red: "0xf7768e"
+      green: "0x9ece6a"
+      yellow: "0xe0af68"
+      blue: "0x7aa2f7"
+      magenta: "0xbb9af7"
+      cyan: "0x7dcfff"
+      white: "0xc0caf5"
+
+    indexed_colors:
+      - { index: 16, color: "0xff9e64" }
+      - { index: 17, color: "0xdb4b4b" }
+
+  andromeda: &andromeda
+    primary:
+      background: "0x2b2d3a"
+      foreground: "0xe1e3e4"
+
+    normal:
+      black: "0x181a1c"
+      red: "0xfb617e"
+      green: "0x9ed06c"
+      yellow: "0xedc763"
+      blue: "0x6dcae8"
+      magenta: "0xbb97ee"
+      cyan: "0xf89860"
+      white: "0xe1e3e4"
+
+    bright:
+      black: "0x181a1c"
+      red: "0xfb617e"
+      green: "0x9ed06c"
+      yellow: "0xedc763"
+      blue: "0x6dcae8"
+      magenta: "0xbb97ee"
+      cyan: "0xf89860"
+      white: "0xe1e3e4"
+
+  shusia: &shusia
+    primary:
+      background: "0x2d2a2e"
+      foreground: "0xe3e1e4"
+
+    normal:
+      black: "0x1a181a"
+      red: "0xf85e84"
+      green: "0x9ecd6f"
+      yellow: "0xe5c463"
+      blue: "0x7accd7"
+      magenta: "0xab9df2"
+      cyan: "0xef9062"
+      white: "0xe3e1e4"
+
+    bright:
+      black: "0x1a181a"
+      red: "0xf85e84"
+      green: "0x9ecd6f"
+      yellow: "0xe5c463"
+      blue: "0x7accd7"
+      magenta: "0xab9df2"
+      cyan: "0xef9062"
+      white: "0xe3e1e4"
+
+colors: *onedark
 
 bell:
   animation: EaseOutExpo
   duration: 0
 
-background_opacity: 0.99
+background_opacity: 1
 
 mouse_bindings:
   - { mouse: Middle, action: PasteSelection }
+
+cursor:
+  style:
+    blinking: On
+    shape: Block
+  blink_interval: 300
+  unfocused_hollow: true
+  thickness: 0.1
 
 mouse:
   # Click settings
@@ -180,9 +379,10 @@ mouse:
   # or triple click.
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
+  hide_when_typing: true
 
 selection:
-  semantic_escape_chars: ",?`|:\"' ()[]{}<>"
+  semantic_escape_chars: ',?`|:"'' ()[]{}<>'
 
   # When set to `true`, selected text will be copied to both the primary and
   # the selection clipboard. Otherwise, it will only be copied to the selection
@@ -190,12 +390,10 @@ selection:
   save_to_clipboard: true
 
 env:
-  TERM: xterm-256color
-
-hide_cursor_when_typing: false
+  TERM: xterm-256color-italic
 
 # Live config reload (changes require restart)
 live_config_reload: true
 
 key_bindings:
-- { key: Key3,     mods: Alt,     chars: "#"                        }
+  - { key: Key3, mods: Alt, chars: "#" }

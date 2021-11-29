@@ -1,14 +1,28 @@
-local parsers = require 'nvim-treesitter.parsers'
+local parsers = require "nvim-treesitter.parsers"
 
 local configs = parsers.get_parser_configs()
 
-local ft_str = table.concat(vim.tbl_map(function(ft)
+local available_filetypes = table.concat(vim.tbl_map(function(ft)
     return configs[ft].filetype or ft
-end, parsers.available_parsers()), ',')
+end, parsers.available_parsers()), ",")
 
-vim.cmd('autocmd Filetype ' .. ft_str .. ' setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()')
+vim.cmd("autocmd Filetype " .. available_filetypes .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()")
 
-vim.api.nvim_set_option('foldlevel', 10)
+vim.api.nvim_set_option("foldlevel", 10)
+
+local parser_config = parsers.get_parser_configs()
+
+parser_config.org = {
+    install_info = {
+        url = "https://github.com/milisims/tree-sitter-org",
+        revision = "main",
+        files = { "src/parser.c", "src/scanner.cc" }
+    },
+    filetype = "org"
+}
+
+parser_config.typescript.used_by = "javascript"
+parser_config.scss.used_by = "css"
 
 local incremental_selection = {
     enable = true,
@@ -30,13 +44,16 @@ local textobjects = {
     }
 }
 
-require'nvim-treesitter.configs'.setup {
-    highlight = { enable = true, use_languagetree = true },
+require"nvim-treesitter.configs".setup {
+    ensure_installed = "maintained",
+    ignore_install = { "javascript", "css" },
+    highlight = { enable = true, disable = { "org" } },
     refactor = { highlight_definitions = { enable = true } },
-    tree_docs = { enable = false },
+    -- tree_docs = { enable = true },
     incremental_selection = incremental_selection,
     textobjects = textobjects,
-    autopairs = { enable = true },
+    autotag = { enable = true },
+    matchup = { enable = true },
     context_commentstring = { enable = true },
     indent = { enable = true },
     playground = {
@@ -44,5 +61,4 @@ require'nvim-treesitter.configs'.setup {
         updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
         persist_queries = true -- Whether the query persists across vim sessions
     }
-
 }

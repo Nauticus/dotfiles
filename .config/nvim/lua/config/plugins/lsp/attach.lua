@@ -1,18 +1,30 @@
-local on_attach = function(client, bufnr)
-    require('config.mappings').register_lsp_mappings(client, bufnr)
+local lsp = vim.lsp
+local handlers = lsp.handlers
 
-    -- local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-    local function buf_set_option(...)
-        vim.api.nvim_buf_set_option(bufnr, ...)
+local pop_opts = { border = "single", max_width = 80 }
+
+local setup_diagnostic_signs = function()
+    local signs = { Error = "", Warn = "", Hint = "", Info = "" }
+
+    for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
     end
-
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = { spacing = 6 }
-    })
-
 end
 
+local publish_diagnostics_handler = lsp.with(lsp.diagnostic.on_publish_diagnostics, { virtual_text = false })
+
+local signature_help_handler = lsp.with(handlers.signature_help, pop_opts)
+
+setup_diagnostic_signs()
+
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, { scope = "cursor", source = "always", max_width = 120, focusable = false, border = "single", header = "   Diagnostics:" })]]
+
+local on_attach = function(client, bufnr)
+    require("config.plugins.lsp.mappings").setup(client, bufnr)
+
+    handlers["textDocument/publishDiagnostics"] = publish_diagnostics_handler
+    handlers["textDocument/signatureHelp"] = signature_help_handler
+end
 
 return on_attach

@@ -26,3 +26,5 @@ vim.cmd [[
         autocmd FileType git setlocal foldmethod=syntax foldlevel=0
     augroup END
 ]]
+
+vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 500 })]]

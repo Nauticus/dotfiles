@@ -34,6 +34,7 @@ o.swapfile = false
 o.undofile = true
 o.tabstop = 4
 o.shiftwidth = 4
+o.showtabline = 2
 o.softtabstop = 4
 o.expandtab = true
 o.smartindent = false

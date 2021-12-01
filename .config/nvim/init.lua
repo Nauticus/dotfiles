@@ -13,7 +13,6 @@ g.loaded_ruby_provider = 0
 g.loaded_python_provider = 0
 g.python3_host_prog = os.getenv('HOME') .. '/.pyenv/versions/3.9.4/bin/python'
 
--- require 'config.colorscheme'
 require 'config.opts'
 require 'config.plugins'
 require 'config.autocmd'

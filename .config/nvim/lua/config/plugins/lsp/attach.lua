@@ -21,6 +21,10 @@ setup_diagnostic_signs()
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, { scope = "cursor", source = "always", max_width = 120, focusable = false, border = "single", header = "   Diagnostics:" })]]
 
 local on_attach = function(client, bufnr)
+    vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
+    vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
+
     require("config.plugins.lsp.mappings").setup(client, bufnr)
 
     handlers["textDocument/publishDiagnostics"] = publish_diagnostics_handler

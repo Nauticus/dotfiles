@@ -59,7 +59,9 @@ local function use_colorschemes(use)
                     GitSignsChange = { fg = util.blend(c.git_signs.change, c.bg, 0.5), bg = c.bg_linenumber },
                     GitSignsDelete = { fg = util.blend(c.git_signs.delete, c.bg, 0.5), bg = c.bg_linenumber },
                     GitSignsCurrentLineBlame = { fg = util.darken(c.fg_gutter, 0.6, c.bg) },
-                    scssTSString = { fg = c.syntax.scss.string }
+                    scssTSString = { fg = c.syntax.scss.string },
+                    ScrollView = { bg = c.fg },
+                    MatchParen = { bg = c.bg_visual, style = "bold" }
                 })
             end, 101)
         end
@@ -67,6 +69,14 @@ local function use_colorschemes(use)
 end
 
 local function use_utilities(use)
+    use {
+        "dstein64/nvim-scrollview",
+        config = function()
+            vim.g.scrollview_winblend = 80
+            vim.g.scrollview_current_only = true
+            vim.g.scrollview_column = 1
+        end
+    }
     use { "Asheq/close-buffers.vim" }
     use {
         "folke/zen-mode.nvim",
@@ -123,12 +133,19 @@ local function use_utilities(use)
     use {
         "nvim-lualine/lualine.nvim",
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
-        config = [[require('config.plugins.lualine')]]
+        config = function()
+            require("config.plugins.lualine")
+        end
     }
     use "tpope/vim-commentary"
     use { "editorconfig/editorconfig-vim", config = [[vim.g.EditorConfig_preserve_formatoptions = 1]] }
     use { "mbbill/undotree", opt = true, cmd = "UndotreeToggle" }
-    use { "folke/which-key.nvim", config = [[require('config.plugins.which-key')]] }
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            require("config.plugins.which-key")
+        end
+    }
     use "tpope/vim-surround"
     use {
         "ggandor/lightspeed.nvim",
@@ -136,9 +153,14 @@ local function use_utilities(use)
             require("lightspeed").setup { exit_after_idle_msecs = { labeled = 2000, unlabeled = 1500 } }
         end
     }
-    -- use { "justinmk/vim-sneak", config = [[require('config.plugins.sneak')]] }
     use "junegunn/vim-easy-align"
-    use { "lukas-reineke/indent-blankline.nvim", branch = "develop", config = [[require('config.plugins.blankline')]] }
+    use {
+        "lukas-reineke/indent-blankline.nvim",
+        branch = "develop",
+        config = function()
+            require("config.plugins.blankline")
+        end
+    }
     use {
         "norcalli/nvim-colorizer.lua",
         config = function()
@@ -161,7 +183,9 @@ local function use_git(use)
     use "junegunn/gv.vim"
     use {
         "lewis6991/gitsigns.nvim",
-        config = [[require('config.plugins.gitsigns')]],
+        config = function()
+            require("config.plugins.gitsigns")
+        end,
         requires = { "nvim-lua/plenary.nvim" }
     }
 end
@@ -169,8 +193,15 @@ end
 local function use_debug(use)
     use {
         "rcarriga/nvim-dap-ui",
-        config = [[require("dapui").setup()]],
-        requires = { "mfussenegger/nvim-dap", config = [[require('config.plugins.dap')]] }
+        config = function()
+            require("dapui").setup()
+        end,
+        requires = {
+            "mfussenegger/nvim-dap",
+            config = function()
+                require("config.plugins.dap")
+            end
+        }
     }
 end
 
@@ -178,7 +209,9 @@ local function use_lsp(use)
     use {
         "neovim/nvim-lspconfig",
         requires = { "williamboman/nvim-lsp-installer" },
-        config = [[require('config.plugins.lsp')]]
+        config = function()
+            require("config.plugins.lsp")
+        end
     }
     use "jose-elias-alvarez/nvim-lsp-ts-utils"
     use "folke/lua-dev.nvim"
@@ -194,10 +227,17 @@ end
 
 local function use_search(use)
     use { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" }
-    use { "junegunn/fzf.vim", config = [[require('config.plugins.fzf')]] }
+    use {
+        "junegunn/fzf.vim",
+        config = function()
+            require("config.plugins.fzf")
+        end
+    }
     use {
         "nvim-telescope/telescope.nvim",
-        config = [[require('config.plugins.telescope')]],
+        config = function()
+            require("config.plugins.telescope")
+        end,
         requires = {
             { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
             { "nvim-telescope/telescope-live-grep-raw.nvim" },
@@ -208,13 +248,24 @@ local function use_search(use)
 end
 
 local function use_syntax(use)
-    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[require('config.plugins.treesitter')]] }
+    use {
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+        config = function()
+            require("config.plugins.treesitter")
+        end
+    }
     use "nvim-treesitter/nvim-treesitter-textobjects"
     use "nvim-treesitter/nvim-treesitter-refactor"
     use "nvim-treesitter/playground"
     use "nvim-treesitter/completion-treesitter"
     use "JoosepAlviste/nvim-ts-context-commentstring"
-    use { "windwp/nvim-autopairs", config = [[require('config.plugins.autopairs')]] }
+    use {
+        "windwp/nvim-autopairs",
+        config = function()
+            require("config.plugins.autopairs")
+        end
+    }
     use { "windwp/nvim-ts-autotag" }
     use {
         "andymass/vim-matchup",
@@ -222,12 +273,37 @@ local function use_syntax(use)
             vim.g.matchup_matchparen_offscreen = { ["method"] = "popup" }
         end
     }
+    use {
+        "abecodes/tabout.nvim",
+        config = function()
+            require("tabout").setup {
+                tabkey = "<Tab>", -- key to trigger tabout, set to an empty string to disable
+                backwards_tabkey = "<S-Tab>", -- key to trigger backwards tabout, set to an empty string to disable
+                act_as_tab = true, -- shift content if tab out is not possible
+                act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+                enable_backwards = true, -- well ...
+                completion = false, -- if the tabkey is used in a completion pum
+                tabouts = {
+                    { open = "'", close = "'" },
+                    { open = "\"", close = "\"" },
+                    { open = "`", close = "`" },
+                    { open = "(", close = ")" },
+                    { open = "[", close = "]" },
+                    { open = "{", close = "}" }
+                },
+                ignore_beginning = true --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+            }
+        end,
+        wants = { "nvim-treesitter" } -- or require if not used so far
+    }
 end
 
 local function use_navigation(use)
     use {
         "kyazdani42/nvim-tree.lua",
-        config = [[require('config.plugins.tree')]],
+        config = function()
+            require("config.plugins.tree")
+        end,
         requires = "kyazdani42/nvim-web-devicons"
     }
 end
@@ -247,7 +323,9 @@ local function use_completion(use)
             -- "hrsh7th/cmp-cmdline",
             "ray-x/cmp-treesitter"
         },
-        config = [[require('config.plugins.cmp')]]
+        config = function()
+            require("config.plugins.cmp")
+        end
     }
 end
 
@@ -264,6 +342,10 @@ local function use_notes(use)
     }
 end
 
+local function use_test(use)
+    use { "vim-test/vim-test" }
+end
+
 return require("packer").startup(function(use)
     use "wbthomason/packer.nvim"
 
@@ -278,4 +360,5 @@ return require("packer").startup(function(use)
     use_db(use)
     use_debug(use)
     use_notes(use)
+    use_test(use)
 end)

@@ -19,7 +19,6 @@ o.ignorecase = true
 o.smartcase = true
 o.smarttab = true
 o.hlsearch = false
--- o.guicursor = ""
 o.signcolumn = "yes:2"
 o.number = true
 o.relativenumber = true

@@ -10,7 +10,7 @@ local tabname = function(tabid)
 end
 
 local function obsession()
-    return "  " .. vim.api.nvim_eval([[ObsessionStatus('﮼ ', ' ')]]) .. " "
+    return "  " .. vim.api.nvim_eval([[ObsessionStatus('', '')]]) .. " "
 end
 
 local active_win_hl = utils.extract_nvim_hl("TabbyWinActive")

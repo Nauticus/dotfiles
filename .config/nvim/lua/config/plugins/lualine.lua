@@ -28,7 +28,7 @@ require("lualine").setup {
                 diff_color = { added = "diffAdded", modified = "diffChanged", removed = "diffRemoved" }
             }
         },
-        lualine_z = { "location", { "fileformat", icons_enabled = false } }
+        lualine_z = { { "fileformat", icons_enabled = false } }
     },
     extensions = { "quickfix", "fugitive" },
     inactive_sections = {

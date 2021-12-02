@@ -53,7 +53,7 @@ require"nvim-treesitter.configs".setup {
     incremental_selection = incremental_selection,
     textobjects = textobjects,
     autotag = { enable = true },
-    matchup = { enable = true },
+    matchup = { enable = true, include_match_words = true },
     context_commentstring = { enable = true },
     indent = { enable = true },
     playground = {

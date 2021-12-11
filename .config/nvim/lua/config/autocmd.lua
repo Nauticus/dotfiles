@@ -6,10 +6,10 @@ vim.cmd [[
 ]]
 
 vim.cmd [[
-augroup dirvishbuf
-    autocmd!
-    autocmd FileType dirvish setlocal relativenumber signcolumn=no nonumber
-augroup END
+    augroup dirvishbuf
+        autocmd!
+        autocmd FileType dirvish setlocal relativenumber signcolumn=no nonumber
+    augroup END
 ]]
 
 vim.cmd [[
@@ -26,5 +26,13 @@ vim.cmd [[
         autocmd FileType git setlocal foldmethod=syntax foldlevel=0
     augroup END
 ]]
+
+-- vim.cmd [[
+--     augroup cursorline
+--         autocmd!
+--         autocmd InsertLeave,WinEnter * set cursorline
+--         autocmd InsertEnter,WinLeave * set nocursorline
+--     augroup END
+-- ]]
 
 vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 500 })]]

@@ -17,4 +17,13 @@
     (quoted_attribute_value
       (attribute_value) @typescript)))
 
+(
+  (template_element
+    (start_tag
+      (attribute
+        (quoted_attribute_value (attribute_value) @_lang)))
+    (text) @pug)
+  (#eq? @_lang "pug")
+)
+
 (comment) @comment

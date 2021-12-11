@@ -14,8 +14,7 @@ wk.register {
     ["<A-Left>"] = { "<cmd>vertical resize -4<CR>", "Vertical Resize -4" },
     ["§"] = { "<CMD>NvimTreeToggle<CR>", "Nvim Tree" },
     ["-"] = { "<CMD>NvimTreeFindFile<CR>", "Find file in tree" },
-    ["<leader>zm"] = { "<CMD>ZenMode<CR>", "ZenMode" },
-    ["<leader><leader>"] = { "<CMD>Telescope builtin<CR>", "Telescope" }
+    ["<leader>zm"] = { "<CMD>ZenMode<CR>", "ZenMode" }
 }
 
 local keymap_source = {

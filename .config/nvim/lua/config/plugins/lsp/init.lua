@@ -4,19 +4,12 @@ local efm = require("config.plugins.lsp.efm")
 
 local config = {
     vuels = {
-        flags = {
-            debounce_text_changes = 500
-        },
+        flags = { debounce_text_changes = 500 },
         init_options = {
             config = {
                 vetur = {
-                    validation = {
-                        template = true,
-                        script = true,
-                        style = true,
-                        templateProps = true,
-                        interpolation = true
-                    },
+                    useWorkspaceDependencies = true,
+                    validation = { templateProps = true },
                     experimental = { templateInterpolationService = false }
                 }
             }
@@ -24,10 +17,10 @@ local config = {
     },
     tsserver = {
         init_options = require("nvim-lsp-ts-utils").init_options,
-        on_attach = function (client, bufnr)
+        on_attach = function(client, bufnr)
             local ts_utils = require("nvim-lsp-ts-utils")
 
-            ts_utils.setup({})
+            ts_utils.setup({ inlay_hints_highlight = "TSLspInlayHints" })
             ts_utils.setup_client(client)
 
             client.resolved_capabilities.document_formatting = false

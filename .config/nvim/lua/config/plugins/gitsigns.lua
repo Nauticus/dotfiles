@@ -3,11 +3,11 @@ local gitsigns = require("gitsigns")
 
 gitsigns.setup({
     signs = {
-        add = { text = "┃" },
-        change = { text = "┃" },
-        delete = { text = "┃" },
-        topdelete = { text = "┃" },
-        changedelete = { text = "┃" }
+        add = { text = "│" },
+        change = { text = "│" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "~" }
     },
     keymaps = {
         noremap = true,
@@ -22,6 +22,9 @@ gitsigns.setup({
         virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
         delay = 200,
         ignore_whitespace = true
+    },
+    current_line_blame_formatter_opts = {
+        relative_time = true
     }
 })
 

@@ -15,7 +15,7 @@ require("lualine").setup {
         lualine_x = {
             {
                 "diagnostics",
-                sources = { "nvim_lsp" },
+                sources = { "nvim_diagnostic" },
                 symbols = { error = " ", warn = " ", info = " ", hint = " " }
             }
         },
@@ -23,8 +23,9 @@ require("lualine").setup {
             { "branch", icon = "" },
             {
                 "diff",
-                symbols = { added = " ", modified = "柳", removed = " " },
+                symbols = { added = "  ", modified = " 柳", removed = "  " },
                 colored = true,
+                padding = { left = 0, right = 1 },
                 diff_color = { added = "diffAdded", modified = "diffChanged", removed = "diffRemoved" }
             }
         },

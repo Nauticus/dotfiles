@@ -10,7 +10,7 @@ M.show_line_diagnostics = function()
         max_width = 120,
         focusable = false,
         border = "single",
-        header = "   Diagnostics:"
+        header = "Line Diagnostics:"
     })
 end
 

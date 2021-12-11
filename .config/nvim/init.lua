@@ -11,11 +11,19 @@ g.loaded_perl_provider = 0
 g.loaded_netrwPlugin = 1
 g.loaded_ruby_provider = 0
 g.loaded_python_provider = 0
-g.python3_host_prog = os.getenv('HOME') .. '/.pyenv/versions/3.9.4/bin/python'
+g.python3_host_prog = os.getenv("HOME") .. "/.pyenv/versions/3.9.4/bin/python"
 
-require 'config.opts'
-require 'config.plugins'
-require 'config.autocmd'
-require 'config.utils'
-require 'config.mappings'
-require 'config.debug'
+if not pcall(require, "impatient") then
+    vim.notify("Failed to load impatient.nvim", "error")
+end
+
+require "config.opts"
+require "config.plugins"
+require "config.autocmd"
+require "config.utils"
+require "config.mappings"
+require "config.debug"
+
+if not pcall(require, "packer_compiled") then
+    vim.notify("Failed to load packer_compiled", "error")
+end

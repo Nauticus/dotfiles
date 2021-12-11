@@ -3,9 +3,7 @@ local handlers = lsp.handlers
 
 local pop_opts = { border = "single", max_width = 80 }
 
-local setup_diagnostic_signs = function()
-    local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-
+local setup_diagnostic_signs = function(signs)
     for type, icon in pairs(signs) do
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -16,7 +14,7 @@ local publish_diagnostics_handler = lsp.with(lsp.diagnostic.on_publish_diagnosti
 
 local signature_help_handler = lsp.with(handlers.signature_help, pop_opts)
 
-setup_diagnostic_signs()
+setup_diagnostic_signs({ Error = "", Warn = "", Hint = "", Info = "" })
 
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, { scope = "cursor", source = "always", max_width = 120, focusable = false, border = "single", header = "   Diagnostics:" })]]
 

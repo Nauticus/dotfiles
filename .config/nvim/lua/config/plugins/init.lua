@@ -6,7 +6,13 @@ end
 
 vim.cmd "packadd packer.nvim"
 
-require("packer").init { max_jobs = 4, profile = { enable = false } }
+local packer_utils = require("packer.util")
+
+require("packer").init {
+    max_jobs = 4,
+    profile = { enable = false },
+    compile_path = packer_utils.join_paths(vim.fn.stdpath("config"), "lua", "packer_compiled.lua")
+}
 
 local function use_colorschemes(use)
     use {
@@ -31,6 +37,7 @@ local function use_colorschemes(use)
     use {
         "ful1e5/onedark.nvim",
         disable = false,
+        after = "lualine.nvim",
         config = function()
             vim.cmd [[colo onedark]]
 
@@ -41,7 +48,9 @@ local function use_colorschemes(use)
                 ObsessionStatus = { fg = c.red, bg = c.bg },
                 TabbyWinActive = { bg = c.bg_visual },
                 TabbyCwd = { bg = c.red, fg = c.bg, style = "bold" },
-                TSTagDelimiter = { fg = c.fg_dark }
+                TSTagDelimiter = { fg = c.fg_dark },
+                Folded = { fg = c.fg_dark, bg = util.blend(c.fg_dark, c.bg, 0.1), style = "bold"},
+                TSLspInlayHints = { fg = util.blend(c.red, c.bg, 0.2) }
             })
 
             vim.defer_fn(function()
@@ -55,9 +64,9 @@ local function use_colorschemes(use)
                     NvimTreeOpenedFolderName = { fg = c.orange, style = "bold" },
                     IndentBlanklineChar = { fg = util.darken(c.fg_gutter, 0.4, c.bg) },
                     IndentBlanklineContextChar = { fg = util.darken(c.fg_gutter, 0.9, c.bg) },
-                    GitSignsAdd = { fg = util.blend(c.git_signs.add, c.bg, 0.5), bg = c.bg_linenumber },
-                    GitSignsChange = { fg = util.blend(c.git_signs.change, c.bg, 0.5), bg = c.bg_linenumber },
-                    GitSignsDelete = { fg = util.blend(c.git_signs.delete, c.bg, 0.5), bg = c.bg_linenumber },
+                    GitSignsAdd = { fg = util.blend(c.git_signs.add, c.bg, 0.7) },
+                    GitSignsChange = { fg = util.blend(c.git_signs.change, c.bg, 0.7) },
+                    GitSignsDelete = { fg = util.blend(c.git_signs.delete, c.bg, 0.7) },
                     GitSignsCurrentLineBlame = { fg = util.darken(c.fg_gutter, 0.6, c.bg) },
                     scssTSString = { fg = c.syntax.scss.string },
                     ScrollView = { bg = c.fg },
@@ -69,6 +78,20 @@ local function use_colorschemes(use)
 end
 
 local function use_utilities(use)
+    use "lewis6991/impatient.nvim"
+    use {
+        "lewis6991/cleanfold.nvim",
+        config = function()
+            require("cleanfold").setup()
+        end
+    }
+    use {
+        "rcarriga/nvim-notify",
+        config = function()
+            require("notify").setup({ stages = "static" })
+            vim.notify = require("notify")
+        end
+    }
     use {
         "dstein64/nvim-scrollview",
         config = function()
@@ -116,12 +139,6 @@ local function use_utilities(use)
     use "romainl/vim-devdocs"
     use "tpope/vim-obsession"
     use {
-        "kwkarlwang/bufresize.nvim",
-        config = function()
-            require("bufresize").setup()
-        end
-    }
-    use {
         "nanozuki/tabby.nvim",
         after = "onedark.nvim",
         config = function()
@@ -137,8 +154,12 @@ local function use_utilities(use)
             require("config.plugins.lualine")
         end
     }
-    use "tpope/vim-commentary"
-    use { "editorconfig/editorconfig-vim", config = [[vim.g.EditorConfig_preserve_formatoptions = 1]] }
+    use {
+        "editorconfig/editorconfig-vim",
+        config = function()
+            -- vim.g.EditorConfig_preserve_formatoptions = 1
+        end
+    }
     use { "mbbill/undotree", opt = true, cmd = "UndotreeToggle" }
     use {
         "folke/which-key.nvim",
@@ -149,8 +170,15 @@ local function use_utilities(use)
     use "tpope/vim-surround"
     use {
         "ggandor/lightspeed.nvim",
+        after = "onedark.nvim",
         config = function()
-            require("lightspeed").setup { exit_after_idle_msecs = { labeled = 2000, unlabeled = 1500 } }
+            vim.cmd [[autocmd User LightspeedLeave set scrolloff=4]]
+
+            require("lightspeed").setup {
+                exit_after_idle_msecs = { labeled = 2000, unlabeled = 1500 },
+                grey_out_search_area = false,
+                match_only_the_start_of_same_char_seqs = false
+            }
         end
     }
     use "junegunn/vim-easy-align"
@@ -223,6 +251,13 @@ local function use_lsp(use)
             require("trouble").setup {}
         end
     }
+    use {
+        "folke/todo-comments.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup {}
+        end
+    }
 end
 
 local function use_search(use)
@@ -240,6 +275,7 @@ local function use_search(use)
         end,
         requires = {
             { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+            { "nvim-telescope/telescope-file-browser.nvim" },
             { "nvim-telescope/telescope-live-grep-raw.nvim" },
             { "nvim-lua/popup.nvim" },
             { "nvim-lua/plenary.nvim" }
@@ -259,7 +295,7 @@ local function use_syntax(use)
     use "nvim-treesitter/nvim-treesitter-refactor"
     use "nvim-treesitter/playground"
     use "nvim-treesitter/completion-treesitter"
-    use "JoosepAlviste/nvim-ts-context-commentstring"
+    use { "JoosepAlviste/nvim-ts-context-commentstring", requires = { "tpope/vim-commentary" } }
     use {
         "windwp/nvim-autopairs",
         config = function()
@@ -277,12 +313,12 @@ local function use_syntax(use)
         "abecodes/tabout.nvim",
         config = function()
             require("tabout").setup {
-                tabkey = "<Tab>", -- key to trigger tabout, set to an empty string to disable
-                backwards_tabkey = "<S-Tab>", -- key to trigger backwards tabout, set to an empty string to disable
-                act_as_tab = true, -- shift content if tab out is not possible
-                act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
-                enable_backwards = true, -- well ...
-                completion = false, -- if the tabkey is used in a completion pum
+                tabkey = "<Tab>",
+                backwards_tabkey = "<S-Tab>",
+                act_as_tab = true,
+                act_as_shift_tab = false,
+                enable_backwards = true,
+                completion = false,
                 tabouts = {
                     { open = "'", close = "'" },
                     { open = "\"", close = "\"" },
@@ -291,10 +327,10 @@ local function use_syntax(use)
                     { open = "[", close = "]" },
                     { open = "{", close = "}" }
                 },
-                ignore_beginning = true --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+                ignore_beginning = true
             }
         end,
-        wants = { "nvim-treesitter" } -- or require if not used so far
+        wants = { "nvim-treesitter" }
     }
 end
 

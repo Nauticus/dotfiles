@@ -2,11 +2,11 @@ local parsers = require "nvim-treesitter.parsers"
 
 local configs = parsers.get_parser_configs()
 
-local available_filetypes = table.concat(vim.tbl_map(function(ft)
+local parsers_filetypes = table.concat(vim.tbl_map(function(ft)
     return configs[ft].filetype or ft
 end, parsers.available_parsers()), ",")
 
-vim.cmd("autocmd Filetype " .. available_filetypes .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()")
+vim.cmd("autocmd Filetype " .. parsers_filetypes .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()")
 
 vim.api.nvim_set_option("foldlevel", 10)
 
@@ -46,8 +46,8 @@ local textobjects = {
 
 require"nvim-treesitter.configs".setup {
     ensure_installed = "maintained",
-    ignore_install = { "javascript", "css" },
-    highlight = { enable = true, disable = { "org" } },
+    ignore_install = { "javascript", "css", "haskell", "comment" },
+    highlight = { enable = true, disable = { "org" }, additional_vim_regex_highlighting = false },
     refactor = { highlight_definitions = { enable = true } },
     -- tree_docs = { enable = true },
     incremental_selection = incremental_selection,

@@ -39,9 +39,9 @@ draw_bold_text_with_bright_colors: true
 font:
   # Normal (roman) font face
   normal:
-    family: JetBrainsMonoNL Nerd Font Mono
+    family: JetBrainsMono Nerd Font
     # The `style` can be specified to pick a specific face.
-    style: Light
+    style: Regular
 
   # Bold font face
   bold:
@@ -392,9 +392,6 @@ selection:
   # the selection clipboard. Otherwise, it will only be copied to the selection
   # clipboard.
   save_to_clipboard: true
-
-env:
-  TERM: xterm-256color-italic
 
 # Live config reload (changes require restart)
 live_config_reload: true

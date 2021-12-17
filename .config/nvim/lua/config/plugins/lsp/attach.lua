@@ -10,11 +10,14 @@ local setup_diagnostic_signs = function(signs)
     end
 end
 
-local publish_diagnostics_handler = lsp.with(lsp.diagnostic.on_publish_diagnostics, { virtual_text = false })
+local publish_diagnostics_handler = lsp.with(
+    lsp.diagnostic.on_publish_diagnostics,
+    { virtual_text = false }
+)
 
 local signature_help_handler = lsp.with(handlers.signature_help, pop_opts)
 
-setup_diagnostic_signs({ Error = "", Warn = "", Hint = "", Info = "" })
+setup_diagnostic_signs { Error = "", Warn = "", Hint = "", Info = "" }
 
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, { scope = "cursor", source = "always", max_width = 120, focusable = false, border = "single", header = "   Diagnostics:" })]]
 
@@ -23,7 +26,7 @@ local on_attach = function(client, bufnr)
     vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
     vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
 
-    require("config.plugins.lsp.mappings").setup(client, bufnr)
+    require("config.mappings").lsp_mappings(client, bufnr)
 
     handlers["textDocument/publishDiagnostics"] = publish_diagnostics_handler
     handlers["textDocument/signatureHelp"] = signature_help_handler

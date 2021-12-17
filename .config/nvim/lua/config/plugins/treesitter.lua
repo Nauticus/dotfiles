@@ -2,11 +2,18 @@ local parsers = require "nvim-treesitter.parsers"
 
 local configs = parsers.get_parser_configs()
 
-local parsers_filetypes = table.concat(vim.tbl_map(function(ft)
-    return configs[ft].filetype or ft
-end, parsers.available_parsers()), ",")
+local parsers_filetypes = table.concat(
+    vim.tbl_map(function(ft)
+        return configs[ft].filetype or ft
+    end, parsers.available_parsers()),
+    ","
+)
 
-vim.cmd("autocmd Filetype " .. parsers_filetypes .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()")
+vim.cmd(
+    "autocmd Filetype "
+        .. parsers_filetypes
+        .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()"
+)
 
 vim.api.nvim_set_option("foldlevel", 10)
 
@@ -16,9 +23,9 @@ parser_config.org = {
     install_info = {
         url = "https://github.com/milisims/tree-sitter-org",
         revision = "main",
-        files = { "src/parser.c", "src/scanner.cc" }
+        files = { "src/parser.c", "src/scanner.cc" },
     },
-    filetype = "org"
+    filetype = "org",
 }
 
 parser_config.typescript.used_by = "javascript"
@@ -26,7 +33,12 @@ parser_config.scss.used_by = "css"
 
 local incremental_selection = {
     enable = true,
-    keymaps = { init_selection = "gnn", node_incremental = "gn[", scope_incremental = "gn]", node_decremental = "gn)" }
+    keymaps = {
+        init_selection = "gnn",
+        node_incremental = "gn[",
+        scope_incremental = "gn]",
+        node_decremental = "gn)",
+    },
 }
 
 local textobjects = {
@@ -39,12 +51,12 @@ local textobjects = {
             ["ac"] = "@class.outer",
             ["ic"] = "@class.inner",
             ["ii"] = "@call.inner",
-            ["ai"] = "@call.outer"
-        }
-    }
+            ["ai"] = "@call.outer",
+        },
+    },
 }
 
-require"nvim-treesitter.configs".setup {
+require("nvim-treesitter.configs").setup {
     ensure_installed = "maintained",
     ignore_install = { "javascript", "css", "haskell", "comment" },
     highlight = { enable = true, disable = { "org" }, additional_vim_regex_highlighting = false },
@@ -59,6 +71,6 @@ require"nvim-treesitter.configs".setup {
     playground = {
         enable = true,
         updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-        persist_queries = true -- Whether the query persists across vim sessions
-    }
+        persist_queries = true, -- Whether the query persists across vim sessions
+    },
 }

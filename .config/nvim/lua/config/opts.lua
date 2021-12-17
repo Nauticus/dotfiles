@@ -20,7 +20,6 @@ o.smartcase = true
 o.smarttab = true
 o.hlsearch = false
 o.signcolumn = "yes:2"
--- o.foldtext = [[v:lua.require"config.foldtext"()]]
 o.numberwidth = 6
 o.number = true
 o.relativenumber = true
@@ -42,5 +41,3 @@ o.smartindent = false
 o.formatoptions = string.gsub(vim.bo.formatoptions, "[co]", "")
 o.ssop = o.ssop - { "blank", "help", "buffers" } + { "terminal" }
 o.fillchars = { vert = " " }
-
-vim.g.completion_confirm_key = ""

@@ -1,25 +1,34 @@
-local cmp = require("cmp")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-local luasnip = require("luasnip")
+local cmp = require "cmp"
+local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+local luasnip = require "luasnip"
+local types = require "luasnip.util.types"
 
-luasnip.config.set_config({ history = true })
+luasnip.config.set_config {
+    history = true,
+    ext_opts = {
+        [types.choiceNode] = { active = { virt_text = { { "", "GitSignsAdd" } } } },
+        [types.insertNode] = { active = { virt_text = { { "", "GitSignsChange" } } } },
+    },
+}
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    return col ~= 0
+        and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s"
+            == nil
 end
 
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { text = "" } }))
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { text = "" } })
 
-cmp.setup({
+cmp.setup {
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body) -- For `luasnip` users.
-        end
+        end,
     },
-    sources = cmp.config.sources({
+    sources = cmp.config.sources {
         { name = "path" },
         { name = "nvim_lsp", max_item_count = 10 },
         { name = "luasnip", max_item_count = 10 },
@@ -28,12 +37,12 @@ cmp.setup({
             option = {
                 get_bufnrs = function()
                     return vim.api.nvim_list_bufs()
-                end
-            }
+                end,
+            },
         },
-        { name = "tmux" }
+        { name = "tmux" },
         -- { name = "orgmode" }
-    }),
+    },
     experimental = { native_menu = false, ghost_text = true },
     mapping = {
         ["<C-n>"] = cmp.mapping(function(fallback)
@@ -56,9 +65,9 @@ cmp.setup({
             else
                 fallback()
             end
-        end, { "i", "s" })
-    }
-})
+        end, { "i", "s" }),
+    },
+}
 
 cmp.setup.cmdline("/", { sources = { { name = "buffer" } } })
 cmp.setup.cmdline("?", { sources = { { name = "buffer" } } })

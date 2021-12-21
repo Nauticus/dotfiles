@@ -48,8 +48,10 @@ M.telescope_mappings = function()
         name = "+telescope",
         f = { telescope_builtin.find_files, "Files" },
         p = { telescope_builtin.builtin, "Pickers" },
+        g = { "<cmd>Rg<CR>", "Grep all" },
         r = { telescope_builtin.resume, "Resume" },
         w = { telescope_builtin.grep_string, "Grep word under cursor" },
+        t = { "<cmd>Telescope windows<CR>", "Search windows" },
     }, { prefix = prefix })
 
     wk.register(
@@ -59,7 +61,7 @@ M.telescope_mappings = function()
 end
 
 M.lsp_mappings = function(client, bufnr)
-    local pickers = require "fzf-lua"
+    local pickers = require "telescope.builtin"
 
     local show_line_diagnostics = function()
         vim.diagnostic.open_float(0, {

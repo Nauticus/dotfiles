@@ -63,8 +63,6 @@ local function use_colorschemes(use)
                     VertSplit = { bg = c.bg2 },
                     StatuslineTerm = { bg = c.bg2 },
                     StatuslineTermNC = { bg = c.bg2 },
-                    NvimTreeFolderName = { fg = c.red },
-                    NvimTreeOpenedFolderName = { fg = c.orange, style = "bold" },
                     IndentBlanklineChar = { fg = util.darken(c.fg_gutter, 0.4, c.bg) },
                     IndentBlanklineContextChar = { fg = util.darken(c.fg_gutter, 0.9, c.bg) },
                     GitSignsAdd = { fg = util.blend(c.git_signs.add, c.bg, 0.7) },
@@ -82,6 +80,12 @@ end
 
 local function use_utilities(use)
     use "lewis6991/impatient.nvim"
+    use {
+        "kwkarlwang/bufresize.nvim",
+        config = function()
+            require("bufresize").setup()
+        end
+    }
     use {
         "lewis6991/cleanfold.nvim",
         config = function()
@@ -173,9 +177,9 @@ local function use_utilities(use)
             vim.cmd [[autocmd User LightspeedLeave set scrolloff=4]]
 
             require("lightspeed").setup {
-                exit_after_idle_msecs = { labeled = 2000, unlabeled = 1500 },
-                grey_out_search_area = false,
-                match_only_the_start_of_same_char_seqs = false,
+                ignore_case = true,
+                grey_out_search_area = true,
+                match_only_the_start_of_same_char_seqs = true,
             }
         end,
     }
@@ -259,32 +263,34 @@ local function use_lsp(use)
 end
 
 local function use_search(use)
-    use { "junegunn/fzf", run = "./install --bin" }
+    -- use { "junegunn/fzf", run = "./install --bin" }
+    -- use {
+    --     "ibhagwan/fzf-lua",
+    --     requires = { "kyazdani42/nvim-web-devicons" },
+    --     config = function()
+    --         require "config.plugins.fzf-lua"
+    --     end,
+    -- }
+    use { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" }
     use {
-        "ibhagwan/fzf-lua",
-        requires = { "kyazdani42/nvim-web-devicons" },
+        "junegunn/fzf.vim",
         config = function()
-            require "config.plugins.fzf-lua"
+            require "config.plugins.fzf"
         end,
     }
-    -- use { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" }
-    -- use {
-    --     "junegunn/fzf.vim",
-    --     config = function()
-    --         require("config.plugins.fzf")
-    --     end
-    -- }
-    -- use {
-    --     "nvim-telescope/telescope.nvim",
-    --     config = function()
-    --         require("config.plugins.telescope")
-    --     end,
-    --     requires = {
-    --         { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-    --         { "nvim-lua/popup.nvim" },
-    --         { "nvim-lua/plenary.nvim" }
-    --     }
-    -- }
+    use {
+        "nvim-telescope/telescope.nvim",
+        config = function()
+            require "config.plugins.telescope"
+        end,
+        requires = {
+            { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+            { "kyoh86/telescope-windows.nvim" },
+            { "nvim-telescope/telescope-file-browser.nvim" },
+            { "nvim-lua/popup.nvim" },
+            { "nvim-lua/plenary.nvim" },
+        },
+    }
 end
 
 local function use_syntax(use)
@@ -312,29 +318,6 @@ local function use_syntax(use)
         config = function()
             vim.g.matchup_matchparen_offscreen = { ["method"] = "popup" }
         end,
-    }
-    use {
-        "abecodes/tabout.nvim",
-        config = function()
-            require("tabout").setup {
-                tabkey = "<Tab>",
-                backwards_tabkey = "<S-Tab>",
-                act_as_tab = true,
-                act_as_shift_tab = false,
-                enable_backwards = true,
-                completion = false,
-                tabouts = {
-                    { open = "'", close = "'" },
-                    { open = '"', close = '"' },
-                    { open = "`", close = "`" },
-                    { open = "(", close = ")" },
-                    { open = "[", close = "]" },
-                    { open = "{", close = "}" },
-                },
-                ignore_beginning = true,
-            }
-        end,
-        wants = { "nvim-treesitter" },
     }
 end
 

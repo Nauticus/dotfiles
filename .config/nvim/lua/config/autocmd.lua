@@ -27,12 +27,12 @@ vim.cmd [[
     augroup END
 ]]
 
--- vim.cmd [[
---     augroup cursorline
---         autocmd!
---         autocmd InsertLeave,WinEnter * set cursorline
---         autocmd InsertEnter,WinLeave * set nocursorline
---     augroup END
--- ]]
+vim.cmd [[
+    augroup cursorline
+        autocmd!
+        autocmd InsertLeave,WinEnter * set cursorline
+        autocmd InsertEnter,WinLeave * set nocursorline
+    augroup END
+]]
 
 vim.cmd [[au TextYankPost * silent! lua vim.highlight.on_yank({ timeout = 500 })]]

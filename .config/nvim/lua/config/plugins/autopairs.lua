@@ -3,6 +3,7 @@ local Rule = require "nvim-autopairs.rule"
 
 npairs.setup {
     map_c_w = true,
+    map_c_h = true,
     enable_check_bracket_line = true,
 }
 

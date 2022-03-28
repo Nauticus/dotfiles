@@ -1,9 +1,10 @@
 require("lualine").setup {
     options = {
-        theme = "onedark-nvim",
+        theme = "kanagawa",
         disabled_filetypes = { "NvimTree", "DiffviewFiles" },
         component_separators = { left = "", right = "" },
-        section_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
+        globalstatus = true,
     },
     sections = {
         lualine_a = { { "mode", icons_enabled = true } },
@@ -26,11 +27,6 @@ require("lualine").setup {
                 symbols = { added = "  ", modified = " 柳", removed = "  " },
                 colored = true,
                 padding = { left = 0, right = 1 },
-                diff_color = {
-                    added = "diffAdded",
-                    modified = "diffChanged",
-                    removed = "diffRemoved",
-                },
             },
         },
         lualine_z = { { "fileformat", icons_enabled = false } },

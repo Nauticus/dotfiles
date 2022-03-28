@@ -9,71 +9,26 @@ vim.cmd "packadd packer.nvim"
 local packer_utils = require "packer.util"
 
 require("packer").init {
-    max_jobs = 4,
+    max_jobs = 6,
     profile = { enable = false },
     compile_path = packer_utils.join_paths(vim.fn.stdpath "config", "lua", "packer_compiled.lua"),
 }
 
 local function use_colorschemes(use)
     use {
-        "eddyekofo94/gruvbox-flat.nvim",
-        disable = true,
-        config = function()
-            vim.cmd [[colo gruvbox-flat]]
-        end,
-    }
-    use {
-        "folke/tokyonight.nvim",
-        disable = true,
-        config = function()
-            vim.cmd [[colorscheme tokyonight]]
-
-            local c = require("tokyonight.colors").setup(require "tokyonight.config")
-            local util = require "tokyonight.util"
-
-            util.syntax {
-                ObsessionStatus = { fg = c.red, bg = c.bg },
-                TabbyWinActive = { bg = c.bg_visual },
-            }
-        end,
-    }
-    use {
-        "ful1e5/onedark.nvim",
+        "rebelot/kanagawa.nvim",
         disable = false,
-        after = "lualine.nvim",
         config = function()
-            vim.cmd [[colo onedark]]
+            local colors = require("kanagawa.colors").setup()
 
-            local c = require("onedark.colors").setup(require "onedark.config")
-            local util = require "onedark.util"
-
-            util.syntax {
-                ObsessionStatus = { fg = c.red, bg = c.bg },
-                TabbyWinActive = { bg = c.bg_visual },
-                TabbyCwd = { bg = c.red, fg = c.bg, style = "bold" },
-                TSTagDelimiter = { fg = c.fg_dark },
-                Folded = { fg = c.fg_dark, bg = util.blend(c.fg_dark, c.bg, 0.1), style = "bold" },
-                TSLspInlayHints = { fg = util.blend(c.red, c.bg, 0.2) },
+            require("kanagawa").setup {
+                undercurl = true,
+                transparent = true,
+                overrides = {
+                    TelescopeBorder = { fg = colors.fujiGray, bg = "NONE" },
+                },
             }
-
-            vim.defer_fn(function()
-                util.syntax {
-                    TabLineActiveTab = { bg = c.red, fg = c.bg, style = "bold" },
-                    TabLineInactiveTab = { bg = c.bg2, fg = c.red },
-                    VertSplit = { bg = c.bg2 },
-                    StatuslineTerm = { bg = c.bg2 },
-                    StatuslineTermNC = { bg = c.bg2 },
-                    IndentBlanklineChar = { fg = util.darken(c.fg_gutter, 0.4, c.bg) },
-                    IndentBlanklineContextChar = { fg = util.darken(c.fg_gutter, 0.9, c.bg) },
-                    GitSignsAdd = { fg = util.blend(c.git_signs.add, c.bg, 0.7) },
-                    GitSignsChange = { fg = util.blend(c.git_signs.change, c.bg, 0.7) },
-                    GitSignsDelete = { fg = util.blend(c.git_signs.delete, c.bg, 0.7) },
-                    GitSignsCurrentLineBlame = { fg = util.darken(c.fg_gutter, 0.6, c.bg) },
-                    scssTSString = { fg = c.syntax.scss.string },
-                    ScrollView = { bg = c.fg },
-                    MatchParen = { bg = c.bg_visual, style = "bold" },
-                }
-            end, 101)
+            vim.cmd "colorscheme kanagawa"
         end,
     }
 end
@@ -81,15 +36,10 @@ end
 local function use_utilities(use)
     use "lewis6991/impatient.nvim"
     use {
-        "kwkarlwang/bufresize.nvim",
+        "anuvyklack/pretty-fold.nvim",
         config = function()
-            require("bufresize").setup()
-        end
-    }
-    use {
-        "lewis6991/cleanfold.nvim",
-        config = function()
-            require("cleanfold").setup()
+            require("pretty-fold").setup {}
+            require("pretty-fold.preview").setup_keybinding()
         end,
     }
     use {
@@ -97,14 +47,6 @@ local function use_utilities(use)
         config = function()
             require("notify").setup { stages = "static" }
             vim.notify = require "notify"
-        end,
-    }
-    use {
-        "dstein64/nvim-scrollview",
-        config = function()
-            vim.g.scrollview_winblend = 80
-            vim.g.scrollview_current_only = true
-            vim.g.scrollview_column = 1
         end,
     }
     use { "Asheq/close-buffers.vim" }
@@ -140,14 +82,14 @@ local function use_utilities(use)
     use {
         "aserowy/tmux.nvim",
         config = function()
-            require("tmux").setup { navigation = { enable_default_keybindings = true } }
+            require("tmux.init").setup { navigation = { enable_default_keybindings = true } }
         end,
     }
     use "romainl/vim-devdocs"
     use "tpope/vim-obsession"
     use {
         "nanozuki/tabby.nvim",
-        after = "onedark.nvim",
+        after = "kanagawa.nvim",
         config = function()
             require "config.plugins.tabby"
         end,
@@ -172,20 +114,46 @@ local function use_utilities(use)
     use "tpope/vim-surround"
     use {
         "ggandor/lightspeed.nvim",
-        after = "onedark.nvim",
         config = function()
             vim.cmd [[autocmd User LightspeedLeave set scrolloff=4]]
+            local opts = require("lightspeed").opts
+
+            table.remove(opts.safe_labels, 1)
+            table.remove(opts.labels, 1)
 
             require("lightspeed").setup {
-                ignore_case = true,
-                grey_out_search_area = true,
+                force_beacons_into_match_width = true,
                 match_only_the_start_of_same_char_seqs = true,
+                ignore_case = true,
             }
+        end,
+    }
+    use {
+        "justinmk/vim-sneak",
+        disable = true,
+        config = function()
+            require "config.plugins.sneak"
+        end,
+    }
+    use {
+        "phaazon/hop.nvim",
+        disable = true,
+        config = function()
+            -- you can configure Hop the way you like here; see :h hop-config
+            require("hop").setup {
+                keys = "stovpdygfblzhckieuran",
+                quit_key = "<C-[>",
+                char2_fallback_key = "<C-[>",
+            }
+            vim.api.nvim_set_keymap("n", "s", "<cmd>HopChar2AC<cr>", { silent = true })
+            vim.api.nvim_set_keymap("n", "S", "<cmd>HopChar2BC<cr>", { silent = true })
+            vim.api.nvim_set_keymap("n", "<leader>s", "<cmd>HopWord<cr>", { silent = true })
         end,
     }
     use "junegunn/vim-easy-align"
     use {
         "lukas-reineke/indent-blankline.nvim",
+        disable = true,
         branch = "develop",
         config = function()
             require "config.plugins.blankline"
@@ -238,7 +206,10 @@ end
 local function use_lsp(use)
     use {
         "neovim/nvim-lspconfig",
-        requires = { "williamboman/nvim-lsp-installer", "b0o/schemastore.nvim" },
+        requires = {
+            "williamboman/nvim-lsp-installer",
+            "b0o/schemastore.nvim",
+        },
         config = function()
             require "config.plugins.lsp"
         end,
@@ -254,23 +225,14 @@ local function use_lsp(use)
         end,
     }
     use {
-        "folke/todo-comments.nvim",
-        requires = "nvim-lua/plenary.nvim",
+        "j-hui/fidget.nvim",
         config = function()
-            require("todo-comments").setup {}
+            require("fidget").setup {}
         end,
     }
 end
 
 local function use_search(use)
-    -- use { "junegunn/fzf", run = "./install --bin" }
-    -- use {
-    --     "ibhagwan/fzf-lua",
-    --     requires = { "kyazdani42/nvim-web-devicons" },
-    --     config = function()
-    --         require "config.plugins.fzf-lua"
-    --     end,
-    -- }
     use { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" }
     use {
         "junegunn/fzf.vim",
@@ -308,6 +270,7 @@ local function use_syntax(use)
     use { "JoosepAlviste/nvim-ts-context-commentstring", requires = { "tpope/vim-commentary" } }
     use {
         "windwp/nvim-autopairs",
+        disable = true,
         config = function()
             require "config.plugins.autopairs"
         end,
@@ -319,15 +282,29 @@ local function use_syntax(use)
             vim.g.matchup_matchparen_offscreen = { ["method"] = "popup" }
         end,
     }
+    use { "digitaltoad/vim-pug" }
+    use {
+        "danymat/neogen",
+        config = function()
+            require("neogen").setup {
+                enabled = true,
+            }
+        end,
+        requires = "nvim-treesitter/nvim-treesitter",
+    }
 end
 
 local function use_navigation(use)
     use {
-        "kyazdani42/nvim-tree.lua",
+        "tamago324/lir.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "tamago324/lir-git-status.nvim",
+            "kyazdani42/nvim-web-devicons",
+        },
         config = function()
-            require "config.plugins.tree"
+            require "config.plugins.lir"
         end,
-        requires = "kyazdani42/nvim-web-devicons",
     }
 end
 
@@ -337,7 +314,7 @@ local function use_completion(use)
         requires = {
             "f3fora/cmp-spell",
             "hrsh7th/cmp-buffer",
-            { "andersevenrud/compe-tmux", branch = "cmp" },
+            { "andersevenrud/cmp-tmux" },
             "saadparwaiz1/cmp_luasnip",
             "rafamadriz/friendly-snippets",
             "L3MON4D3/LuaSnip",
@@ -345,6 +322,7 @@ local function use_completion(use)
             "hrsh7th/cmp-nvim-lsp",
             -- "hrsh7th/cmp-cmdline",
             "ray-x/cmp-treesitter",
+            { "tzachar/cmp-tabnine", run = "./install.sh" },
         },
         config = function()
             require "config.plugins.cmp"
@@ -363,7 +341,7 @@ end
 
 local function use_notes(use)
     use {
-        "kristijanhusak/orgmode.nvim",
+        "nvim-orgmode/orgmode",
         config = function()
             require("orgmode").setup {}
         end,
@@ -387,6 +365,6 @@ return require("packer").startup(function(use)
     use_completion(use)
     use_db(use)
     use_debug(use)
-    use_notes(use)
+    -- use_notes(use)
     use_test(use)
 end)

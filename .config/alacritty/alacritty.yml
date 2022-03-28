@@ -56,20 +56,20 @@ font:
     style: Italic
 
   # Point size of the font
-  size: 13 
+  size: 13
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
     x: 0
-    y: 0
+    y: 4
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
   # increasing `y` moves the glyph upwards.
   glyph_offset:
     x: 0
-    y: 0
+    y: 2
 
   # Better font rendering for mac
   use_thin_strokes: true
@@ -176,36 +176,37 @@ schemes:
       - { index: 16, color: "0xffe37e" }
       - { index: 17, color: "0xe06c75" }
 
-  github_dimmed: &github_dimmed # Default colors
+  github-dimmed: &github-dimmed
+    # Default colors
     primary:
-      background: "0x22272e"
-      foreground: "0x768390"
+      background: '0x22272e'
+      foreground: '0x768390'
 
     # Normal colors
     normal:
-      black: "0x22272e"
-      red: "0xff938a"
-      green: "0x6bc46d"
-      yellow: "0xc69026"
-      blue: "0x6cb6ff"
-      magenta: "0xb083f0"
-      cyan: "0x56d4dd"
-      white: "0x768390"
+      black:   '0x22272e'
+      red:     '0xff938a'
+      green:   '0x6bc46d'
+      yellow:  '0xc69026'
+      blue:    '0x6cb6ff'
+      magenta: '0xb083f0'
+      cyan:    '0x56d4dd'
+      white:   '0x768390'
 
     # Bright colors
     bright:
-      black: "0x636e7b"
-      red: "0xff938a"
-      green: "0x6bc46d"
-      yellow: "0xdaaa3f"
-      blue: "0x6cb6ff"
-      magenta: "0xdcbdfb"
-      cyan: "0x56d4dd"
-      white: "0x768390"
+      black:   '0x636e7b'
+      red:     '0xff938a'
+      green:   '0x6bc46d'
+      yellow:  '0xdaaa3f'
+      blue:    '0x6cb6ff'
+      magenta: '0xdcbdfb'
+      cyan:    '0x56d4dd'
+      white:   '0x768390'
 
     indexed_colors:
-      - { index: 16, color: "0xd18616" }
-      - { index: 17, color: "0xff938a" }
+      - { index: 16, color: '0xd18616' }
+      - { index: 17, color: '0xff938a' }
 
   embark: &embark
     primary:
@@ -356,7 +357,7 @@ schemes:
       cyan: "0xef9062"
       white: "0xe3e1e4"
 
-colors: *onedark
+colors: *github-dimmed
 
 bell:
   animation: EaseOutExpo

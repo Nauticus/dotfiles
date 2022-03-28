@@ -10,10 +10,11 @@ local tabname = function(tabid)
 end
 
 local function obsession()
-    return "  " .. vim.api.nvim_eval [[ObsessionStatus('', '')]] .. " "
+    return "  " .. vim.api.nvim_eval [[ObsessionStatus('', '')]] .. "  "
 end
 
-local active_win_hl = utils.extract_nvim_hl "TabbyWinActive"
+local tabline_hl = utils.extract_nvim_hl "TabLine"
+local tabline_sel_hl = utils.extract_nvim_hl "TabLineSel"
 
 local tabline = {
     hl = "TabLineFill",
@@ -21,19 +22,19 @@ local tabline = {
     head = {},
     active_tab = {
         label = function(tabid)
-            return { " " .. tabname(tabid) .. " ", hl = "TabLineActiveTab" }
+            return { " " .. tabname(tabid) .. " ", hl = { bg = tabline_sel_hl.bg } }
         end,
     },
     inactive_tab = {
         label = function(tabid)
-            return { " " .. tabname(tabid) .. " ", hl = "TabLineInactiveTab" }
+            return { " " .. tabname(tabid) .. " ", hl = { fg = tabline_sel_hl.fg } }
         end,
     },
     top_win = {
         label = function(winid)
             return {
                 " " .. filename.unique(winid) .. " ",
-                hl = { bg = active_win_hl.bg, style = "bold" },
+                hl = { bg = tabline_hl.bg, style = "bold" },
             }
         end,
     },
@@ -42,7 +43,10 @@ local tabline = {
             return { " " .. filename.unique(winid) .. " " }
         end,
     },
-    tail = { { cwd, hl = "TabbyCwd" }, { obsession, hl = "ObsessionStatus" } },
+    tail = {
+        { obsession, hl = { fg = tabline_sel_hl.fg } },
+        { cwd, hl = { bg = tabline_sel_hl.bg } },
+    },
 }
 
 require("tabby").setup { tabline = tabline }

@@ -1,7 +1,44 @@
 local cmp = require "cmp"
-local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 local luasnip = require "luasnip"
 local types = require "luasnip.util.types"
+
+local tabnine = require "cmp_tabnine.config"
+
+local kind_icons = {
+  Text = "",
+  Method = "",
+  Function = "",
+  Constructor = "",
+  Field = "",
+  Variable = "",
+  Class = "ﴯ",
+  Interface = "",
+  Module = "",
+  Property = "ﰠ",
+  Unit = "",
+  Value = "",
+  Enum = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = ""
+}
+
+tabnine:setup {
+    max_lines = 1000,
+    max_num_results = 20,
+    sort = true,
+    run_on_every_keystroke = true,
+    snippet_placeholder = "..",
+}
 
 luasnip.config.set_config {
     history = true,
@@ -20,18 +57,31 @@ local has_words_before = function()
             == nil
 end
 
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { text = "" } })
+if not pcall(require, "nvim-autopairs.completion.cmp") then
+    cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { map_char = { text = "" } })
+end
 
+---@diagnostic disable-next-line: redundant-parameter
 cmp.setup {
     snippet = {
         expand = function(args)
-            luasnip.lsp_expand(args.body) -- For `luasnip` users.
+            luasnip.lsp_expand(args.body)
         end,
     },
+    sortings = {
+        priority_weight = 2,
+    },
+    formatting = {
+        format = function(_, vim_item)
+            vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
+            return vim_item
+        end
+    },
     sources = cmp.config.sources {
-        { name = "path" },
         { name = "nvim_lsp", max_item_count = 10 },
         { name = "luasnip", max_item_count = 10 },
+        { name = "path" },
+        { name = "cmp_tabnine" },
         {
             name = "buffer",
             option = {
@@ -40,8 +90,7 @@ cmp.setup {
                 end,
             },
         },
-        { name = "tmux" },
-        -- { name = "orgmode" }
+        { name = "tmux", max_item_count = 10 },
     },
     experimental = { native_menu = false, ghost_text = true },
     mapping = {
@@ -66,6 +115,7 @@ cmp.setup {
                 fallback()
             end
         end, { "i", "s" }),
+        ["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace }
     },
 }
 

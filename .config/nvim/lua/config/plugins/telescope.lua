@@ -24,13 +24,7 @@ telescope.setup {
         file_ignore_patterns = file_ignore_patterns,
         layout_strategy = "vertical",
         layout_config = { preview_cutoff = 10, mirror = false },
-        mappings = {
-            i = {
-                ["<C-w>"] = function()
-                    vim.cmd [[normal! bce]]
-                end,
-            },
-        },
+        border = true
     },
     pickers = {
         builtin = {
@@ -47,9 +41,9 @@ telescope.setup {
         },
     },
     extensions = {
-        -- file_browser = {
-        --     theme = "ivy",
-        -- },
+        file_browser = {
+            theme = "ivy",
+        },
         fzf = {
             fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter

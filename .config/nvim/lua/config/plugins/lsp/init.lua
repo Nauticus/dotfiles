@@ -14,12 +14,18 @@ local config = {
             },
         },
     },
+    volar = {
+        on_attach = function (client, bufnr)
+            client.resolved_capabilities.document_formatting = false
+            on_attach(client, bufnr)
+        end
+    },
     tsserver = {
         init_options = require("nvim-lsp-ts-utils").init_options,
         on_attach = function(client, bufnr)
             local ts_utils = require "nvim-lsp-ts-utils"
 
-            ts_utils.setup { inlay_hints_highlight = "TSLspInlayHints" }
+            ts_utils.setup { auto_inlay_hints = false }
             ts_utils.setup_client(client)
 
             client.resolved_capabilities.document_formatting = false
@@ -38,10 +44,11 @@ local config = {
         },
     },
     sumneko_lua = require("lua-dev").setup {
-        lspconfig = {
-            flags = { debounce_text_changes = 300 },
-            settings = { Lua = { diagnostics = { workspaceRate = "60" } } },
-        },
+        -- lspconfig = {
+        --     flags = { debounce_text_changes = 300 },
+        --     settings = { Lua = { diagnostics = { workspaceRate = "60" } } },
+        -- },
+        runtime_path = true
     },
     eslint = { flags = { debounce_text_changes = 500 } },
 }

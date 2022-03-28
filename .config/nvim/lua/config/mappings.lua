@@ -14,8 +14,6 @@ wk.register {
     ["<A-Down>"] = { "<cmd>resize +4<CR>", "Resize +4" },
     ["<A-Right>"] = { "<cmd>vertical resize +4<CR>", "Vertical Resize +4" },
     ["<A-Left>"] = { "<cmd>vertical resize -4<CR>", "Vertical Resize -4" },
-    ["§"] = { "<CMD>NvimTreeToggle<CR>", "Nvim Tree" },
-    ["-"] = { "<CMD>NvimTreeFindFile<CR>", "Find file in tree" },
     ["<leader>zm"] = { "<CMD>ZenMode<CR>", "ZenMode" },
 }
 
@@ -36,12 +34,23 @@ wk.register({
     s = { ":setlocal spell! spelllang=en_us<CR>", "Toggle spellchecking" },
 }, { prefix = "<leader>u" })
 
+M.lir_mappings = function()
+    wk.register {
+        ["§"] = { "<CMD>e .<CR>", "Open CWD" },
+        ["-"] = { "<CMD>e %:p:h<CR>", "Open previous directory" },
+    }
+end
+
 M.telescope_mappings = function()
     local prefix = "<leader>f"
     local telescope_builtin = require "telescope.builtin"
 
     local grep_selection = function()
         telescope_builtin.grep_string { search = _G.utils.get_visual_selection_text()[1] }
+    end
+
+    local file_browser = function()
+        require("telescope").extensions.file_browser.file_browser()
     end
 
     wk.register({
@@ -52,6 +61,7 @@ M.telescope_mappings = function()
         r = { telescope_builtin.resume, "Resume" },
         w = { telescope_builtin.grep_string, "Grep word under cursor" },
         t = { "<cmd>Telescope windows<CR>", "Search windows" },
+        b = { file_browser, "File browser" },
     }, { prefix = prefix })
 
     wk.register(

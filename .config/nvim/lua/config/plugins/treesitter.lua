@@ -17,19 +17,14 @@ vim.cmd(
 
 vim.api.nvim_set_option("foldlevel", 10)
 
-local parser_config = parsers.get_parser_configs()
+if pcall(require, "orgmode") then
+    require("orgmode").setup_ts_grammar()
+end
 
-parser_config.org = {
-    install_info = {
-        url = "https://github.com/milisims/tree-sitter-org",
-        revision = "main",
-        files = { "src/parser.c", "src/scanner.cc" },
-    },
-    filetype = "org",
-}
+local filetype_to_parsername = parsers.filetype_to_parsername
 
-parser_config.typescript.used_by = "javascript"
-parser_config.scss.used_by = "css"
+filetype_to_parsername.javascript = "typescript"
+filetype_to_parsername.css = "scss"
 
 local incremental_selection = {
     enable = true,
@@ -58,8 +53,12 @@ local textobjects = {
 
 require("nvim-treesitter.configs").setup {
     ensure_installed = "maintained",
-    ignore_install = { "javascript", "css", "haskell", "comment" },
-    highlight = { enable = true, disable = { "org" }, additional_vim_regex_highlighting = false },
+    ignore_install = { "javascript", "css", "haskell", "comment", "pug" },
+    highlight = {
+        enable = true,
+        disable = { "org", "pug" },
+        additional_vim_regex_highlighting = { "pug" },
+    },
     refactor = { highlight_definitions = { enable = true } },
     -- tree_docs = { enable = true },
     incremental_selection = incremental_selection,

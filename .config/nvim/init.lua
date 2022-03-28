@@ -18,8 +18,8 @@ if not pcall(require, "impatient") then
 end
 
 require "config.opts"
-require "config.plugins"
 require "config.autocmd"
+require "config.plugins"
 require "config.utils"
 require "config.mappings"
 require "config.debug"

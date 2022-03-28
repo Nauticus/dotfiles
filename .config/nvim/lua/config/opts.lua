@@ -20,7 +20,7 @@ o.smartcase = true
 o.smarttab = true
 o.hlsearch = false
 o.signcolumn = "yes:2"
-o.numberwidth = 6
+o.numberwidth = 2
 o.number = true
 o.relativenumber = true
 o.cursorline = false
@@ -40,4 +40,4 @@ o.expandtab = true
 o.smartindent = false
 o.formatoptions = string.gsub(vim.bo.formatoptions, "[co]", "")
 o.ssop = o.ssop - { "blank", "help", "buffers" } + { "terminal" }
-o.fillchars = { vert = " " }
+-- o.fillchars = { vert = " " }

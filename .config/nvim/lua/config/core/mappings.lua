@@ -109,7 +109,7 @@ M.lsp_mappings = function(client, bufnr)
         e = { show_line_diagnostics, "Show line diagnostics" },
         r = { "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
         f = { "<cmd>lua vim.lsp.buf.formatting()<CR>", "Format" },
-        a = { pickers.lsp_code_actions, "Code actions" },
+        a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code actions" },
         w = keymap_workspaces,
     }
 

@@ -1,5 +1,5 @@
 local telescope = require "telescope"
-local telescope_mappings = require("config.mappings").telescope_mappings
+local telescope_mappings = require("config.core.mappings").telescope_mappings
 
 local file_ignore_patterns = { ".git/.*", "node_modules/.*" }
 
@@ -24,7 +24,7 @@ telescope.setup {
         file_ignore_patterns = file_ignore_patterns,
         layout_strategy = "vertical",
         layout_config = { preview_cutoff = 10, mirror = false },
-        border = true
+        border = true,
     },
     pickers = {
         builtin = {
@@ -35,6 +35,7 @@ telescope.setup {
         },
         find_files = {
             find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
+            hidden = true,
         },
         live_grep = {
             disable_coordinates = true,
@@ -43,6 +44,9 @@ telescope.setup {
     extensions = {
         file_browser = {
             theme = "ivy",
+        },
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {},
         },
         fzf = {
             fuzzy = true, -- false will only do exact matching
@@ -57,5 +61,6 @@ telescope.setup {
 require("telescope").load_extension "fzf"
 require("telescope").load_extension "windows"
 require("telescope").load_extension "file_browser"
+require("telescope").load_extension "ui-select"
 
 telescope_mappings()

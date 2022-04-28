@@ -7,6 +7,7 @@ require("lir").setup {
     devicons_enable = true,
     mappings = {
         ["<CR>"] = actions.edit,
+        ["l"] = actions.edit,
         ["<C-s>"] = actions.split,
         ["<C-v>"] = actions.vsplit,
         ["<C-t>"] = actions.tabedit,
@@ -38,4 +39,4 @@ require("lir.git_status").setup {
     show_ignored = false,
 }
 
-require("config.mappings").lir_mappings()
+require("config.core.mappings").lir_mappings()

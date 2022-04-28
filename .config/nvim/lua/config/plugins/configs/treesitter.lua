@@ -52,8 +52,8 @@ local textobjects = {
 }
 
 require("nvim-treesitter.configs").setup {
-    ensure_installed = "maintained",
-    ignore_install = { "javascript", "css", "haskell", "comment", "pug" },
+    ensure_installed = "all",
+    ignore_install = { "javascript", "css", "haskell", "pug" },
     highlight = {
         enable = true,
         disable = { "org", "pug" },

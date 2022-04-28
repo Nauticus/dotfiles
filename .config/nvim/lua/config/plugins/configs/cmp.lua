@@ -5,31 +5,31 @@ local types = require "luasnip.util.types"
 local tabnine = require "cmp_tabnine.config"
 
 local kind_icons = {
-  Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "ﴯ",
-  Interface = "",
-  Module = "",
-  Property = "ﰠ",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = ""
+    Text = "",
+    Method = "",
+    Function = "",
+    Constructor = "",
+    Field = "",
+    Variable = "",
+    Class = "ﴯ",
+    Interface = "",
+    Module = "",
+    Property = "ﰠ",
+    Unit = "",
+    Value = "",
+    Enum = "",
+    Keyword = "",
+    Snippet = "",
+    Color = "",
+    File = "",
+    Reference = "",
+    Folder = "",
+    EnumMember = "",
+    Constant = "",
+    Struct = "",
+    Event = "",
+    Operator = "",
+    TypeParameter = "",
 }
 
 tabnine:setup {
@@ -58,7 +58,10 @@ local has_words_before = function()
 end
 
 if not pcall(require, "nvim-autopairs.completion.cmp") then
-    cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { map_char = { text = "" } })
+    cmp.event:on(
+        "confirm_done",
+        require("nvim-autopairs.completion.cmp").on_confirm_done { map_char = { text = "" } }
+    )
 end
 
 ---@diagnostic disable-next-line: redundant-parameter
@@ -69,17 +72,24 @@ cmp.setup {
         end,
     },
     sortings = {
-        priority_weight = 2,
+        comparators = {
+            cmp.config.compare.locally,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.score,
+            cmp.config.compare.scopes,
+            cmp.config.compare.offset,
+            cmp.config.compare.order,
+        },
     },
     formatting = {
         format = function(_, vim_item)
-            vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
+            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
             return vim_item
-        end
+        end,
     },
     sources = cmp.config.sources {
-        { name = "nvim_lsp", max_item_count = 10 },
-        { name = "luasnip", max_item_count = 10 },
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
         { name = "path" },
         { name = "cmp_tabnine" },
         {
@@ -104,7 +114,7 @@ cmp.setup {
             else
                 fallback()
             end
-        end, { "i", "s" }),
+        end, { "i", "s", "c" }),
 
         ["<C-p>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
@@ -114,8 +124,11 @@ cmp.setup {
             else
                 fallback()
             end
-        end, { "i", "s" }),
-        ["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace }
+        end, { "i", "s", "c" }),
+        ["<C-y>"] = cmp.mapping {
+            i = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace },
+            c = cmp.mapping.confirm { select = false },
+        },
     },
 }
 

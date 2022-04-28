@@ -40,4 +40,12 @@ o.expandtab = true
 o.smartindent = false
 o.formatoptions = string.gsub(vim.bo.formatoptions, "[co]", "")
 o.ssop = o.ssop - { "blank", "help", "buffers" } + { "terminal" }
--- o.fillchars = { vert = " " }
+o.fillchars:append {
+    horiz = "━",
+    horizup = "┻",
+    horizdown = "┳",
+    vert = "┃",
+    vertleft = "┨",
+    vertright = "┣",
+    verthoriz = "╋",
+}

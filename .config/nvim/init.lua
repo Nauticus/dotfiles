@@ -17,13 +17,9 @@ if not pcall(require, "impatient") then
     vim.notify("Failed to load impatient.nvim", "error")
 end
 
-require "config.opts"
-require "config.autocmd"
+require "config.core.utils"
+require "config.core.opts"
+require "config.core.autocmd"
+require "config.core.mappings"
+require "config.core.debug"
 require "config.plugins"
-require "config.utils"
-require "config.mappings"
-require "config.debug"
-
-if not pcall(require, "packer_compiled") then
-    vim.notify("Failed to load packer_compiled", "error")
-end

@@ -1,4 +1,16 @@
 require("which-key").setup {
-    window = { border = "none", padding = { 2, 0, 2, 0 }, margin = { 2, 2, 2, 2 } },
-    layout = { align = "left", width = { min = 20, max = 50 }, spacing = 10 },
+    plugins = {
+        spelling = { enabled = true }
+    },
+    window = {
+        border = "rounded",
+        position = "bottom",
+        padding = { 1, 0, 1, 0 },
+        margin = { 2, 2, 2, 2 },
+    },
+    layout = {
+        align = "center",
+        width = { min = 20, max = 80 },
+        spacing = 5,
+    },
 }

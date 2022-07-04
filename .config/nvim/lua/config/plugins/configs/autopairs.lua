@@ -5,7 +5,7 @@ local Rule = require "nvim-autopairs.rule"
 npairs.setup {
     map_c_w = true,
     map_c_h = true,
-    enable_check_bracket_line = true,
+    enable_check_bracket_line = false,
 }
 
 npairs.add_rules {

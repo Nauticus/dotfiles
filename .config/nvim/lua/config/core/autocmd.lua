@@ -36,11 +36,12 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     desc = "Source plugins config on write.",
     group = "SourcePacker",
     pattern = "*/nvim/lua/config/plugins/*.lua",
-    callback = function (context)
-        local init_path = vim.fn.stdpath("config") .. "/lua/config/plugins/init.lua"
+    callback = function(context)
+        local init_path = vim.fn.stdpath "config" .. "/lua/config/plugins/init.lua"
         local status_ok, reload = pcall(require, "plenary.reload")
         if not status_ok then
             vim.cmd(vim.fn.printf("source %s", context.file))
+            vim.cmd(vim.fn.printf("source %s", init_path))
         end
 
         reload.reload_module("config.plugins", true)
@@ -48,13 +49,32 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
         local confirm_compile = vim.fn.confirm("Run PackerCompile?", "&Yes\n&No", 1)
         if confirm_compile == 1 then
-            vim.cmd[[PackerCompile]]
+            vim.cmd [[PackerCompile]]
         end
-    end
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+    desc = "Source test file.",
+    group = "SourcePacker",
+    pattern = "*/nvim/lua/config/test.lua",
+    callback = function(context)
+        local status_ok, reload = pcall(require, "plenary.reload")
+        if status_ok then
+            reload.reload_module("test", true)
+            vim.cmd(vim.fn.printf("source %s", context.file))
+        end
+    end,
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight region on yank.",
     group = "HighlightYank",
     command = "silent! lua vim.highlight.on_yank() {higroup='IncSearch', timeout=800}",
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+        vim.api.nvim_set_hl(0, "LeapMatch", { fg = "#000000", bg = "#FFFFFF", bold = true })
+    end,
 })

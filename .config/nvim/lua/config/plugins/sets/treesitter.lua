@@ -9,14 +9,18 @@ return {
             "nvim-treesitter/completion-treesitter",
             "windwp/nvim-ts-autotag",
             {
-                "JoosepAlviste/nvim-ts-context-commentstring",
-                requires = { "tpope/vim-commentary" },
-            },
-            {
                 "danymat/neogen",
                 config = function()
                     require("neogen").setup {
                         enabled = true,
+                        snippet_engine = "luasnip",
+                        languages = {
+                            lua = {
+                                template = {
+                                    annotation_convention = "emmylua",
+                                },
+                            },
+                        },
                     }
                 end,
             },

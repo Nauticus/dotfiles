@@ -4,8 +4,8 @@ local g = vim.g
 cmd [[cd %:p:h]]
 vim.env.NVIMRC = "~/.config/nvim/init.lua"
 
-cmd [[let mapleader = "\<Space>"]]
-cmd [[let g:mapleader = "\<Space>"]]
+g.mapleader = vim.api.nvim_replace_termcodes("<Space>", true, true, true)
+g.maplocalleader = "\\"
 
 g.loaded_perl_provider = 0
 g.loaded_netrwPlugin = 1

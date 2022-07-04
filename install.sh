@@ -1,3 +1,6 @@
+# TO CONSIDER
+brew install jsonnet
+
 # brew install --cask contexts
 # brew install --cask google-chrome
 # brew install --cask amethyst

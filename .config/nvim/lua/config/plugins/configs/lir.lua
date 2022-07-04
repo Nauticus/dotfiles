@@ -25,8 +25,7 @@ require("lir").setup {
         ["D"] = actions.delete,
 
         ["J"] = function()
-            mark_actions.toggle_mark()
-            vim.cmd "normal! j"
+            mark_actions.toggle_mark("n")
         end,
         ["C"] = clipboard_actions.copy,
         ["X"] = clipboard_actions.cut,
@@ -39,4 +38,4 @@ require("lir.git_status").setup {
     show_ignored = false,
 }
 
-require("config.core.mappings").lir_mappings()
+require("config.core.mappings").lir()

@@ -1,4 +1,3 @@
-local wk = require "which-key"
 local gitsigns = require "gitsigns"
 
 gitsigns.setup {
@@ -33,27 +32,3 @@ gitsigns.setup {
         relative_time = true,
     },
 }
-
-wk.register({
-    name = "+gitsigns",
-    s = { gitsigns.stage_hunk, "Stage hunk" },
-    u = { gitsigns.undo_stage_hunk, "Undo stage hunk" },
-    r = { gitsigns.reset_hunk, "Reset hunk" },
-    p = { gitsigns.preview_hunk, "Preview hunk" },
-    b = { gitsigns.blame_line, "Blame line" },
-}, { prefix = "<leader>h" })
-
-wk.register({
-    s = {
-        function()
-            gitsigns.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
-        end,
-        "Stage hunk",
-    },
-    r = {
-        function()
-            gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
-        end,
-        "Reset hunk",
-    },
-}, { mode = "v", prefix = "<leader>h" })

@@ -1,18 +1,19 @@
 require("lualine").setup {
     options = {
-        theme = "kanagawa",
-        disabled_filetypes = { "NvimTree", "DiffviewFiles" },
+        theme = "auto",
+        disabled_filetypes = { "NvimTree", "DiffviewFiles", "harpoon", "TelescopePrompt" },
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
+        always_divide_middle = true,
         globalstatus = true,
     },
     sections = {
         lualine_a = { { "mode", icons_enabled = true } },
-        lualine_b = {},
-        lualine_c = {
+        lualine_b = {
             { "filetype", icon_only = true },
             { "filename", path = 1, file_status = true, shorting_target = 50 },
         },
+        lualine_c = {},
         lualine_x = {
             {
                 "diagnostics",
@@ -21,7 +22,6 @@ require("lualine").setup {
             },
         },
         lualine_y = {
-            { "branch", icon = "" },
             {
                 "diff",
                 symbols = { added = "  ", modified = " 柳", removed = "  " },
@@ -29,7 +29,7 @@ require("lualine").setup {
                 padding = { left = 0, right = 1 },
             },
         },
-        lualine_z = { { "fileformat", icons_enabled = false } },
+        lualine_z = { "branch" },
     },
     extensions = { "quickfix", "fugitive" },
     inactive_sections = {

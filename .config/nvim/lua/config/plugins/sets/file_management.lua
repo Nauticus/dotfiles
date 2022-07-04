@@ -1,5 +1,6 @@
 return {
     "tamago324/lir.nvim",
+    disable = false,
     requires = {
         "nvim-lua/plenary.nvim",
         "tamago324/lir-git-status.nvim",

@@ -10,7 +10,7 @@ local function on_attach(client, bufnr)
     vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
     vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
 
-    require("config.core.mappings").lsp_mappings(client, bufnr)
+    require("config.core.mappings").lsp(client, bufnr)
 
     vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         vim.lsp.diagnostic.on_publish_diagnostics,
@@ -50,12 +50,6 @@ local config = {
             },
         },
     },
-    volar = {
-        on_attach = function(client, bufnr)
-            client.resolved_capabilities.document_formatting = false
-            on_attach(client, bufnr)
-        end,
-    },
     tsserver = {
         init_options = require("nvim-lsp-ts-utils").init_options,
         on_attach = function(client, bufnr)
@@ -63,9 +57,6 @@ local config = {
 
             ts_utils.setup { auto_inlay_hints = false }
             ts_utils.setup_client(client)
-
-            client.resolved_capabilities.document_formatting = false
-            client.resolved_capabilities.document_range_formatting = false
 
             on_attach(client, bufnr)
         end,

@@ -6,6 +6,9 @@ return {
             "jose-elias-alvarez/nvim-lsp-ts-utils",
             "b0o/schemastore.nvim",
             "folke/lua-dev.nvim",
+            { "kosayoda/nvim-lightbulb", config = function ()
+                require("nvim-lightbulb").setup {}
+            end},
         },
         config = function()
             require "config.plugins.configs.lspconfig"

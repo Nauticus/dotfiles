@@ -1,6 +1,5 @@
 local cmp = require "cmp"
 local luasnip = require "luasnip"
-local types = require "luasnip.util.types"
 
 local tabnine = require "cmp_tabnine.config"
 
@@ -40,28 +39,31 @@ tabnine:setup {
     snippet_placeholder = "..",
 }
 
-luasnip.config.set_config {
-    history = true,
-    ext_opts = {
-        [types.choiceNode] = { active = { virt_text = { { "", "GitSignsAdd" } } } },
-        [types.insertNode] = { active = { virt_text = { { "", "GitSignsChange" } } } },
-    },
-}
-
-require("luasnip.loaders.from_vscode").lazy_load()
-
-local has_words_before = function()
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0
-        and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s"
-            == nil
-end
-
 if not pcall(require, "nvim-autopairs.completion.cmp") then
     cmp.event:on(
         "confirm_done",
         require("nvim-autopairs.completion.cmp").on_confirm_done { map_char = { text = "" } }
     )
+end
+
+local mapping_next = function(fallback)
+    if cmp.visible() then
+        cmp.select_next_item()
+    elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+    else
+        fallback()
+    end
+end
+
+local mapping_prev = function(fallback)
+    if cmp.visible() then
+        cmp.select_prev_item()
+    elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+    else
+        fallback()
+    end
 end
 
 ---@diagnostic disable-next-line: redundant-parameter
@@ -71,25 +73,46 @@ cmp.setup {
             luasnip.lsp_expand(args.body)
         end,
     },
+    view = {
+        entries = "custom",
+        selection_order = "near_cursor",
+    },
+    experimental = { native_menu = false, ghost_text = true },
     sortings = {
         comparators = {
-            cmp.config.compare.locally,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.score,
-            cmp.config.compare.scopes,
             cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            require("cmp-under-comparator").under,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
             cmp.config.compare.order,
         },
     },
     formatting = {
-        format = function(_, vim_item)
-            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            local source = ({
+                nvim_lsp = "LSP",
+                luasnip = "Snippet",
+                path = "Path",
+                cmp_tabnine = "Tabnine",
+                buffer = "Buffer",
+                tmux = "Tmux",
+            })[entry.source.name]
+
+            vim_item.menu = string.format("[%s] %s", source, entry.source.score)
+            vim_item.kind = kind_icons[vim_item.kind]
+
             return vim_item
         end,
     },
     sources = cmp.config.sources {
         { name = "nvim_lsp" },
-        { name = "luasnip" },
+        { name = "luasnip", priority_weight = 50 },
+        { name = "nvim_lsp_signature_help" },
+        { name = "nvim_lua" },
         { name = "path" },
         { name = "cmp_tabnine" },
         {
@@ -102,35 +125,74 @@ cmp.setup {
         },
         { name = "tmux", max_item_count = 10 },
     },
-    experimental = { native_menu = false, ghost_text = true },
     mapping = {
-        ["<C-n>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end, { "i", "s", "c" }),
+        ["<C-n>"] = cmp.mapping {
+            i = mapping_next,
+            s = mapping_next,
+            c = function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+                else
+                    fallback()
+                end
+            end,
+        },
+        ["<C-p>"] = cmp.mapping {
+            i = mapping_prev,
+            s = mapping_prev,
+            c = function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item { behavior = cmp.SelectBehavior.Select }
+                else
+                    fallback()
+                end
+            end,
+        },
 
-        ["<C-p>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
+        ["<C-j>"] = cmp.mapping(function(fallback)
+            if luasnip.choice_active() then
+                luasnip.change_choice(1)
             else
                 fallback()
             end
-        end, { "i", "s", "c" }),
+        end, { "i", "s" }),
+        ["<C-k>"] = cmp.mapping(function(fallback)
+            if luasnip.choice_active() then
+                luasnip.change_choice(-1)
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
+
         ["<C-y>"] = cmp.mapping {
             i = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace },
             c = cmp.mapping.confirm { select = false },
         },
+
+        ["<C-e>"] = cmp.mapping {
+            i = function(fallback)
+                if cmp.visible() then
+                    cmp.abort()
+                else
+                    fallback()
+                end
+            end,
+            c = function(fallback)
+                if cmp.visible() then
+                    cmp.close()
+                else
+                    fallback()
+                end
+            end,
+        },
     },
 }
+
+cmp.setup.filetype("harpoon", {
+    sources = cmp.config.sources {
+        { name = "path", priority_weight = 110 },
+    },
+})
 
 cmp.setup.cmdline("/", { sources = { { name = "buffer" } } })
 cmp.setup.cmdline("?", { sources = { { name = "buffer" } } })

@@ -1,4 +1,8 @@
-local gitsigns = require "gitsigns"
+local has_gitsigns, gitsigns = pcall(require, "gitsigns")
+if not has_gitsigns then
+    vim.notify("gitsigns is missing", vim.log.levels.WARN)
+    return
+end
 
 gitsigns.setup {
     signs = {
@@ -32,3 +36,7 @@ gitsigns.setup {
         relative_time = true,
     },
 }
+
+-- if pcall(require, "scrollbar.handlers.gitsigns") then
+--     require("scrollbar.handlers.gitsigns").setup()
+-- end

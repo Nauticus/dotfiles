@@ -1,5 +1,5 @@
 return {
-    "~/code/personal/nvim_plugins/shape.nvim",
+    -- "~/code/personal/nvim_plugins/shape.nvim",
     "nanotee/luv-vimdocs",
     "milisims/nvim-luaref",
     "lewis6991/impatient.nvim",
@@ -27,9 +27,6 @@ return {
     {
         "folke/which-key.nvim",
         disable = false,
-        config = function()
-            require "config.plugins.configs.which-key"
-        end,
     },
     {
         "anuvyklack/pretty-fold.nvim",
@@ -48,7 +45,9 @@ return {
     {
         "aserowy/tmux.nvim",
         config = function()
-            require("tmux.init").setup { navigation = { enable_default_keybindings = true } }
+            require("tmux").setup {
+                copy_sync = { enable = false },
+            }
         end,
     },
     {
@@ -72,23 +71,6 @@ return {
                 },
             }
             require("config.core.mappings").harpoon()
-        end,
-    },
-    {
-        "ThePrimeagen/refactoring.nvim",
-        requires = {
-            { "nvim-lua/plenary.nvim" },
-            { "nvim-treesitter/nvim-treesitter" },
-        },
-        config = function()
-            require("refactoring").setup {}
-
-            vim.api.nvim_set_keymap(
-                "v",
-                "leaderrr",
-                ":lua require('refactoring').select_refactor()<CR>",
-                { noremap = true, silent = true, expr = false }
-            )
         end,
     },
     {

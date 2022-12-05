@@ -1,7 +1,27 @@
-local cmp = require "cmp"
-local luasnip = require "luasnip"
+local has_cmp, cmp = pcall(require, "cmp")
+if not has_cmp then
+    vim.notify("cmp is missing", vim.log.levels.WARN)
+    return
+end
 
-local tabnine = require "cmp_tabnine.config"
+local has_luasnip, luasnip = pcall(require, "luasnip")
+if not has_luasnip then
+    vim.notify("luasnip is missing", vim.log.levels.WARN)
+    return
+end
+
+local has_tabnine, tabnine = pcall(require, "cmp_tabnine.config")
+if has_tabnine then
+    tabnine:setup {
+        max_lines = 1000,
+        max_num_results = 20,
+        sort = true,
+        run_on_every_keystroke = true,
+        snippet_placeholder = "..",
+    }
+else
+    vim.notify("cmp_tabnine.config is missing", vim.log.levels.WARN)
+end
 
 local kind_icons = {
     Text = "",
@@ -31,14 +51,6 @@ local kind_icons = {
     TypeParameter = "",
 }
 
-tabnine:setup {
-    max_lines = 1000,
-    max_num_results = 20,
-    sort = true,
-    run_on_every_keystroke = true,
-    snippet_placeholder = "..",
-}
-
 if not pcall(require, "nvim-autopairs.completion.cmp") then
     cmp.event:on(
         "confirm_done",
@@ -49,8 +61,8 @@ end
 local mapping_next = function(fallback)
     if cmp.visible() then
         cmp.select_next_item()
-    elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
+    elseif luasnip.jumpable(1) then
+        luasnip.jump(1)
     else
         fallback()
     end

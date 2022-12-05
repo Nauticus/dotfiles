@@ -1,4 +1,9 @@
-local telescope = require "telescope"
+local has_telescope, telescope = pcall(require, "telescope")
+if not has_telescope then
+    vim.notify("telescope is missing", vim.log.levels.WARN)
+    return
+end
+
 local telescope_mappings = require("config.core.mappings").telescope
 local actions = require "telescope.actions"
 local actions_state = require "telescope.actions.state"
@@ -108,7 +113,6 @@ require("telescope").load_extension "fzf"
 require("telescope").load_extension "windows"
 require("telescope").load_extension "ui-select"
 require("telescope").load_extension "packer"
-require("telescope").load_extension "refactoring"
 require("telescope").load_extension "luasnip"
 
 telescope_mappings()

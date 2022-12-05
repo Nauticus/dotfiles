@@ -1,8 +1,14 @@
+local has_lir, lir = pcall(require, "lir")
+if not has_lir then
+    vim.notify("lir is missing", vim.log.levels.WARN)
+    return
+end
+
 local actions = require "lir.actions"
 local mark_actions = require "lir.mark.actions"
 local clipboard_actions = require "lir.clipboard.actions"
 
-require("lir").setup {
+lir.setup {
     show_hidden_files = true,
     devicons_enable = true,
     mappings = {
@@ -34,8 +40,15 @@ require("lir").setup {
     hide_cursor = false,
 }
 
-require("lir.git_status").setup {
+require("config.core.mappings").lir()
+
+local has_lir_git_status, lir_git_status = pcall(require, "lir.git_status")
+if not has_lir_git_status then
+    vim.notify("lir.git_status is missing", vim.log.levels.WARN)
+    return
+end
+
+lir_git_status.setup {
     show_ignored = false,
 }
 
-require("config.core.mappings").lir()

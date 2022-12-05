@@ -15,6 +15,9 @@ keymap.set("i", "<C-s>",           "<C-O>:update<CR>",                     { des
 
 keymap.set("i", "<C-h>",           "<BS>",                                 { desc = "Backspace" })
 
+keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Down half page" })
+keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Up half page" })
+
 keymap.set("n", "<A-Up>",          "<CMD>resize -4<CR>",                   { desc = "- resize" })
 keymap.set("n", "<A-Down>",        "<CMD>resize +4<CR>",                   { desc = "+ resize" })
 keymap.set("n", "<A-Right>",       "<CMD>vertical resize +4<CR>",          { desc = "+ vertical resize" })
@@ -140,9 +143,9 @@ M.lsp = function(client, bufnr)
     if capabilities.documentFormattingProvider then
         keymap.set("n", "<localleader>lf", lsp_formatting,               { desc = "Format",                     buffer = bufnr })
     end
-    if capabilities.documentRangeFormattingProvider then
-        keymap.set("v", "<localleader>lf", vim.lsp.buf.range_formatting, { desc = "Range format" })
-    end
+    -- if capabilities.documentRangeFormattingProvider then
+    --     keymap.set("v", "<localleader>lf", vim.lsp.buf.range_formatting, { desc = "Range format" })
+    -- end
     if capabilities.codeActionProvider then
         keymap.set("n", "<localleader>la", vim.lsp.buf.code_action,      { desc = "Code actions",               buffer = bufnr })
     end

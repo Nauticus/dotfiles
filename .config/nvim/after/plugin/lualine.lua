@@ -1,4 +1,22 @@
-require("lualine").setup {
+local has_lualine, lualine = pcall(require, "lualine")
+if not has_lualine then
+    vim.notify("lualine is missing", vim.log.levels.WARN)
+    return
+end
+
+local has_nvim_web_devicons, nvim_web_devicons = pcall(require, "nvim-web-devicons")
+if has_nvim_web_devicons then
+    nvim_web_devicons.set_icon {
+        lir = {
+            icon = "",
+            color = "",
+            cterm_color = "65",
+            name = "Lir",
+        },
+    }
+end
+
+lualine.setup {
     options = {
         theme = "auto",
         disabled_filetypes = { "NvimTree", "DiffviewFiles", "harpoon", "TelescopePrompt" },

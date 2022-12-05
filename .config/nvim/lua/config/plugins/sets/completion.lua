@@ -1,10 +1,6 @@
 return {
     {
         "hrsh7th/nvim-cmp",
-        after = "nvim-autopairs",
-        config = function()
-            require "config.plugins.configs.cmp"
-        end,
         requires = {
             "f3fora/cmp-spell",
             "hrsh7th/cmp-buffer",
@@ -20,10 +16,5 @@ return {
             "hrsh7th/cmp-nvim-lsp-signature-help",
         },
     },
-    {
-        "L3MON4D3/LuaSnip",
-        config = function()
-            require "config.plugins.configs.luasnip"
-        end,
-    },
+    { "L3MON4D3/LuaSnip" },
 }

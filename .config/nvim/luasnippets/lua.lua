@@ -2,11 +2,14 @@ local ls = require "luasnip"
 local s = ls.snippet
 local sn = ls.snippet_node
 local t = ls.text_node
+local f = ls.function_node
 local i = ls.insert_node
 local c = ls.choice_node
 local d = ls.dynamic_node
 local r = ls.restore_node
+local events = require "luasnip.util.events"
 local fmt = require("luasnip.extras.fmt").fmt
+local rep = require("luasnip.extras").rep
 
 local rec_ls
 
@@ -22,17 +25,19 @@ rec_ls = function()
 end
 
 local require_var = function(args, _)
-    local text = args[1][1] or ""
+    local text = (args[1][1] or ""):gsub("-", "_")
     local split = vim.split(text, ".", { plain = true })
 
-    local options = {}
+    local options = { i(nil) }
     for len = 0, #split - 1 do
         table.insert(options, t(table.concat(vim.list_slice(split, #split - len, #split), "_")))
     end
 
     if #options == 1 then
         return sn(nil, {
-            options[1],
+            c(1, {
+                i(nil),
+            })
         })
     end
 
@@ -44,8 +49,10 @@ end
 local get_package_from_clipboard = function()
     -- Get the author and URL in the clipboard and auto populate the author and project
     local default = s("", { i(1, "author"), t "/", i(2, "plugin") })
-    ---@diagnostic disable-next-line: missing-parameter
     local clip = vim.fn.getreg "*"
+
+    print(clip)
+
     if not vim.startswith(clip, "https://github.com/") then
         return default
     end
@@ -58,7 +65,6 @@ local get_package_from_clipboard = function()
 end
 
 local get_rhs_from_clipboard = function()
----@diagnostic disable-next-line: missing-parameter
     local ok, clip = pcall(vim.fn.getreg "*")
 
     clip = ok and clip or ""
@@ -74,6 +80,32 @@ return {
         fmt([[local {} = require("{}")]], {
             d(2, require_var, { 1 }),
             i(1),
+        }),
+        {
+            callbacks = {
+                [1] = {
+                    [events.leave] = function(node)
+                        vim.pretty_print(node)
+                    end,
+                },
+            },
+        }
+    ),
+    s(
+        { trig = "prc", name = "Protected require call." },
+        fmt([[
+        local has_{}, {} = pcall(require, "{}")
+        if not has_{} then
+            vim.notify("{} is missing", vim.log.levels.WARN)
+            return
+        end
+        ]], {
+            rep(2),
+            d(2, require_var, { 1 }),
+            i(1),
+            rep(2),
+            rep(1)
+
         })
     ),
     s(
@@ -126,6 +158,19 @@ return {
         d(2, rec_ls, {}),
         t { "", "\\end{itemize}" },
         i(0),
+    }),
+    s("test", {
+        i(1),
+        t "<->",
+        rep(1),
+    }, {
+        callbacks = {
+            [1] = {
+                [events.leave] = function(node)
+                    vim.notify(node:get_text()[1])
+                end,
+            },
+        },
     }),
     s(
         { trig = "vim.keymap.set", name = "set keymap" },

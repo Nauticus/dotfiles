@@ -2,9 +2,6 @@ return {
     { "junegunn/fzf", dir = "~/.fzf", run = "./install --all" },
     {
         "nvim-telescope/telescope.nvim",
-        config = function()
-            require "config.plugins.configs.telescope"
-        end,
         requires = {
             { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
             { "kyoh86/telescope-windows.nvim" },

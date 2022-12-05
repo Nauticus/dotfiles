@@ -1,5 +1,9 @@
----@diagnostic disable: missing-parameter
-local npairs = require "nvim-autopairs"
+local has_npairs, npairs = pcall(require, "nvim-autopairs")
+if not has_npairs then
+    vim.notify("nvim-autopairs is missing", vim.log.levels.WARN)
+    return
+end
+
 local Rule = require "nvim-autopairs.rule"
 
 npairs.setup {

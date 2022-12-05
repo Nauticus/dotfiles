@@ -70,7 +70,7 @@ _G.utils.get_visual_selection_text = function()
         ecol = nil
     end
 
-    local lines = vim.api.nvim_buf_get_lines(0, sline - 1, eline, 0)
+    local lines = vim.api.nvim_buf_get_lines(0, sline - 1, eline, false)
     if #lines == 0 then
         return
     end

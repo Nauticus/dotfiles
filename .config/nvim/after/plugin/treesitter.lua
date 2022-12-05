@@ -1,21 +1,25 @@
-local parsers = require "nvim-treesitter.parsers"
+local has_nvim_treesitter, _ = pcall(require, "nvim-treesitter")
+if not has_nvim_treesitter then
+    vim.notify("nvim-treesitter is missing", vim.log.levels.WARN)
+    return
+end
 
+-- local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+local parsers = require "nvim-treesitter.parsers"
 local configs = parsers.get_parser_configs()
 
-local parsers_filetypes = table.concat(
-    vim.tbl_map(function(ft)
-        return configs[ft].filetype or ft
-    end, parsers.available_parsers()),
-    ","
-)
+local parsers_filetypes = vim.tbl_map(function(ft)
+    return configs[ft].filetype or ft
+end, parsers.available_parsers())
 
-vim.cmd(
-    "autocmd Filetype "
-        .. parsers_filetypes
-        .. " setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr()"
-)
-
-vim.api.nvim_set_option("foldlevel", 10)
+autocmd("Filetype", {
+    pattern = parsers_filetypes,
+    callback = function()
+        vim.opt_local.foldmethod = "expr"
+        vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+    end
+})
 
 if pcall(require, "orgmode") then
     require("orgmode").setup_ts_grammar()
@@ -53,7 +57,7 @@ local textobjects = {
 
 require("nvim-treesitter.configs").setup {
     ensure_installed = "all",
-    ignore_install = { "javascript", "css", "haskell", "pug" },
+    ignore_install = { "javascript", "css", "haskell", "pug", "phpdoc" },
     highlight = {
         enable = true,
         disable = { "org", "pug" },
@@ -73,3 +77,4 @@ require("nvim-treesitter.configs").setup {
         persist_queries = true, -- Whether the query persists across vim sessions
     },
 }
+

@@ -41,6 +41,7 @@ return packer.startup(function(use)
     use_set "completion"
     use_set "file_management"
     use_set "fuzzy_finder"
-    use_set "debug"
+    -- use_set "debug"
     use_set "databases"
+    use_set "wip"
 end)

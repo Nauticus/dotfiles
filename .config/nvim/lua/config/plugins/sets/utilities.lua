@@ -7,6 +7,18 @@ return {
     "gpanders/editorconfig.nvim",
     "nvim-pack/nvim-spectre",
     {
+        "luukvbaal/statuscol.nvim",
+        disable = true,
+        config = function()
+            require("statuscol").setup {
+                separator = "|",
+                reeval = true,
+                setopt = true,
+                order = "FNSs"
+            }
+        end,
+    },
+    {
         "mbbill/undotree",
         opt = true,
         cmd = "UndotreeToggle",
@@ -63,15 +75,6 @@ return {
         requires = {
             "nvim-lua/plenary.nvim",
         },
-        config = function()
-            require("harpoon").setup {
-                menu = {
-                    width = 70,
-                    height = 20,
-                },
-            }
-            require("config.core.mappings").harpoon()
-        end,
     },
     {
         "zbirenbaum/neodim",
@@ -79,4 +82,6 @@ return {
             require("neodim").setup()
         end,
     },
+    { "jbyuki/venn.nvim" },
+    { "ThePrimeagen/vim-be-good" },
 }

@@ -31,7 +31,7 @@ lir.setup {
         ["D"] = actions.delete,
 
         ["J"] = function()
-            mark_actions.toggle_mark("n")
+            mark_actions.toggle_mark "n"
         end,
         ["C"] = clipboard_actions.copy,
         ["X"] = clipboard_actions.cut,
@@ -40,7 +40,10 @@ lir.setup {
     hide_cursor = false,
 }
 
-require("config.core.mappings").lir()
+-- stylua: ignore start
+vim.keymap.set("n", "§", "<CMD>e .<CR>",     { desc = "Open current working directory" })
+vim.keymap.set("n", "-", "<CMD>e %:p:h<CR>", { desc = "Open parent directory" })
+-- stylua: ignore end
 
 local has_lir_git_status, lir_git_status = pcall(require, "lir.git_status")
 if not has_lir_git_status then
@@ -51,4 +54,3 @@ end
 lir_git_status.setup {
     show_ignored = false,
 }
-

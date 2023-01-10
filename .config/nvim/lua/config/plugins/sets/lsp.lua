@@ -7,11 +7,8 @@ return {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "neovim/nvim-lspconfig",
-    },
-    {
         "jose-elias-alvarez/null-ls.nvim",
-        requires = "PlatyPew/format-installer.nvim",
-        after = "nvim-lspconfig",
+        "jayp0521/mason-null-ls.nvim",
     },
     {
         "folke/trouble.nvim",

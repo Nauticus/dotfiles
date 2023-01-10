@@ -14,19 +14,6 @@ _G.utils.check_backspace = function()
     end
 end
 
-_G.utils.completion_confirm = function()
-    local npairs = require "nvim-autopairs"
-    if vim.fn.pumvisible() ~= 0 then
-        if vim.fn.complete_info()["selected"] ~= -1 then
-            return vim.fn["compe#confirm"](npairs.esc "<cr>")
-        else
-            return npairs.esc "<cr>"
-        end
-    else
-        return npairs.autopairs_cr()
-    end
-end
-
 _G.utils.echo_highlight = function()
     local hi = fn.synIDattr(fn.synID(fn.line ".", fn.col ".", 1), "name")
     local trans = fn.synIDattr(fn.synID(fn.line ".", fn.col ".", 0), "name")

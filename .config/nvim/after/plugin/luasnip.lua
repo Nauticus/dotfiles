@@ -13,8 +13,16 @@ ls.config.set_config {
     region_check_events = "CursorHold",
     delete_check_events = "TextChanged",
     ext_opts = {
-        [types.choiceNode] = { active = { virt_text = { { "﨧C", "NonText" } } } },
-        [types.insertNode] = { active = { virt_text = { { "諸I", "NonText" } } } },
+        [types.choiceNode] = {
+            active = {
+                virt_text = { { "﨧Choice", "NonText" } },
+            },
+        },
+        [types.insertNode] = {
+            active = {
+                virt_text = { { "諸Insert", "NonText" } },
+            },
+        },
     },
 }
 

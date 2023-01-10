@@ -15,9 +15,6 @@ keymap.set("i", "<C-s>",           "<C-O>:update<CR>",                     { des
 
 keymap.set("i", "<C-h>",           "<BS>",                                 { desc = "Backspace" })
 
-keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Down half page" })
-keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Up half page" })
-
 keymap.set("n", "<A-Up>",          "<CMD>resize -4<CR>",                   { desc = "- resize" })
 keymap.set("n", "<A-Down>",        "<CMD>resize +4<CR>",                   { desc = "+ resize" })
 keymap.set("n", "<A-Right>",       "<CMD>vertical resize +4<CR>",          { desc = "+ vertical resize" })
@@ -31,58 +28,11 @@ keymap.set("n", "<localleader>us", ":setlocal spell! spelllang=en_us<CR>", { des
 keymap.set("n", "<localleader>uu", ":UndotreeToggle<CR>",                  { desc = "Toggle UndoTreee" })
 -- stylua: ignore end
 
+wk.register({ name = "+harpoon" }, { prefix = "<leader>h" })
+wk.register({ name = "+telescope" }, { prefix = "<leader>s", mode = "v" })
+wk.register({ name = "+telescope" }, { prefix = "<leader>s", mode = "n" })
+
 local M = {}
-
-M.lir = function()
-    -- stylua: ignore start
-    keymap.set("n", "§", "<CMD>e .<CR>",     { desc = "Open current working directory" })
-    keymap.set("n", "-", "<CMD>e %:p:h<CR>", { desc = "Open parent directory" })
-    -- stylua: ignore end
-end
-
-M.harpoon = function()
-    local harpoon_ui = require "harpoon.ui"
-
-    wk.register({ name = "+harpoon" }, { prefix = "<leader>h" })
-
-    -- stylua: ignore start
-    keymap.set("n", "[h",         harpoon_ui.nav_prev,              { desc = "Previous mark (Harpoon)" })
-    keymap.set("n", "]h",         harpoon_ui.nav_next,              { desc = "Next mark (Harpoon)" })
-
-    keymap.set("n", "<leader>hh", harpoon_ui.toggle_quick_menu,     { desc = "Toggle Harpoon UI" })
-    keymap.set("n", "<leader>ha", require("harpoon.mark").add_file, { desc = "Mark file (Harpoon)" })
-    -- stylua: ignore end
-end
-
-M.telescope = function()
-    local prefix = "<leader>s"
-    local telescope_builtin = require "telescope.builtin"
-
-    wk.register({ name = "+telescope" }, { prefix = prefix, mode = "v" })
-    wk.register({ name = "+telescope" }, { prefix = prefix, mode = "n" })
-
-    local grep_selection = function()
-        telescope_builtin.grep_string { search = _G.utils.get_visual_selection_text()[1] }
-    end
-
-    local function windows()
-        require("telescope").extensions.windows.list()
-    end
-
-    local function grep()
-        telescope_builtin.grep_string { search = "" }
-    end
-
-    -- stylua: ignore start
-    keymap.set("n", "<leader>sf", telescope_builtin.find_files,  { desc = "Find files" })
-    keymap.set("n", "<leader>sp", telescope_builtin.builtin,     { desc = "Find Pickers" })
-    keymap.set("n", "<leader>sr", telescope_builtin.resume,      { desc = "Resume last picker" })
-    keymap.set("n", "<leader>st", windows,                       { desc = "Search windows" })
-    keymap.set("n", "<leader>sw", telescope_builtin.grep_string, { desc = "Grep string" })
-    keymap.set("n", "<leader>sg", grep,                          { desc = "Grep interactive" })
-    keymap.set("v", "<leader>sw", grep_selection,                { desc = "Grep visual selection" })
-    -- stylua: ignore end
-end
 
 M.lsp = function(client, bufnr)
     local pickers = require "telescope.builtin"
@@ -92,7 +42,7 @@ M.lsp = function(client, bufnr)
     wk.register({ name = "+lsp" }, { prefix = "<localleader>l" })
 
     local show_line_diagnostics = function()
-        vim.diagnostic.open_float(0, {
+        vim.diagnostic.open_float({
             scope = "line",
             source = "always",
             max_width = 120,

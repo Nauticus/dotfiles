@@ -46,6 +46,12 @@ lualine.setup {
                 colored = true,
                 padding = { left = 0, right = 1 },
             },
+            {
+                "progress"
+            },
+            {
+                "location"
+            }
         },
         lualine_z = { "branch" },
     },

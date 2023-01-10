@@ -1,5 +1,9 @@
 return {
     {
+        "Tsuzat/NeoSolarized.nvim",
+        disable = true
+    },
+    {
         "catppuccin/nvim",
         disable = false,
         as = "catppuccin",

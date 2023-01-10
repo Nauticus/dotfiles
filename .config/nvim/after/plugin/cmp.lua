@@ -78,6 +78,19 @@ local mapping_prev = function(fallback)
     end
 end
 
+local function border(hl_name)
+    return {
+        { "╭", hl_name },
+        { "─", hl_name },
+        { "╮", hl_name },
+        { "│", hl_name },
+        { "╯", hl_name },
+        { "─", hl_name },
+        { "╰", hl_name },
+        { "│", hl_name },
+    }
+end
+
 ---@diagnostic disable-next-line: redundant-parameter
 cmp.setup {
     snippet = {
@@ -114,11 +127,19 @@ cmp.setup {
                 tmux = "Tmux",
             })[entry.source.name]
 
-            vim_item.menu = string.format("[%s] %s", source, entry.source.score)
+            vim_item.menu = string.format("[%s]", source)
             vim_item.kind = kind_icons[vim_item.kind]
 
             return vim_item
         end,
+    },
+    window = {
+        completion = {
+            border = border "CmpBorder",
+        },
+        documentation = {
+            border = border "CmpDocBorder",
+        },
     },
     sources = cmp.config.sources {
         { name = "nvim_lsp" },
@@ -138,7 +159,7 @@ cmp.setup {
         { name = "tmux", max_item_count = 10 },
     },
     mapping = {
-        ["<C-n>"] = cmp.mapping {
+        ["<Tab>"] = cmp.mapping {
             i = mapping_next,
             s = mapping_next,
             c = function(fallback)
@@ -149,7 +170,7 @@ cmp.setup {
                 end
             end,
         },
-        ["<C-p>"] = cmp.mapping {
+        ["<S-Tab>"] = cmp.mapping {
             i = mapping_prev,
             s = mapping_prev,
             c = function(fallback)
@@ -176,12 +197,12 @@ cmp.setup {
             end
         end, { "i", "s" }),
 
-        ["<C-y>"] = cmp.mapping {
+        ["<CR>"] = cmp.mapping {
             i = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace },
             c = cmp.mapping.confirm { select = false },
         },
 
-        ["<C-e>"] = cmp.mapping {
+        ["<C-c>"] = cmp.mapping {
             i = function(fallback)
                 if cmp.visible() then
                     cmp.abort()
@@ -206,5 +227,24 @@ cmp.setup.filetype("harpoon", {
     },
 })
 
-cmp.setup.cmdline("/", { sources = { { name = "buffer" } } })
-cmp.setup.cmdline("?", { sources = { { name = "buffer" } } })
+
+cmp.setup.cmdline("/", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = "buffer" },
+    },
+})
+
+cmp.setup.cmdline("?", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = "buffer" },
+    },
+})
+
+cmp.setup.cmdline(":", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = "cmdline" },
+    },
+})

@@ -35,8 +35,8 @@ local function on_attach(client, bufnr)
         return
     end
 
-    vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-    vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
+    vim.opt_local.omnifunc   = "v:lua.vim.lsp.omnifunc"
+    vim.opt_local.tagfunc    = "v:lua.vim.lsp.tagfunc"
     vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
 
     mappings.lsp(client, bufnr)

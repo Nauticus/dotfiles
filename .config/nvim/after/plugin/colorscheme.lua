@@ -53,13 +53,15 @@ local function catppuccin_config()
     require("catppuccin").setup {
         flavour = "mocha", -- latte, frappe, macchiato, mocha
         transparent_background = true,
-        term_colors = false,
-        color_overrides = {},
-        custom_highlights = {},
+        custom_highlights = function(colors)
+            return {
+                OilDir = { fg = colors.blue },
+            }
+        end,
         integrations = {
             cmp = true,
             gitsigns = true,
-            nvimtree = true,
+            nvimtree = false,
             telescope = true,
             notify = true,
             mini = false,
@@ -70,5 +72,20 @@ local function catppuccin_config()
     vim.cmd.colorscheme "catppuccin"
 end
 
+local function solarized()
+    local has_neo_solarized, neo_solarized = pcall(require, "NeoSolarized")
+    if not has_neo_solarized then
+        vim.notify("NeoSolarized is missing", vim.log.levels.WARN)
+        return
+    end
+
+    neo_solarized.setup {
+        style = "dark",
+        transparent = true,
+    }
+    vim.cmd.colorscheme "NeoSolarized"
+end
+
 -- SETUP
 catppuccin_config()
+-- solarized()

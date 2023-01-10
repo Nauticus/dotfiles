@@ -4,11 +4,9 @@ if not has_telescope then
     return
 end
 
-local telescope_mappings = require("config.core.mappings").telescope
 local actions = require "telescope.actions"
 local actions_state = require "telescope.actions.state"
-
-local file_ignore_patterns = { ".git/.*", "node_modules/.*" }
+local telescope_builtin = require "telescope.builtin"
 
 local send_to_harpoon_action = function(prompt_bufnr)
     local picker = actions_state.get_current_picker(prompt_bufnr)
@@ -46,7 +44,7 @@ telescope.setup {
         initial_mode = "insert",
         color_devicons = true,
         set_env = { ["COLORTERM"] = "truecolor" },
-        file_ignore_patterns = file_ignore_patterns,
+        file_ignore_patterns = { ".git/.*", "node_modules/.*" },
         layout_strategy = "horizontal",
         layout_config = {
             horizontal = {
@@ -109,10 +107,30 @@ telescope.setup {
     },
 }
 
-require("telescope").load_extension "fzf"
-require("telescope").load_extension "windows"
-require("telescope").load_extension "ui-select"
-require("telescope").load_extension "packer"
-require("telescope").load_extension "luasnip"
+telescope.load_extension "fzf"
+telescope.load_extension "windows"
+telescope.load_extension "ui-select"
+telescope.load_extension "packer"
+telescope.load_extension "luasnip"
 
-telescope_mappings()
+local grep_selection = function()
+    telescope_builtin.grep_string { search = _G.utils.get_visual_selection_text()[1] }
+end
+
+local function windows()
+    telescope.extensions.windows.list()
+end
+
+local function grep()
+    telescope_builtin.grep_string { search = "" }
+end
+
+-- stylua: ignore start
+vim.keymap.set("n", "<leader>sf", telescope_builtin.find_files,  { desc = "Find files" })
+vim.keymap.set("n", "<leader>sp", telescope_builtin.builtin,     { desc = "Find Pickers" })
+vim.keymap.set("n", "<leader>sr", telescope_builtin.resume,      { desc = "Resume last picker" })
+vim.keymap.set("n", "<leader>st", windows,                       { desc = "Search windows" })
+vim.keymap.set("n", "<leader>sw", telescope_builtin.grep_string, { desc = "Grep string" })
+vim.keymap.set("n", "<leader>sg", grep,                          { desc = "Grep interactive" })
+vim.keymap.set("v", "<leader>sw", grep_selection,                { desc = "Grep visual selection" })
+-- stylua: ignore end

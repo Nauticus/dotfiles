@@ -4,21 +4,30 @@ if not has_null_ls then
     return
 end
 
-local has_format_installer, format_installer = pcall(require, "format-installer")
-if not has_format_installer then
-    vim.notify("format-installer is missing", vim.log.levels.WARN)
+local has_mason_null_ls, mason_null_ls = pcall(require, "mason-null-ls")
+if not has_mason_null_ls then
+    vim.notify("mason-null-ls is missing", vim.log.levels.WARN)
     return
 end
+
+mason_null_ls.setup({
+    ensure_installed = {"stylua", "prettier"}
+})
 
 local sources = {
     null_ls.builtins.code_actions.gitsigns
 }
 
-for _, formatter in ipairs(format_installer.get_installed_formatters()) do
-    local config = { command = formatter.cmd, prefer_local = "node_modules/.bin" }
-    table.insert(sources, null_ls.builtins.formatting[formatter.name].with(config))
-end
+require 'mason-null-ls'.setup_handlers {
+    function(source_name, methods)
+      -- all sources with no handler get passed here
+    end,
+    stylua = function(source_name, methods)
+      null_ls.register(null_ls.builtins.formatting.stylua)
+    end,
+}
 
+-- will setup any installed and configured sources above
 null_ls.setup {
     sources = sources,
     debug = true,

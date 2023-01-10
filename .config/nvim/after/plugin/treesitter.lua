@@ -1,25 +1,34 @@
-local has_nvim_treesitter, _ = pcall(require, "nvim-treesitter")
+local has_nvim_treesitter, treesitter = pcall(require, "nvim-treesitter")
 if not has_nvim_treesitter then
     vim.notify("nvim-treesitter is missing", vim.log.levels.WARN)
     return
 end
 
--- local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
 local parsers = require "nvim-treesitter.parsers"
-local configs = parsers.get_parser_configs()
+local query = require "nvim-treesitter.query"
 
-local parsers_filetypes = vim.tbl_map(function(ft)
-    return configs[ft].filetype or ft
-end, parsers.available_parsers())
+local foldmethod_backups = {}
+local foldexpr_backups = {}
 
-autocmd("Filetype", {
-    pattern = parsers_filetypes,
-    callback = function()
-        vim.opt_local.foldmethod = "expr"
-        vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
-    end
-})
+treesitter.define_modules {
+    folding = {
+        enable = true,
+        attach = function(bufnr)
+            -- Fold settings are actually window based...
+            foldmethod_backups[bufnr] = vim.wo.foldmethod
+            foldexpr_backups[bufnr] = vim.wo.foldexpr
+            vim.wo.foldmethod = "expr"
+            vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
+        end,
+        detach = function(bufnr)
+            vim.wo.foldmethod = foldmethod_backups[bufnr]
+            vim.wo.foldexpr = foldexpr_backups[bufnr]
+            foldmethod_backups[bufnr] = nil
+            foldexpr_backups[bufnr] = nil
+        end,
+        is_supported = query.has_folds,
+    },
+}
 
 if pcall(require, "orgmode") then
     require("orgmode").setup_ts_grammar()
@@ -29,31 +38,6 @@ local filetype_to_parsername = parsers.filetype_to_parsername
 
 filetype_to_parsername.javascript = "typescript"
 filetype_to_parsername.css = "scss"
-
-local incremental_selection = {
-    enable = true,
-    keymaps = {
-        init_selection = "gnn",
-        node_incremental = "gn[",
-        scope_incremental = "gn]",
-        node_decremental = "gn)",
-    },
-}
-
-local textobjects = {
-    select = {
-        enable = true,
-        keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-            ["ii"] = "@call.inner",
-            ["ai"] = "@call.outer",
-        },
-    },
-}
 
 require("nvim-treesitter.configs").setup {
     ensure_installed = "all",
@@ -65,8 +49,30 @@ require("nvim-treesitter.configs").setup {
     },
     refactor = { highlight_definitions = { enable = true } },
     -- tree_docs = { enable = true },
-    incremental_selection = incremental_selection,
-    textobjects = textobjects,
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "gnn",
+            node_incremental = "gn[",
+            scope_incremental = "gn]",
+            node_decremental = "gn)",
+        },
+    },
+    textobjects = {
+        select = {
+            enable = true,
+            keymaps = {
+                -- You can use the capture groups defined in textobjects.scm
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["ac"] = "@class.outer",
+                ["ic"] = "@class.inner",
+                ["ii"] = "@call.inner",
+                ["ai"] = "@call.outer",
+                ["adf"] = "@field",
+            },
+        },
+    },
     autotag = { enable = true },
     matchup = { enable = true, include_match_words = true },
     context_commentstring = { enable = true },
@@ -77,4 +83,3 @@ require("nvim-treesitter.configs").setup {
         persist_queries = true, -- Whether the query persists across vim sessions
     },
 }
-

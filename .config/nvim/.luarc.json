@@ -1,5 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "Lua.completion.autoRequire": false,
     "Lua.workspace.library": [
         "/Users/nauticus/.local/share/nvim/site/Pack/packer/start/neodev.nvim/types/nightly",
         "/opt/homebrew/Cellar/neovim/HEAD-fa7e1e2/share/nvim/runtime",

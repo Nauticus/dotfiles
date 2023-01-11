@@ -36,28 +36,6 @@ autocmd("FileType", {
     command = "setlocal foldmethod=syntax foldlevel=0",
 })
 
-autocmd("BufWritePost", {
-    desc = "Source plugins config on write.",
-    group = "SourcePacker",
-    pattern = "*/nvim/lua/config/plugins/*.lua",
-    callback = function(context)
-        local init_path = vim.fn.stdpath "config" .. "/lua/config/plugins/init.lua"
-        local status_ok, reload = pcall(require, "plenary.reload")
-        if not status_ok then
-            vim.cmd(vim.fn.printf("source %s", context.file))
-            vim.cmd(vim.fn.printf("source %s", init_path))
-        end
-
-        reload.reload_module("config.plugins", true)
-        vim.cmd(vim.fn.printf("source %s", init_path))
-
-        local confirm_compile = vim.fn.confirm("Run PackerCompile?", "&Yes\n&No", 1)
-        if confirm_compile == 1 then
-            vim.cmd [[PackerCompile]]
-        end
-    end,
-})
-
 autocmd("TextYankPost", {
     desc = "Highlight region on yank.",
     group = "HighlightYank",

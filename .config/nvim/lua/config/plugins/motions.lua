@@ -4,6 +4,12 @@ return {
     { "junegunn/vim-easy-align", cmd = "EasyAlign" },
     {
         "ggandor/leap.nvim",
+        keys = {
+            { "s", mode = { "n", "v" } },
+            { "S", mode = { "n", "v" } },
+            { "x", mode = "v" },
+            { "X", mode = "v" },
+        },
         opts = {
             safe_labels = {},
             labels = "setonuhidrclgkjmwxbSETONUHIDRCLGKJMWXB",
@@ -24,5 +30,16 @@ return {
             leap.opts.labels = make_labels(opts.labels)
         end,
     },
-    { "ggandor/flit.nvim", enabled = false },
+    {
+        "ggandor/flit.nvim",
+        dependencies = { "ggandor/leap.nvim" },
+        keys = {
+            { "f", mode = { "n", "v" } },
+            { "F", mode = { "n", "v" } },
+            { "t", mode = { "n", "v" } },
+            { "T", mode = { "n", "v" } },
+        },
+        enabled = true,
+        config = true,
+    },
 }

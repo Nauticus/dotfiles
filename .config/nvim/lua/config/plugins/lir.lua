@@ -4,7 +4,7 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons",
-        "tamago324/lir-git-status.nvim"
+        "tamago324/lir-git-status.nvim",
     },
     keys = {
         { "-", "<CMD>e %:p:h<CR>", desc = "Open parent directory" },
@@ -17,7 +17,10 @@ return {
 
         lir.setup({
             show_hidden_files = true,
-            devicons_enable = true,
+            devicons = {
+                enable = true,
+                highlight_dirname = true,
+            },
             mappings = {
                 ["<CR>"] = actions.edit,
                 ["l"] = actions.edit,

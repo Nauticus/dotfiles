@@ -41,7 +41,7 @@ end
 
 return {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
         "f3fora/cmp-spell",
         "hrsh7th/cmp-buffer",

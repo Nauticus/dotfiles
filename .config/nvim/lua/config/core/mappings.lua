@@ -8,13 +8,17 @@ keymap.set("i", "<C-s>",           "<C-O>:update<CR>",                     { des
 
 keymap.set("i", "<C-h>",           "<BS>",                                 { desc = "Backspace" })
 
-keymap.set("n", "<A-Up>",          "<CMD>resize -4<CR>",                   { desc = "- resize" })
-keymap.set("n", "<A-Down>",        "<CMD>resize +4<CR>",                   { desc = "+ resize" })
-keymap.set("n", "<A-Right>",       "<CMD>vertical resize +4<CR>",          { desc = "+ vertical resize" })
-keymap.set("n", "<A-Left>",        "<CMD>vertical resize -4<CR>",          { desc = "- vertical resize" })
+keymap.set("n", "<A-k>",           "<CMD>resize -4<CR>",                   { desc = "- resize" })
+keymap.set("n", "<A-j>",           "<CMD>resize +4<CR>",                   { desc = "+ resize" })
+keymap.set("n", "<A-l>",           "<CMD>vertical resize +4<CR>",          { desc = "+ vertical resize" })
+keymap.set("n", "<A-h>",           "<CMD>vertical resize -4<CR>",          { desc = "- vertical resize" })
 
 -- UTILS (u)
 keymap.set("n", "<localleader>ur", "<CMD>so %<CR>",                        { desc = "Source file" })
 keymap.set("n", "<localleader>uy", "<CMD>redir @* | file | redir END<CR>", { desc = "Paste file info" })
 keymap.set("n", "<localleader>us", ":setlocal spell! spelllang=en_us<CR>", { desc = "Toggle spellchecking" })
+
+keymap.set("v", "J",               ":m '>+1<CR>gv=gv")
+keymap.set("v", "K",               ":m '<-2<CR>gv=gv")
+keymap.set("n", "J",               "mzJ`z")
 -- stylua: ignore end

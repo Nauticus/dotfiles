@@ -1,4 +1,3 @@
-
 local M = {
     "neovim/nvim-lspconfig",
     event = "BufReadPre",
@@ -101,11 +100,6 @@ local mappings = function(client, bufnr)
 end
 
 local function on_attach(client, bufnr)
-
-    -- vim.opt_local.omnifunc   = "v:lua.vim.lsp.omnifunc"
-    -- vim.opt_local.tagfunc    = "v:lua.vim.lsp.tagfunc"
-    -- vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
-
     mappings(client, bufnr)
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {

@@ -16,7 +16,7 @@ vim.opt.hidden = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.scrolloff = 4
-vim.opt.mouse = "n"
+vim.opt.mouse = "a"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.smarttab = true
@@ -42,7 +42,7 @@ vim.opt.expandtab = true
 vim.opt.smartindent = false
 vim.opt.formatoptions = string.gsub(vim.bo.formatoptions, "[co]", "")
 vim.opt.ssop = vim.opt.ssop - { "blank", "help", "buffers" } + { "terminal" }
-vim.opt.fillchars:append {
+vim.opt.fillchars:append({
     horiz = "━",
     horizup = "┻",
     horizdown = "┳",
@@ -50,22 +50,10 @@ vim.opt.fillchars:append {
     vertleft = "┨",
     vertright = "┣",
     verthoriz = "╋",
-}
+})
 vim.opt.inccommand = "split"
+vim.opt.splitkeep = "cursor"
 vim.opt.laststatus = 3
 vim.opt.cmdheight = 1 -- TODO: Set to 0 when https://github.com/neovim/neovim/pull/18961 to be merged.
 vim.opt.foldenable = false
--- vim.opt.statuscolumn = '%s %=%{v:relnum?v:relnum:v:lnum} │ '
--- vim.opt.statuscolumn = "%s%=%l%= %{% %C == '' ? '|' : '%C' %}"
--- vim.o.statuscolumn = "%=%l%s%C"
--- vim.opt.statuscolumn = vim.fn.join({
---   -- line number
---   '%=%{&nu? (&rnu&&(v:relnum) ? v:relnum : v:lnum." ") : ""}',
---   -- signs
---   '%s',
---   -- fold
---   '%C%',
---   -- space
---   '#Normal#%{&nu? " " : ""}',
--- }, '')
--- oauaoeu.oeu
+vim.o.statuscolumn = "%s %=%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''} %#GutterSep#▏%*%T"

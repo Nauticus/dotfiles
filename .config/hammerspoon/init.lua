@@ -3,56 +3,51 @@
 hs.window.animationDuration = 0.1
 PaperWM = hs.loadSpoon("PaperWM")
 PaperWM.window_gap = 0
+
+local hyper = { "ctrl", "alt", "cmd" }
+local hyper_shift = { "ctrl", "alt", "cmd", "shift" }
+
 PaperWM:bindHotkeys({
--- switch to a new focused window in tiled grid
-    focus_left  = {{"ctrl", "alt", "cmd"}, "left"},
-    focus_right = {{"ctrl", "alt", "cmd"}, "right"},
-    focus_up    = {{"ctrl", "alt", "cmd"}, "up"},
-    focus_down  = {{"ctrl", "alt", "cmd"}, "down"},
+	-- switch to a new focused window in tiled grid
+    -- stylua: ignore start
+    focus_left     = { hyper, "left" },
+    focus_right    = { hyper, "right" },
+    focus_up       = { hyper, "up" },
+    focus_down     = { hyper, "down" },
 
-    -- move windows around in tiled grid
-    swap_left  = {{"ctrl", "alt", "cmd", "shift"}, "left"},
-    swap_right = {{"ctrl", "alt", "cmd", "shift"}, "right"},
-    swap_up    = {{"ctrl", "alt", "cmd", "shift"}, "up"},
-    swap_down  = {{"ctrl", "alt", "cmd", "shift"}, "down"},
+	-- move windows around in tiled grid
+    swap_left      = { hyper_shift, "left" },
+    swap_right     = { hyper_shift, "right" },
+    swap_up        = { hyper_shift, "up" },
+    swap_down      = { hyper_shift, "down" },
 
-    -- position and resize focused window
-    center_window = { { "ctrl", "alt", "cmd" }, "c" },
-    full_width = { { "ctrl", "alt", "cmd" }, "f" },
-    cycle_width = { { "ctrl", "alt", "cmd" }, "r" },
-    cycle_height = { { "ctrl", "alt", "cmd", "shift" }, "r" },
+	-- position and resize focused window
+	center_window  = { hyper, "c" },
+	full_width     = { hyper, "f" },
+	cycle_width    = { hyper, "r" },
+	cycle_height   = { hyper_shift, "r" },
 
-    -- move focused window into / out of a column
-    slurp_in = { { "ctrl", "alt", "cmd" }, "i" },
-    barf_out = { { "ctrl", "alt", "cmd" }, "o" },
+	-- move focused window into / out of a column
+	slurp_in       = { hyper, "i" },
+	barf_out       = { hyper, "o" },
 
-    -- switch to a new Mission Control space
-    switch_space_1 = { { "ctrl", "alt", "cmd" }, "1" },
-    switch_space_2 = { { "ctrl", "alt", "cmd" }, "2" },
-    switch_space_3 = { { "ctrl", "alt", "cmd" }, "3" },
-    switch_space_4 = { { "ctrl", "alt", "cmd" }, "4" },
-    switch_space_5 = { { "ctrl", "alt", "cmd" }, "5" },
-    switch_space_6 = { { "ctrl", "alt", "cmd" }, "6" },
-    switch_space_7 = { { "ctrl", "alt", "cmd" }, "7" },
-    switch_space_8 = { { "ctrl", "alt", "cmd" }, "8" },
-    switch_space_9 = { { "ctrl", "alt", "cmd" }, "9" },
-
-    -- move focused window to a new space and tile
-    move_window_1 = { { "ctrl", "alt", "cmd", "shift" }, "1" },
-    move_window_2 = { { "ctrl", "alt", "cmd", "shift" }, "2" },
-    move_window_3 = { { "ctrl", "alt", "cmd", "shift" }, "3" },
-    move_window_4 = { { "ctrl", "alt", "cmd", "shift" }, "4" },
-    move_window_5 = { { "ctrl", "alt", "cmd", "shift" }, "5" },
-    move_window_6 = { { "ctrl", "alt", "cmd", "shift" }, "6" },
-    move_window_7 = { { "ctrl", "alt", "cmd", "shift" }, "7" },
-    move_window_8 = { { "ctrl", "alt", "cmd", "shift" }, "8" },
-    move_window_9 = { { "ctrl", "alt", "cmd", "shift" }, "9" },
+	-- move focused window to a new space and tile
+	move_window_1  = { hyper, "1" },
+	move_window_2  = { hyper, "2" },
+	move_window_3  = { hyper, "3" },
+	move_window_4  = { hyper, "4" },
+	move_window_5  = { hyper, "5" },
+	move_window_6  = { hyper, "6" },
+	move_window_7  = { hyper, "7" },
+	move_window_8  = { hyper, "8" },
+	move_window_9  = { hyper, "9" },
+    -- stylua: ignore end
 })
 PaperWM.window_filter = PaperWM.window_filter:setFilters({
-    ["Brave Browser"] = { rejectTitles = "Picture in Picture" },
-    ["Google Chrome"] = { rejectTitles = "Picture in Picture" },
-    ["Hammerspoon"] = { rejectTitles = "Hammerspoon Console" },
-    ["1Password"] = { rejectTitles = "Preferences" },
+	["Brave Browser"] = { rejectTitles = "Picture in Picture" },
+	["Google Chrome"] = { rejectTitles = "Picture in Picture" },
+	["Hammerspoon"] = { rejectTitles = "Hammerspoon Console" },
+	["1Password"] = { rejectTitles = "Preferences" },
 })
 PaperWM:start()
 

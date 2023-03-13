@@ -7,6 +7,7 @@ local M = {
         { "nvim-lua/popup.nvim" },
         { "nvim-lua/plenary.nvim" },
         { "nvim-telescope/telescope-ui-select.nvim" },
+        { "tsakirist/telescope-lazy.nvim" },
         { "benfowler/telescope-luasnip.nvim" },
     },
     keys = {
@@ -59,8 +60,16 @@ local M = {
                     search = _G.utils.get_visual_selection_text()[1],
                 })
             end,
+            mode = "v",
             desc = "Grep visual selection",
         },
+        {
+            "<leader>s:",
+            function ()
+                require("telescope.builtin").command_history()
+            end,
+            desc = "Command History"
+        }
     },
 }
 
@@ -127,6 +136,9 @@ M.config = function()
                 -- previewer = false,
                 include_extensions = true,
             },
+            command_history = {
+                theme = "ivy"
+            },
             oldfiles = {
                 only_cwd = true,
             },
@@ -172,6 +184,7 @@ M.config = function()
         },
     })
 
+    telescope.load_extension("lazy")
     telescope.load_extension("fzf")
     telescope.load_extension("windows")
     telescope.load_extension("ui-select")

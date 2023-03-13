@@ -17,8 +17,13 @@ return {
         "windwp/nvim-ts-autotag",
         {
             "andymass/vim-matchup",
+            enabled = false,
             init = function()
+                vim.g.matchup_matchparen_deferred = 1
+                vim.g.matchup_matchparen_hi_surround_always = 1
                 vim.g.matchup_matchparen_offscreen = {}
+                vim.g.matchup_matchparen_deferred_show_delay = 200
+                vim.g.matchup_matchparen_deferred_hide_delay = 1000
             end,
         },
     },
@@ -50,14 +55,14 @@ return {
             },
         })
 
-        local filetype_to_parsername = parsers.filetype_to_parsername
-
-        filetype_to_parsername.javascript = "typescript"
-        filetype_to_parsername.css = "scss"
+        -- local filetype_to_parsername = parsers.filetype_to_parsername
+        --
+        -- filetype_to_parsername.javascript = "typescript"
+        -- filetype_to_parsername.css = "scss"
 
         require("nvim-treesitter.configs").setup({
             ensure_installed = "all",
-            ignore_install = { "javascript", "css", "haskell", "pug", "phpdoc" },
+            ignore_install = { "haskell" },
             highlight = {
                 enable = true,
                 disable = { "org", "pug" },
@@ -85,12 +90,11 @@ return {
                         ["ic"] = "@class.inner",
                         ["ii"] = "@call.inner",
                         ["ai"] = "@call.outer",
-                        ["adf"] = "@field",
                     },
                 },
             },
             autotag = { enable = true },
-            matchup = { enable = true, include_match_words = true },
+            -- matchup = { enable = true, include_match_words = true },
             context_commentstring = { enable = true },
             indent = { enable = true },
             playground = {

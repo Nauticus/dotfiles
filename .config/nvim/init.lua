@@ -5,10 +5,9 @@ cmd([[cd %:p:h]])
 vim.env.NVIMRC = "~/.config/nvim/init.lua"
 
 g.mapleader = vim.api.nvim_replace_termcodes("<Space>", true, true, true)
-g.maplocalleader = ","
+g.maplocalleader = "\\"
 
 g.loaded_perl_provider = 0
--- g.loaded_netrwPlugin = 0
 g.loaded_ruby_provider = 0
 g.loaded_python_provider = 0
 g.python3_host_prog = os.getenv("HOME") .. "/.pyenv/versions/3.9.4/bin/python"
@@ -29,6 +28,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("config.plugins", {
+    performance = {
+        rtp = {
+            disabled_plugins = { "matchparen", "matchit", "netrw", "tutor" },
+        },
+    },
     ui = {
         border = "rounded",
     },
@@ -36,8 +40,8 @@ require("lazy").setup("config.plugins", {
         notify = false,
     },
     diff = {
-        cmd = "diffview.nvim"
-    }
+        cmd = "diffview.nvim",
+    },
 })
 
 require("config.core.utils")

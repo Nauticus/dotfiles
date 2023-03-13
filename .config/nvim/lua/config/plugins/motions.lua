@@ -1,12 +1,12 @@
 return {
     { "kylechui/nvim-surround", event = "BufReadPre", config = true },
-    { "tpope/vim-unimpaired", keys = { "[", "]" } },
+    { "tpope/vim-unimpaired" },
     { "junegunn/vim-easy-align", cmd = "EasyAlign" },
     {
         "ggandor/leap.nvim",
         keys = {
-            { "s", mode = { "n", "v" } },
-            { "S", mode = { "n", "v" } },
+            { "s", mode = "n" },
+            { "S", mode = "n" },
             { "x", mode = "v" },
             { "X", mode = "v" },
         },
@@ -39,7 +39,7 @@ return {
             { "t", mode = { "n", "v" } },
             { "T", mode = { "n", "v" } },
         },
-        enabled = true,
+        enabled = false,
         config = true,
     },
 }

@@ -42,12 +42,6 @@ autocmd("TextYankPost", {
     command = "silent! lua vim.highlight.on_yank() {higroup='IncSearch', timeout=800}",
 })
 
-autocmd("ColorScheme", {
-    callback = function()
-        vim.api.nvim_set_hl(0, "LeapMatch", { fg = "#000000", bg = "#FFFFFF", bold = true })
-    end,
-})
-
 autocmd({ "BufNewFile", "BufRead" }, {
     pattern = "*.keymap",
     group = "KeymapSyntax",

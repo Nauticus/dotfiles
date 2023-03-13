@@ -2,26 +2,6 @@ local fn = vim.fn
 
 _G.utils = {}
 
-_G.utils.check_backspace = function()
-    local curr_col = fn.col "."
-    local is_first_col = fn.col "." - 1 == 0
-    local prev_char = fn.getline("."):sub(curr_col - 1, curr_col - 1)
-
-    if is_first_col or prev_char:match "%s" then
-        return true
-    else
-        return false
-    end
-end
-
-_G.utils.echo_highlight = function()
-    local hi = fn.synIDattr(fn.synID(fn.line ".", fn.col ".", 1), "name")
-    local trans = fn.synIDattr(fn.synID(fn.line ".", fn.col ".", 0), "name")
-    local lo = fn.synIDattr(fn.synIDtrans(fn.synID(fn.line ".", fn.col ".", 1)), "name")
-
-    print(string.format("hi<%s> trans<%s> lo<%s>", hi, trans, lo))
-end
-
 _G.utils.get_visual_selection_text = function()
     local modeInfo = vim.api.nvim_get_mode()
     local mode = modeInfo.mode

@@ -11,7 +11,7 @@ return {
         {
             "]h",
             function()
-                require("haproon.ui").nav_next()
+                require("harpoon.ui").nav_next()
             end,
             desc = "Next mark (Harpoon)",
         },

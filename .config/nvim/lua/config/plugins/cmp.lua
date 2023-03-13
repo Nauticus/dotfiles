@@ -47,7 +47,6 @@ return {
         "hrsh7th/cmp-buffer",
         "andersevenrud/cmp-tmux",
         { "saadparwaiz1/cmp_luasnip", dependencies = { "L3MON4D3/LuaSnip" } },
-        "rafamadriz/friendly-snippets",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-nvim-lsp",
         "ray-x/cmp-treesitter",
@@ -66,16 +65,16 @@ return {
         "lukas-reineke/cmp-under-comparator",
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-cmdline",
-        "windwp/nvim-autopairs",
+        -- "windwp/nvim-autopairs",
     },
     config = function()
         local cmp = require("cmp")
         local luasnip = require("luasnip")
 
-        cmp.event:on(
-            "confirm_done",
-            require("nvim-autopairs.completion.cmp").on_confirm_done({ map_char = { text = "" } })
-        )
+        -- cmp.event:on(
+        --     "confirm_done",
+        --     require("nvim-autopairs.completion.cmp").on_confirm_done({ map_char = { text = "" } })
+        -- )
 
         local mapping_next = function(fallback)
             if cmp.visible() then
@@ -107,7 +106,10 @@ return {
                 entries = "custom",
                 selection_order = "near_cursor",
             },
-            experimental = { native_menu = false, ghost_text = true },
+            experimental = { native_menu = false, ghost_text = false },
+            completion = {
+                keyword_length = 2
+            },
             sortings = {
                 comparators = {
                     cmp.config.compare.offset,
@@ -120,24 +122,24 @@ return {
                     cmp.config.compare.order,
                 },
             },
-            formatting = {
-                fields = { "kind", "abbr", "menu" },
-                format = function(entry, vim_item)
-                    local source = ({
-                        nvim_lsp = "LSP",
-                        luasnip = "Snippet",
-                        path = "Path",
-                        cmp_tabnine = "Tabnine",
-                        buffer = "Buffer",
-                        tmux = "Tmux",
-                    })[entry.source.name]
-
-                    vim_item.menu = string.format("[%s]", source)
-                    vim_item.kind = kind_icons[vim_item.kind]
-
-                    return vim_item
-                end,
-            },
+            -- formatting = {
+            --     fields = { "kind", "abbr", "menu" },
+            --     format = function(entry, vim_item)
+            --         local source = ({
+            --             nvim_lsp = "LSP",
+            --             luasnip = "Snippet",
+            --             path = "Path",
+            --             cmp_tabnine = "Tabnine",
+            --             buffer = "Buffer",
+            --             tmux = "Tmux",
+            --         })[entry.source.name]
+            --
+            --         vim_item.menu = string.format("[%s]", source)
+            --         vim_item.kind = kind_icons[vim_item.kind]
+            --
+            --         return vim_item
+            --     end,
+            -- },
             window = {
                 completion = {
                     border = border("CmpBorder"),
@@ -164,7 +166,7 @@ return {
                 { name = "tmux", max_item_count = 10 },
             }),
             mapping = {
-                ["<Tab>"] = cmp.mapping({
+                ["<C-n>"] = cmp.mapping({
                     i = mapping_next,
                     s = mapping_next,
                     c = function(fallback)
@@ -175,7 +177,7 @@ return {
                         end
                     end,
                 }),
-                ["<S-Tab>"] = cmp.mapping({
+                ["<C-p>"] = cmp.mapping({
                     i = mapping_prev,
                     s = mapping_prev,
                     c = function(fallback)

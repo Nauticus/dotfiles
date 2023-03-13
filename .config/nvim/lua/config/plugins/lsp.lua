@@ -5,7 +5,7 @@ local M = {
         {
             "williamboman/mason-lspconfig.nvim",
             opts = {
-                ensure_installed = { "sumneko_lua", "tsserver", "jsonls", "eslint" },
+                ensure_installed = { "lua_ls", "tsserver", "jsonls", "eslint" },
             },
             dependencies = { "williamboman/mason.nvim", config = true },
         },
@@ -18,10 +18,17 @@ local M = {
     },
 }
 
+vim.diagnostic.config({
+    float = {
+        border = "rounded",
+        source = "always",
+    },
+})
+
 local mappings = function(client, bufnr)
     local keymap = vim.keymap
     local wk = require("which-key")
-    local pickers = require "telescope.builtin"
+    local pickers = require("telescope.builtin")
     local capabilities = client.server_capabilities
 
     wk.register({ name = "+goto" }, { prefix = "<localleader>g" })
@@ -39,64 +46,123 @@ local mappings = function(client, bufnr)
     end
 
     local lsp_formatting = function()
-        vim.lsp.buf.format {
+        vim.lsp.buf.format({
             filter = function(c)
                 return c.name ~= "sumneko_lua"
             end,
             bufnr = bufnr,
-        }
+        })
     end
 
     local list_workspaces = function()
-        vim.pretty_print(vim.lsp.buf.list_workspace_folter())
+        vim.pretty_print(vim.lsp.buf.list_workspace_folders())
     end
 
     -- Go to
-    -- stylua: ignore start
     if capabilities.definitionProvider then
-        keymap.set("n", "<localleader>gd", pickers.lsp_definitions,      { desc = "Go to definition",           buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>gd",
+            pickers.lsp_definitions,
+            { desc = "Go to definition", buffer = bufnr }
+        )
     end
     if capabilities.declarationProvider then
-        keymap.set("n", "<localleader>gD", vim.lsp.buf.declaration,      { desc = "Go to declaration",          buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>gD",
+            vim.lsp.buf.declaration,
+            { desc = "Go to declaration", buffer = bufnr }
+        )
     end
     if capabilities.implementationProvider then
-        keymap.set("n", "<localleader>gi", pickers.lsp_implementations,  { desc = "Go to implementation",       buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>gi",
+            pickers.lsp_implementations,
+            { desc = "Go to implementation", buffer = bufnr }
+        )
     end
     if capabilities.typeDefinitionProvider then
-        keymap.set("n", "<localleader>gt", pickers.lsp_type_definitions, { desc = "Go to type definition",      buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>gt",
+            pickers.lsp_type_definitions,
+            { desc = "Go to type definition", buffer = bufnr }
+        )
     end
     if capabilities.referencesProvider then
-        keymap.set("n", "<localleader>gr", pickers.lsp_references,       { desc = "Go to reference",            buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>gr",
+            pickers.lsp_references,
+            { desc = "Go to reference", buffer = bufnr }
+        )
     end
 
     -- Lsp specific
     if capabilities.signatureHelpProvider then
-        keymap.set("n", "<localleader>ls", vim.lsp.buf.signature_help,   { desc = "Show signature help",        buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>ls",
+            vim.lsp.buf.signature_help,
+            { desc = "Show signature help", buffer = bufnr }
+        )
     end
     if capabilities.renameProvider then
-        keymap.set("n", "<localleader>lr", vim.lsp.buf.rename,           { desc = "Rename symbol under cursor", buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>lr",
+            vim.lsp.buf.rename,
+            { desc = "Rename symbol under cursor", buffer = bufnr }
+        )
     end
     if capabilities.documentFormattingProvider then
-        keymap.set("n", "<localleader>lf", lsp_formatting,               { desc = "Format",                     buffer = bufnr })
+        keymap.set("n", "<localleader>lf", lsp_formatting, {
+            desc = "Format",
+            buffer = bufnr,
+        })
     end
     -- if capabilities.documentRangeFormattingProvider then
     --     keymap.set("v", "<localleader>lf", vim.lsp.buf.range_formatting, { desc = "Range format" })
     -- end
     if capabilities.codeActionProvider then
-        keymap.set("n", "<localleader>la", vim.lsp.buf.code_action,      { desc = "Code actions",               buffer = bufnr })
+        keymap.set(
+            "n",
+            "<localleader>la",
+            vim.lsp.buf.code_action,
+            { desc = "Code actions", buffer = bufnr }
+        )
     end
 
     if capabilities.hoverProvider then
-        keymap.set("n", "K",               vim.lsp.buf.hover,            { desc = "Hover",                      buffer = bufnr })
+        keymap.set("n", "K", vim.lsp.buf.hover, {
+            desc = "Hover",
+            buffer = bufnr,
+        })
     end
 
-    keymap.set("n", "<localleader>le",  show_line_diagnostics,               { desc = "Show line diagnostics", buffer = bufnr })
+    keymap.set(
+        "n",
+        "<localleader>le",
+        show_line_diagnostics,
+        { desc = "Show line diagnostics", buffer = bufnr }
+    )
 
     -- Workspaces
-    keymap.set("n", "<localleader>lwa", vim.lsp.buf.add_workspace_folder,    { desc = "Add workspace folder" })
-    keymap.set("n", "<localleader>lwr", vim.lsp.buf.remove_workspace_folder, { desc = "Remove workspace folder" })
-    keymap.set("n", "<localleader>lwl", list_workspaces,                     { desc = "List workspace folders" })
-    -- stylua: ignore end
+    keymap.set(
+        "n",
+        "<localleader>lwa",
+        vim.lsp.buf.add_workspace_folder,
+        { desc = "Add workspace folder" }
+    )
+    keymap.set(
+        "n",
+        "<localleader>lwr",
+        vim.lsp.buf.remove_workspace_folder,
+        { desc = "Remove workspace folder" }
+    )
+    keymap.set("n", "<localleader>lwl", list_workspaces, { desc = "List workspace folders" })
 end
 
 local function on_attach(client, bufnr)
@@ -105,6 +171,11 @@ local function on_attach(client, bufnr)
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = "rounded",
         max_width = 80,
+    })
+
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "rounded",
+        max_width = 120,
     })
 end
 
@@ -168,12 +239,12 @@ M.config = function()
 
             require("lspconfig")[server_name].setup(opts)
         end,
-        ["sumneko_lua"] = function()
+        ["lua_ls"] = function()
             local neodev = require("neodev")
 
             neodev.setup()
 
-            require("lspconfig").sumneko_lua.setup({
+            require("lspconfig").lua_ls.setup({
                 on_attach = on_attach,
                 capabilities = cmp_nvim_lsp.default_capabilities(),
                 settings = {

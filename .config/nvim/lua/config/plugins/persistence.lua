@@ -14,7 +14,7 @@ return {
             function()
                 require("persistence").load()
             end,
-            desc = "Restore the session for the current folder.",
+            desc = "Restore the session for the current directory.",
         },
         {
             "<leader>ps",

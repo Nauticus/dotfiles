@@ -1,44 +1,3 @@
-local kind_icons = {
-    Text = "",
-    Method = "",
-    Function = "",
-    Constructor = "",
-    Field = "",
-    Variable = "",
-    Class = "ﴯ",
-    Interface = "",
-    Module = "",
-    Property = "ﰠ",
-    Unit = "",
-    Value = "",
-    Enum = "",
-    Keyword = "",
-    Snippet = "",
-    Color = "",
-    File = "",
-    Reference = "",
-    Folder = "",
-    EnumMember = "",
-    Constant = "",
-    Struct = "",
-    Event = "",
-    Operator = "",
-    TypeParameter = "",
-}
-
-local function border(hl_name)
-    return {
-        { "╭", hl_name },
-        { "─", hl_name },
-        { "╮", hl_name },
-        { "│", hl_name },
-        { "╯", hl_name },
-        { "─", hl_name },
-        { "╰", hl_name },
-        { "│", hl_name },
-    }
-end
-
 return {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
@@ -53,28 +12,32 @@ return {
         {
             "tzachar/cmp-tabnine",
             build = "./install.sh",
-            opts = {
-                max_lines = 1000,
-                max_num_results = 20,
-                sort = true,
-                run_on_every_keystroke = true,
-                snippet_placeholder = "..",
-            },
+            config = function()
+                local tabnine = require("cmp_tabnine.config")
+
+                tabnine:setup({
+                    max_lines = 1000,
+                    max_num_results = 20,
+                    sort = true,
+                    run_on_every_keystroke = true,
+                    snippet_placeholder = "..",
+                })
+            end,
         },
         "hrsh7th/cmp-nvim-lua",
         "lukas-reineke/cmp-under-comparator",
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-cmdline",
-        -- "windwp/nvim-autopairs",
+        "windwp/nvim-autopairs",
     },
     config = function()
         local cmp = require("cmp")
         local luasnip = require("luasnip")
 
-        -- cmp.event:on(
-        --     "confirm_done",
-        --     require("nvim-autopairs.completion.cmp").on_confirm_done({ map_char = { text = "" } })
-        -- )
+        cmp.event:on(
+            "confirm_done",
+            require("nvim-autopairs.completion.cmp").on_confirm_done({ map_char = { text = "" } })
+        )
 
         local mapping_next = function(fallback)
             if cmp.visible() then
@@ -108,7 +71,7 @@ return {
             },
             experimental = { native_menu = false, ghost_text = false },
             completion = {
-                keyword_length = 2
+                keyword_length = 1,
             },
             sortings = {
                 comparators = {
@@ -122,39 +85,38 @@ return {
                     cmp.config.compare.order,
                 },
             },
-            -- formatting = {
-            --     fields = { "kind", "abbr", "menu" },
-            --     format = function(entry, vim_item)
-            --         local source = ({
-            --             nvim_lsp = "LSP",
-            --             luasnip = "Snippet",
-            --             path = "Path",
-            --             cmp_tabnine = "Tabnine",
-            --             buffer = "Buffer",
-            --             tmux = "Tmux",
-            --         })[entry.source.name]
-            --
-            --         vim_item.menu = string.format("[%s]", source)
-            --         vim_item.kind = kind_icons[vim_item.kind]
-            --
-            --         return vim_item
-            --     end,
-            -- },
+            formatting = {
+                fields = { "abbr", "menu", "kind" },
+                format = function(entry, item)
+                    local short_name = {
+                        nvim_lsp = "LSP",
+                        nvim_lua = "nvim",
+                    }
+
+                    local menu_name = short_name[entry.source.name] or entry.source.name
+
+                    item.menu = string.format("[%s]", menu_name)
+                    return item
+                end,
+            },
             window = {
-                completion = {
-                    border = border("CmpBorder"),
-                },
-                documentation = {
-                    border = border("CmpDocBorder"),
-                },
+                completion = cmp.config.window.bordered({
+                    border = "single",
+                    winhighlight = "Normal:Normal,FloatBorder:CmpCompletionWindow,CursorLine:Visual,Search:None",
+                }),
+                documentation = cmp.config.window.bordered({
+                    border = "single",
+                    winhighlight = "Normal:Normal,FloatBorder:CmpDocumentationWindow,CursorLine:Visual,Search:None",
+                }),
             },
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
-                { name = "luasnip", priority_weight = 50 },
                 { name = "nvim_lsp_signature_help" },
+                { name = "cmp_tabnine" },
+                { name = "luasnip", priority_weight = 50 },
                 { name = "nvim_lua" },
                 { name = "path" },
-                { name = "cmp_tabnine" },
+            }, {
                 {
                     name = "buffer",
                     option = {

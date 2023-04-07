@@ -14,6 +14,7 @@ g.python3_host_prog = os.getenv("HOME") .. "/.pyenv/versions/3.9.4/bin/python"
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
+---@diagnostic disable-next-line: undefined-field
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
         "git",

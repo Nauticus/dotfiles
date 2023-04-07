@@ -14,9 +14,9 @@ keymap.set("n", "<A-l>",           "<CMD>vertical resize +4<CR>",          { des
 keymap.set("n", "<A-h>",           "<CMD>vertical resize -4<CR>",          { desc = "- vertical resize" })
 
 -- UTILS (u)
-keymap.set("n", "<localleader>ur", "<CMD>so %<CR>",                        { desc = "Source file" })
-keymap.set("n", "<localleader>uy", "<CMD>redir @* | file | redir END<CR>", { desc = "Paste file info" })
-keymap.set("n", "<localleader>us", ":setlocal spell! spelllang=en_us<CR>", { desc = "Toggle spellchecking" })
+keymap.set("n", "<leader>ur", "<CMD>so %<CR>",                        { desc = "Source file" })
+keymap.set("n", "<leader>uy", "<CMD>redir @* | file | redir END<CR>", { desc = "Paste file info" })
+keymap.set("n", "<leader>us", ":setlocal spell! spelllang=en_us<CR>", { desc = "Toggle spellchecking" })
 
 keymap.set("v", "J",               ":m '>+1<CR>gv=gv")
 keymap.set("v", "K",               ":m '<-2<CR>gv=gv")

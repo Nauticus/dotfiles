@@ -4,7 +4,7 @@ return {
     event = "BufReadPre",
     keys = {
         {
-            "<localleader>uh",
+            "<leader>uh",
             ":TSHighlightCapturesUnderCursor<CR>",
             desc = "(TS) Syntax captures under the cursor",
         },
@@ -55,18 +55,11 @@ return {
             },
         })
 
-        -- local filetype_to_parsername = parsers.filetype_to_parsername
-        --
-        -- filetype_to_parsername.javascript = "typescript"
-        -- filetype_to_parsername.css = "scss"
-
         require("nvim-treesitter.configs").setup({
             ensure_installed = "all",
             ignore_install = { "haskell" },
             highlight = {
                 enable = true,
-                disable = { "org", "pug" },
-                additional_vim_regex_highlighting = { "pug" },
             },
             refactor = { highlight_definitions = { enable = true } },
             -- tree_docs = { enable = true },
@@ -94,7 +87,6 @@ return {
                 },
             },
             autotag = { enable = true },
-            -- matchup = { enable = true, include_match_words = true },
             context_commentstring = { enable = true },
             indent = { enable = true },
             playground = {

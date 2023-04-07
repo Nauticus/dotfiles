@@ -5,10 +5,10 @@ return {
             spelling = { enabled = true },
         },
         window = {
-            border = "rounded",
+            border = "single",
             position = "bottom",
             padding = { 1, 0, 1, 0 },
-            margin = { 2, 2, 2, 2 },
+            margin = { 2, 2, 1, 2 },
         },
         layout = {
             align = "left",
@@ -20,8 +20,9 @@ return {
         local wk = require("which-key")
         wk.setup(opts)
 
-        wk.register({ name = "+utilities" }, { prefix = "<localleader>u" })
+        wk.register({ name = "+utilities" }, { prefix = "<leader>u" })
         wk.register({ name = "+harpoon" }, { prefix = "<leader>h" })
+        wk.register({ name = "+persistance" }, { prefix = "<leader>p" })
         wk.register(
             { name = "+gitsigns", h = { name = "+hunk" }, t = { name = "+toggle" } },
             { prefix = "<leader>g" }

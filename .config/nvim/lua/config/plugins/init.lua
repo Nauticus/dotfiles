@@ -1,6 +1,18 @@
 return {
     { dir = "~/code/personal/nvim-routine" },
     {
+        "loctvl842/monokai-pro.nvim",
+        enabled = false,
+        config = function()
+            require("monokai-pro").setup({
+                transparent_background = true,
+                filter = "pro",
+            })
+
+            vim.cmd.colorscheme("monokai-pro")
+        end,
+    },
+    {
         "catppuccin/nvim",
         enabled = true,
         lazy = false,
@@ -15,6 +27,8 @@ return {
                     GutterSep = { fg = colors.base },
                     MatchParen = { bg = colors.surface0, bold = true },
                     MatchWord = { bg = colors.surface0, underdashed = true, bold = true },
+                    CmpCompletionWindow = { fg = colors.surface2 },
+                    CmpDocumentationWindow = { fg = colors.rosewater },
                 }
             end,
             integrations = {
@@ -24,6 +38,11 @@ return {
                 telescope = true,
                 notify = true,
                 mini = false,
+                mason = true,
+                semantic_tokens = true,
+                treesitter = true,
+                treesitter_context = true,
+                which_key = true,
                 native_lsp = {
                     enabled = true,
                     virtual_text = {

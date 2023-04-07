@@ -7,7 +7,16 @@ local M = {
             opts = {
                 ensure_installed = { "lua_ls", "tsserver", "jsonls", "eslint" },
             },
-            dependencies = { "williamboman/mason.nvim", config = true },
+            dependencies = {
+                "williamboman/mason.nvim",
+                config = function()
+                    require("mason").setup({
+                        ui = {
+                            border = "single",
+                        },
+                    })
+                end,
+            },
         },
         "b0o/schemastore.nvim",
         "folke/neodev.nvim",
@@ -20,7 +29,7 @@ local M = {
 
 vim.diagnostic.config({
     float = {
-        border = "rounded",
+        border = "single",
         source = "always",
     },
 })
@@ -31,8 +40,7 @@ local mappings = function(client, bufnr)
     local pickers = require("telescope.builtin")
     local capabilities = client.server_capabilities
 
-    wk.register({ name = "+goto" }, { prefix = "<localleader>g" })
-    wk.register({ name = "+lsp" }, { prefix = "<localleader>l" })
+    wk.register({ name = "+lsp", g = "+goto", w = "+workspaces" }, { prefix = "<leader>l" })
 
     local show_line_diagnostics = function()
         vim.diagnostic.open_float({
@@ -62,7 +70,7 @@ local mappings = function(client, bufnr)
     if capabilities.definitionProvider then
         keymap.set(
             "n",
-            "<localleader>gd",
+            "<leader>lgd",
             pickers.lsp_definitions,
             { desc = "Go to definition", buffer = bufnr }
         )
@@ -70,7 +78,7 @@ local mappings = function(client, bufnr)
     if capabilities.declarationProvider then
         keymap.set(
             "n",
-            "<localleader>gD",
+            "<leader>lgD",
             vim.lsp.buf.declaration,
             { desc = "Go to declaration", buffer = bufnr }
         )
@@ -78,7 +86,7 @@ local mappings = function(client, bufnr)
     if capabilities.implementationProvider then
         keymap.set(
             "n",
-            "<localleader>gi",
+            "<leader>lgi",
             pickers.lsp_implementations,
             { desc = "Go to implementation", buffer = bufnr }
         )
@@ -86,7 +94,7 @@ local mappings = function(client, bufnr)
     if capabilities.typeDefinitionProvider then
         keymap.set(
             "n",
-            "<localleader>gt",
+            "<leader>lgt",
             pickers.lsp_type_definitions,
             { desc = "Go to type definition", buffer = bufnr }
         )
@@ -94,7 +102,7 @@ local mappings = function(client, bufnr)
     if capabilities.referencesProvider then
         keymap.set(
             "n",
-            "<localleader>gr",
+            "<leader>lgr",
             pickers.lsp_references,
             { desc = "Go to reference", buffer = bufnr }
         )
@@ -104,7 +112,7 @@ local mappings = function(client, bufnr)
     if capabilities.signatureHelpProvider then
         keymap.set(
             "n",
-            "<localleader>ls",
+            "<leader>ls",
             vim.lsp.buf.signature_help,
             { desc = "Show signature help", buffer = bufnr }
         )
@@ -112,24 +120,24 @@ local mappings = function(client, bufnr)
     if capabilities.renameProvider then
         keymap.set(
             "n",
-            "<localleader>lr",
+            "<leader>lr",
             vim.lsp.buf.rename,
             { desc = "Rename symbol under cursor", buffer = bufnr }
         )
     end
     if capabilities.documentFormattingProvider then
-        keymap.set("n", "<localleader>lf", lsp_formatting, {
+        keymap.set("n", "<leader>lf", lsp_formatting, {
             desc = "Format",
             buffer = bufnr,
         })
     end
     -- if capabilities.documentRangeFormattingProvider then
-    --     keymap.set("v", "<localleader>lf", vim.lsp.buf.range_formatting, { desc = "Range format" })
+    --     keymap.set("v", "<leader>lf", vim.lsp.buf.range_formatting, { desc = "Range format" })
     -- end
     if capabilities.codeActionProvider then
         keymap.set(
             "n",
-            "<localleader>la",
+            "<leader>la",
             vim.lsp.buf.code_action,
             { desc = "Code actions", buffer = bufnr }
         )
@@ -144,7 +152,7 @@ local mappings = function(client, bufnr)
 
     keymap.set(
         "n",
-        "<localleader>le",
+        "<leader>ld",
         show_line_diagnostics,
         { desc = "Show line diagnostics", buffer = bufnr }
     )
@@ -152,29 +160,29 @@ local mappings = function(client, bufnr)
     -- Workspaces
     keymap.set(
         "n",
-        "<localleader>lwa",
+        "<leader>lwa",
         vim.lsp.buf.add_workspace_folder,
         { desc = "Add workspace folder" }
     )
     keymap.set(
         "n",
-        "<localleader>lwr",
+        "<leader>lwr",
         vim.lsp.buf.remove_workspace_folder,
         { desc = "Remove workspace folder" }
     )
-    keymap.set("n", "<localleader>lwl", list_workspaces, { desc = "List workspace folders" })
+    keymap.set("n", "<leader>lwl", list_workspaces, { desc = "List workspace folders" })
 end
 
 local function on_attach(client, bufnr)
     mappings(client, bufnr)
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "rounded",
+        border = "single",
         max_width = 80,
     })
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
+        border = "single",
         max_width = 120,
     })
 end

@@ -1,7 +1,7 @@
 return {
     "stevearc/oil.nvim",
     lazy = false,
-    enabled = false,
+    enabled = true,
     keys = {
         {
             "-",

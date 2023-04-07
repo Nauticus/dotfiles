@@ -8,7 +8,7 @@ return {
         "mbbill/undotree",
         cmd = "UndotreeToggle",
         keys = {
-            { "<localleader>uu", ":UndotreeToggle<CR>", desc = "Toggle UndoTree" },
+            { "<leader>uu", ":UndotreeToggle<CR>", desc = "Toggle UndoTree" },
         },
     },
     {
